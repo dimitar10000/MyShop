@@ -1,0 +1,96 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ProductsBrand {
+  name String
+}
+
+type ProductsImage {
+  description String
+  height      Int?
+  source      String
+  width       Int?
+}
+
+type ShoppingCartsItems {
+  brand     String
+  image     ShoppingCartsItemsImage
+  name      String
+  price     Float
+  discountedPercent Int?
+  categories String[]
+  productID Int
+  quantity  Int
+}
+
+type ShoppingCartsItemsImage {
+  description String
+  height      Int?
+  source      String
+  width       Int?
+}
+
+type WishlistsItems {
+  brand             String
+  discountedPercent Int?
+  image             WishlistsItemsImage
+  name              String
+  price             Float
+  categories        String[]
+  productID         Int
+}
+
+type WishlistsItemsImage {
+  description String
+  height      Int?
+  source      String
+  width       Int?
+}
+
+model brands {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  image String
+  name  String
+}
+
+model products {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  brand             ProductsBrand
+  categories        String[]
+  discountedPercent Int?
+  id_               Int           @map("id")
+  image             ProductsImage
+  name              String
+  price             Float
+}
+
+model shopping_carts {
+  id     String               @id @default(auto()) @map("_id") @db.ObjectId
+  items  ShoppingCartsItems[]
+  userID String
+
+  @@map("shopping carts")
+}
+
+model storage {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  productID Int
+  quantity  Int
+}
+
+model users {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model wishlists {
+  id     String           @id @default(auto()) @map("_id") @db.ObjectId
+  items  WishlistsItems[]
+  userID String
+}

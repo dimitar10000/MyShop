@@ -1,0 +1,16 @@
+.menu-item {
+    width: 150px;
+    height: 38px;
+    margin: auto;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+.menu-item:hover {
+    background-color: theme('colors.gray.800');
+}
+
+.divider {
+    background-color: theme("colors.gray.800");
+}
