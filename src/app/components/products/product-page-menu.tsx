@@ -8,7 +8,7 @@ import Link from 'next/link';
 import PriceSlider from './price-slider/price-slider';
 import {useProducts} from '@/app/lib/product/products-provider';
 import {getInitialPriceRange} from '@/app/lib/util-funcs';
-import {useState, useEffect} from 'react';
+import {useState, useEffect,Suspense} from 'react';
 
 // labels["men's clothes"] = [["jeans", <address of jeans image>]]
 export default function ProductPageMenu({ labels }: { labels: { [key: string]: string[][] }}) {
@@ -63,7 +63,9 @@ export default function ProductPageMenu({ labels }: { labels: { [key: string]: s
                 <div className='text-lg text-slate-100 mb-3 ms-3 font-medium'>
                     Select price range:
                 </div>
-                <PriceSlider initialRange={initialPrices}/>
+                <Suspense>
+                    <PriceSlider initialRange={initialPrices}/>
+                </Suspense>
             </div>
         </div>
     )

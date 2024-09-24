@@ -1,6 +1,6 @@
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
-import {useState,useEffect} from 'react';
+import {useState,useEffect, Suspense} from 'react';
 import SliderInputs from './slider-inputs';
 import SearchButton from './search-button';
 import {useSearchParams} from 'next/navigation'
@@ -31,7 +31,9 @@ export default function PriceSlider({initialRange} : {initialRange: number[]}) {
             size='medium' min={initialRange[0]} max={initialRange[1]}/>
 
             <div className='mt-2'>
-                <SliderInputs range={value} sliderUpdater={setValue} paramsUpdater={setMySearchParams}/>
+                <Suspense>
+                    <SliderInputs range={value} sliderUpdater={setValue} paramsUpdater={setMySearchParams}/>
+                </Suspense>
             </div>
 
             <div className='mt-5'>
