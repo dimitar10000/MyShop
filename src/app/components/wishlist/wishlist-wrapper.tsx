@@ -7,7 +7,6 @@ import DiscountDisplay from '@/app/components/products/discount-display';
 import WishlistCartButton from '@/app/components/wishlist/wishlist-cart-button';
 import RemoveButton from '@/app/components/wishlist/remove-button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
 import {getBrandImageOfProduct,setLocalStorageForProduct} from '@/app/lib/util-funcs';
 import { useRouter } from "next/navigation";
 
@@ -22,17 +21,18 @@ function RemoveProductLoader() {
         </div>);
 }
 
-export default function WishlistWrapper({ link, product, setAddedToCart, brands }: {
+export default function WishlistWrapper({ link, product, setAddedToCart, brands, dialog,
+    openDialog, confirmSetter,setRemovedItemFail}: {
     link: string, product: WishlistItemType,
     setAddedToCart: Dispatch<SetStateAction<null | boolean>>,
-    brands: Brand[] | null
-}) {
+    brands: Brand[] | null,
+    dialog: JSX.Element, openDialog: () => void, confirmSetter: any,
+    setRemovedItemFail: Dispatch<SetStateAction<true | null>>}) {
+
     const [showCart, setShowCart] = useState(false);
     const [showButton, setShowButton] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
     const [brandImg, setBrandImg] = useState("");
-    const { confirmationDialog, openFunction, setConfirmFunction, setCloseFunction } = useConfirmationDialog('Are you sure you want to remove the product from the wishlist?', '',
-        { confirm: 'Yes', cancel: 'No' });
     const router = useRouter();
     
     useEffect(() => {
@@ -50,7 +50,12 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands 
         setAddedToCart(success);
     }
 
+    const removeItemFailEmitter = () => {
+        setRemovedItemFail(true);
+    }
+
     return (
+        <>
         <Box
             height={300}
             width={260}
@@ -58,9 +63,7 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands 
             alignItems="center"
             justifyContent="center"
             sx={{ backgroundColor: "white" }}
-            onMouseEnter={() => { setShowCart(true); setShowButton(true);
-                setCloseFunction(() => () => {setShowCart(false); setShowButton(false);})
-            }}
+            onMouseEnter={() => { setShowCart(true); setShowButton(true);}}
             onMouseLeave={() => { setShowCart(false); setShowButton(false); }}
         >
             <Link href={link} style={{ height: '100%', width: '100%', position: 'relative' }}
@@ -76,8 +79,9 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands 
                     sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 {showLoader && <RemoveProductLoader />}
-                <RemoveButton show={showButton} product={product} dialog={confirmationDialog} openDialog={openFunction}
-                 confirmSetter={setConfirmFunction} onRemoveProductLoad={removeProductEmitter} />
+                <RemoveButton show={showButton} product={product} dialog={dialog} openDialog={openDialog}
+                 confirmSetter={confirmSetter} onRemoveProductLoad={removeProductEmitter}
+                 onRemoveItemFailNotify={removeItemFailEmitter}/>
                 <WishlistCartButton show={showCart} product={product} onAddToCartNotify={addToCartEmitter} />
                 {discount
                     ? <DiscountDisplay percent={discount} />
@@ -85,5 +89,6 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands 
                 }
             </Link>
         </Box>
+        </>
     )
 }

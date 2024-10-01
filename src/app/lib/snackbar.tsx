@@ -51,11 +51,13 @@ export function useSnackbar(message: string, color?: string, keyIndex?: number) 
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         onClose={handleClose}
+        onMouseEnter={(e) => {e.stopPropagation();}}
         autoHideDuration={5000}
         key={vertical + horizontal + (keyIndex ? keyIndex : '')}
     >
         <Alert
             onClose={handleClose}
+            onMouseEnter={(e) => {e.stopPropagation();}}
             severity= {alertColor !== "custom" ? alertColor : undefined }
             variant="filled"
             sx={{ width: '100%', backgroundColor: alertColor === "custom" ? color : undefined }}

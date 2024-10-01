@@ -10,14 +10,19 @@ import { useState, useEffect } from 'react';
 import { getProductLink } from '@/app/lib/util-funcs';
 import { initializeBrandsOnClient } from '@/app/lib/fetch-brands';
 import WishlistSkeleton from '@/app/components/loadings/wishlist-skeleton';
+import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
 
 export default function WishlistBox({ productsData }: {
     productsData: Nullable<Wishlist['items']>
 }) {
     const [addedToCart, setAddedToCart] = useState<boolean | null>(null);
+    const [removedItemFail, setRemovedItemFail] = useState<true | null>(null);
     const [brands, setBrands] = useState<Brand[] | null>(null);
     const { snackbar: snackbarRed, clickHandler: clickHandlerRed } = useSnackbar("The product couldn't be added to the cart...", 'red', 1);
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the cart!", 'green', 2);
+    const { snackbar: snackbarRed2, clickHandler: clickHandlerRed2 } = useSnackbar("There was a problem removing the item... Please try again later.", 'red');
+    const { confirmationDialog, openFunction, setConfirmFunction } = useConfirmationDialog('Are you sure you want to remove the product from the wishlist?', '',
+        { confirm: 'Yes', cancel: 'No' });
 
     useEffect(() => {
         if (addedToCart) {
@@ -27,6 +32,12 @@ export default function WishlistBox({ productsData }: {
             clickHandlerRed({ vertical: 'top', horizontal: 'left' })();
         }
     }, [addedToCart]);
+
+    useEffect(() => {
+        if(removedItemFail) {
+            clickHandlerRed2({ vertical: 'top', horizontal: 'left' })();
+        }
+    },[removedItemFail])
 
     useEffect(() => {
         initializeBrandsOnClient(setBrands);
@@ -58,10 +69,10 @@ export default function WishlistBox({ productsData }: {
                             return (
                                 <div key={'product' + index}>
                                     <div className='flex flex-col gap-y-2'>
-                                        <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart} />
+                                        <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart}
+                                        openDialog={openFunction} dialog={confirmationDialog} confirmSetter={setConfirmFunction}
+                                        setRemovedItemFail={setRemovedItemFail} />
                                         <ProductDetails brand={brand} price={price} discount={discount} />
-                                        {snackbarRed}
-                                        {snackbarGreen}
                                     </div>
                                 </div>
                             )
@@ -73,6 +84,10 @@ export default function WishlistBox({ productsData }: {
                 {productsData === null && <LoadError resource='wishlist items' />}
 
             </Box>
+            {snackbarRed}
+            {snackbarRed2}
+            {snackbarGreen}
+            {confirmationDialog}
         </div>
     );
 }
