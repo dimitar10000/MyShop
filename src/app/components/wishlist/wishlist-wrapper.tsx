@@ -22,9 +22,10 @@ function RemoveProductLoader() {
         </div>);
 }
 
-export default function WishlistWrapper({ link, product, setAddedToCart, brands }: {
+export default function WishlistWrapper({ link, product, setAddedToCart, setRemovedFromList, brands }: {
     link: string, product: WishlistItemType,
     setAddedToCart: Dispatch<SetStateAction<null | boolean>>,
+    setRemovedFromList: Dispatch<SetStateAction<null | boolean>>,
     brands: Brand[] | null
 }) {
     const [showCart, setShowCart] = useState(false);
@@ -48,6 +49,10 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands 
 
     const addToCartEmitter = (success: boolean) => {
         setAddedToCart(success);
+    }
+
+    const removeFromListEmitter = (success: boolean) => {
+        setRemovedFromList(success);
     }
 
     return (
@@ -78,7 +83,8 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands 
                 {showLoader && <RemoveProductLoader />}
                 <RemoveButton show={showButton} product={product} dialog={confirmationDialog} openDialog={openFunction}
                  confirmSetter={setConfirmFunction} onRemoveProductLoad={removeProductEmitter} />
-                <WishlistCartButton show={showCart} product={product} onAddToCartNotify={addToCartEmitter} />
+                <WishlistCartButton show={showCart} product={product} onAddToCartNotify={addToCartEmitter}
+                onRemoveFromListNotify={setRemovedFromList}/>
                 {discount
                     ? <DiscountDisplay percent={discount} />
                     : null

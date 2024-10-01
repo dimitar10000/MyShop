@@ -15,9 +15,11 @@ export default function WishlistBox({ productsData }: {
     productsData: Nullable<Wishlist['items']>
 }) {
     const [addedToCart, setAddedToCart] = useState<boolean | null>(null);
+    const [removedFromList,setRemovedFromList] = useState<boolean | null>(null);
     const [brands, setBrands] = useState<Brand[] | null>(null);
     const { snackbar: snackbarRed, clickHandler: clickHandlerRed } = useSnackbar("The product couldn't be added to the cart...", 'red', 1);
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the cart!", 'green', 2);
+    const {snackbar: snackbarRed2, clickHandler: clickHandlerRed2} = useSnackbar("The product couldn't be removed from the cart...", 'red', 3);
 
     useEffect(() => {
         if (addedToCart) {
@@ -27,6 +29,12 @@ export default function WishlistBox({ productsData }: {
             clickHandlerRed({ vertical: 'top', horizontal: 'left' })();
         }
     }, [addedToCart]);
+
+    useEffect(() => {
+        if (removedFromList === false) {
+            clickHandlerRed2({ vertical: 'top', horizontal: 'left' })();
+        }
+    },[removedFromList])
 
     useEffect(() => {
         initializeBrandsOnClient(setBrands);
@@ -58,10 +66,12 @@ export default function WishlistBox({ productsData }: {
                             return (
                                 <div key={'product' + index}>
                                     <div className='flex flex-col gap-y-2'>
-                                        <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart} />
+                                        <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart}
+                                        setRemovedFromList={setRemovedFromList}/>
                                         <ProductDetails brand={brand} price={price} discount={discount} />
                                         {snackbarRed}
                                         {snackbarGreen}
+                                        {snackbarRed2}
                                     </div>
                                 </div>
                             )
