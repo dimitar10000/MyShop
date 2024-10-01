@@ -11,7 +11,7 @@ import {useList} from '@/app/lib/list/list-provider';
 export default function WishlistCartButton({ show, product, onAddToCartNotify,onRemoveFromListNotify }: {
     show: boolean, product: WishlistItemType,
     onAddToCartNotify: (success: boolean) => void,
-    onRemoveFromListNotify: (success: boolean) => void
+    onRemoveFromListNotify: () => void
 }) {
     const { user } = useUser();
     const {setCartItems} = useCart();
@@ -36,7 +36,7 @@ export default function WishlistCartButton({ show, product, onAddToCartNotify,on
             return removeFromList(user?.sub!, product.productID);
         },
         onError: () => {
-            onRemoveFromListNotify(false);
+            onRemoveFromListNotify();
         },
         onSuccess: (data) => {
             setListItems(data?.items);
