@@ -1,35 +1,31 @@
-'use client'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { useState } from 'react';
+import { useState,Dispatch,SetStateAction } from 'react';
 import { addToList, removeFromList } from '@/app/actions/wishlist';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { useSnackbar } from '@/app/lib/snackbar';
 import {useMutation } from '@tanstack/react-query'; 
 import {useList} from '@/app/lib/list/list-provider';
 import {Product} from '@/app/lib/definitions';
 
-export default function WishlistButton({ product, initialSelected }: { product: Product, initialSelected: boolean }) {
+export default function WishlistButton({ product, initialSelected,setAddedToList,setRemovedFromList }:
+    { product: Product, initialSelected: boolean, setAddedToList: Dispatch<SetStateAction<boolean | null>>,
+        setRemovedFromList: Dispatch<SetStateAction<boolean | null>>}) {
+
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
     const {setListItems} = useList();
-
-    const {snackbar: snackbarGreen,clickHandler: clickHandlerGreen} = useSnackbar("Your product was added to the wishlist!",undefined,1);
-    const {snackbar: snackbarRed,clickHandler: clickHandlerRed} = useSnackbar("The product couldn't be added to the list...", 'red',2);
-    const {snackbar: snackbarGreen2,clickHandler: clickHandlerGreen2} = useSnackbar("The product was removed from the wishlist!", 'grey',3);
-    const {snackbar: snackbarRed2,clickHandler: clickHandlerRed2} = useSnackbar("The product couldn't be removed from the list...", 'red',4);
 
     const mutationAdd = useMutation({
         mutationFn: () => {
             return addToList(user?.sub!,product);
         },
         onSuccess: (data) => {
-            displayPopup('green');
+            setAddedToList(true);
             setListItems(data?.items);
         },
         onError: () => {
-            displayPopup('red');
+            setAddedToList(false);
         }
     });
 
@@ -38,31 +34,14 @@ export default function WishlistButton({ product, initialSelected }: { product: 
             return removeFromList(user?.sub!,product.id);
         },
         onSuccess: (data) => {
-            displayPopup('grey');
+            setRemovedFromList(true);
             setListItems(data?.items);
         },
         onError: () => {
-            displayPopup('red',2);
+            setRemovedFromList(false);
         }
 
     })
-
-    const displayPopup = (color: string, variant?: number) => {
-        if(color === 'green') {
-        (clickHandlerGreen({vertical: 'bottom', horizontal: 'left'}))();
-        }
-        else if(color === 'red') {
-            if(variant && variant === 2) {
-                (clickHandlerRed2({vertical: 'bottom', horizontal: 'left'}))();
-            }
-            else {
-                (clickHandlerRed({vertical: 'bottom', horizontal: 'left'}))();
-            }
-        }
-        else if(color === 'grey') {
-            (clickHandlerGreen2({vertical: 'bottom', horizontal: 'left'}))();
-        }
-    };
 
     return (
         <>
@@ -132,10 +111,6 @@ export default function WishlistButton({ product, initialSelected }: { product: 
                     }}
                 />
             }
-            {snackbarGreen}
-            {snackbarGreen2}
-            {snackbarRed}
-            {snackbarRed2}
         </>
     )
 }
