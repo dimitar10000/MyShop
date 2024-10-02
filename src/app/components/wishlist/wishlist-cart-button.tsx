@@ -8,9 +8,10 @@ import { WishlistItemType } from '@/app/lib/definitions';
 import {useCart} from '@/app/lib/cart/cart-provider';
 import {useList} from '@/app/lib/list/list-provider';
 
-export default function WishlistCartButton({ show, product, onAddToCartNotify }: {
+export default function WishlistCartButton({ show, product, onAddToCartNotify,onRemoveFromListNotify }: {
     show: boolean, product: WishlistItemType,
-    onAddToCartNotify: (success: boolean) => void
+    onAddToCartNotify: (success: boolean) => void,
+    onRemoveFromListNotify: () => void
 }) {
     const { user } = useUser();
     const {setCartItems} = useCart();
@@ -22,11 +23,11 @@ export default function WishlistCartButton({ show, product, onAddToCartNotify }:
         },
         onSuccess: (data) => {
             setCartItems(data?.items);
-            displayPopup('green');
+            onAddToCartNotify(true);
             mutationRemove.mutate();
         },
         onError: () => {
-            displayPopup('red');
+            onAddToCartNotify(false);
         }
     })
 
@@ -35,21 +36,12 @@ export default function WishlistCartButton({ show, product, onAddToCartNotify }:
             return removeFromList(user?.sub!, product.productID);
         },
         onError: () => {
-            displayPopup('red');
+            onRemoveFromListNotify();
         },
         onSuccess: (data) => {
             setListItems(data?.items);
         }
     })
-
-    const displayPopup = (color: string) => {
-        if (color === 'red') {
-            onAddToCartNotify(false);
-        }
-        else if (color === 'green') {
-            onAddToCartNotify(true);
-        }
-    };
 
     const shopping = <ShoppingCartIcon style={{ color: 'white', fontSize: 25 }} />;
 

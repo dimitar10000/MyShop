@@ -82,7 +82,12 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands,
                 <RemoveButton show={showButton} product={product} dialog={dialog} openDialog={openDialog}
                  confirmSetter={confirmSetter} onRemoveProductLoad={removeProductEmitter}
                  onRemoveItemFailNotify={removeItemFailEmitter}/>
+<<<<<<< HEAD
                 <WishlistCartButton show={showCart} product={product} onAddToCartNotify={addToCartEmitter} />
+=======
+                <WishlistCartButton show={showCart} product={product} onAddToCartNotify={addToCartEmitter}
+                onRemoveFromListNotify={removeItemFailEmitter}/>
+>>>>>>> snackbar-fix
                 {discount
                     ? <DiscountDisplay percent={discount} />
                     : null

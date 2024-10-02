@@ -1,24 +1,23 @@
-'use client'
 import Box from '@mui/system/Box';
 import Image from 'next/image';
 import Link from 'next/link';
 import WishlistButton from '@/app/components/products/wishlist-button';
 import CartButton from '@/app/components/products/cart-button';
 import DiscountDisplay from '@/app/components/products/discount-display';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,Dispatch,SetStateAction } from 'react';
 import {getBrandImageOfProduct,setLocalStorageForProduct} from '@/app/lib/util-funcs';
 import { Brand,Product } from '@/app/lib/definitions';
 import { useRouter } from "next/navigation";
 import { useSnackbar } from '@/app/lib/snackbar';
 
-export default function ProductWrapper({ link, product, inWishlist, brands }: {
-    link: string, product: Product, inWishlist: boolean, brands: Brand[] | null
+export default function ProductWrapper({ link, product, inWishlist, brands, setAddedToList, setRemovedFromList }: {
+    link: string, product: Product, inWishlist: boolean, brands: Brand[] | null,
+    setAddedToList: Dispatch<SetStateAction<null | boolean>>,
+    setRemovedFromList: Dispatch<SetStateAction<null | boolean>>
 }) {
     const [showCart, setShowCart] = useState(false);
     const [brandImg, setBrandImg] = useState("");
     const router = useRouter();
-    const [addedToList, setAddedToList] = useState<boolean | null>(null);
-    const [removedFromList, setRemovedFromList] = useState<boolean | null>(null);
     const discount = product.discountedPercent;
     const {snackbar: snackbarGreen,clickHandler: clickHandlerGreen} = useSnackbar("Your product was added to the wishlist!",undefined,1);
     const {snackbar: snackbarRed,clickHandler: clickHandlerRed} = useSnackbar("The product couldn't be added to the list...", 'red',2);
@@ -30,24 +29,13 @@ export default function ProductWrapper({ link, product, inWishlist, brands }: {
         setBrandImg(img);
     },[product,brands]);
 
-    useEffect(() => {
-        if(addedToList) {
-            (clickHandlerGreen({vertical: 'bottom', horizontal: 'left'}))();   
-        }
-        else if(addedToList === false) {
-            (clickHandlerRed({vertical: 'bottom', horizontal: 'left'}))();   
+    const addedEmitter = (success: boolean) => {
+        setAddedToList(success);
+    }
 
-        }
-    },[addedToList])
-
-    useEffect(() => {
-        if(removedFromList) {
-            (clickHandlerGreen2({vertical: 'bottom', horizontal: 'left'}))();   
-        }
-        else if(removedFromList === false) {
-            (clickHandlerRed2({vertical: 'bottom', horizontal: 'left'}))();   
-        }
-    },[removedFromList])
+    const removedEmitter = (success: boolean) => {
+        setRemovedFromList(success);
+    }
 
     return (
         <Box
@@ -71,8 +59,8 @@ export default function ProductWrapper({ link, product, inWishlist, brands }: {
                     fill
                     sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
-                <WishlistButton product={product} initialSelected={inWishlist} setAddedToList={setAddedToList}
-                setRemovedFromList={setRemovedFromList}/>
+                <WishlistButton product={product} initialSelected={inWishlist} onAddToListNotify={addedEmitter}
+                onRemoveFromListNotify={removedEmitter}/>
                 <CartButton show={showCart} product={product} />
                 {discount
                     ? <DiscountDisplay percent={discount} />

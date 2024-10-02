@@ -24,6 +24,10 @@ export default function WishlistBox({ productsData }: {
     const { confirmationDialog, openFunction, setConfirmFunction } = useConfirmationDialog('Are you sure you want to remove the product from the wishlist?', '',
         { confirm: 'Yes', cancel: 'No' });
 
+    const { snackbar: snackbarRed2, clickHandler: clickHandlerRed2 } = useSnackbar("There was a problem removing the item... Please try again later.", 'red');
+    const { confirmationDialog, openFunction, setConfirmFunction } = useConfirmationDialog('Are you sure you want to remove the product from the wishlist?', '',
+        { confirm: 'Yes', cancel: 'No' });
+
     useEffect(() => {
         if (addedToCart) {
             clickHandlerGreen({ vertical: 'top', horizontal: 'left' })();

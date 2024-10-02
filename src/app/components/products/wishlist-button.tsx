@@ -1,31 +1,35 @@
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { useState,Dispatch,SetStateAction } from 'react';
+import { useState,useEffect } from 'react';
 import { addToList, removeFromList } from '@/app/actions/wishlist';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import {useMutation } from '@tanstack/react-query'; 
 import {useList} from '@/app/lib/list/list-provider';
 import {Product} from '@/app/lib/definitions';
 
-export default function WishlistButton({ product, initialSelected,setAddedToList,setRemovedFromList }:
-    { product: Product, initialSelected: boolean, setAddedToList: Dispatch<SetStateAction<boolean | null>>,
-        setRemovedFromList: Dispatch<SetStateAction<boolean | null>>}) {
-
+export default function WishlistButton({ product, initialSelected, onAddToListNotify, onRemoveFromListNotify }: { product: Product, initialSelected: boolean,
+    onAddToListNotify: (success: boolean) => void, onRemoveFromListNotify: (success: boolean) => void}) {
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
     const {setListItems} = useList();
+    
+    // update the initial value for the button
+    // when the wishlist is set in ancestor products box component
+    useEffect(() => {
+        setSelected(initialSelected);
+    },[initialSelected]);
 
     const mutationAdd = useMutation({
         mutationFn: () => {
             return addToList(user?.sub!,product);
         },
         onSuccess: (data) => {
-            setAddedToList(true);
+            onAddToListNotify(true);
             setListItems(data?.items);
         },
         onError: () => {
-            setAddedToList(false);
+            onAddToListNotify(false);
         }
     });
 
@@ -34,11 +38,11 @@ export default function WishlistButton({ product, initialSelected,setAddedToList
             return removeFromList(user?.sub!,product.id);
         },
         onSuccess: (data) => {
-            setRemovedFromList(true);
+            onRemoveFromListNotify(true);
             setListItems(data?.items);
         },
         onError: () => {
-            setRemovedFromList(false);
+            onRemoveFromListNotify(false);
         }
 
     })
@@ -111,6 +115,7 @@ export default function WishlistButton({ product, initialSelected,setAddedToList
                     }}
                 />
             }
+            
         </>
     )
 }

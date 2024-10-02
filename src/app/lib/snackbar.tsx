@@ -53,6 +53,7 @@ export function useSnackbar(message: string, color?: string, keyIndex?: number) 
         onClose={handleClose}
         onMouseEnter={(e) => {e.stopPropagation();}}
         autoHideDuration={5000}
+        disableWindowBlurListener
         key={vertical + horizontal + (keyIndex ? keyIndex : '')}
     >
         <Alert
