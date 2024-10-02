@@ -31,6 +31,7 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
     const { snackbar: snackbarGreen2, clickHandler: clickHandlerGreen2 } = useSnackbar("The product was removed from the wishlist!", 'grey', 3);
     const { snackbar: snackbarRed2, clickHandler: clickHandlerRed2 } = useSnackbar("The product couldn't be removed from the list...", 'red', 4);
 
+    
     useEffect(() => {
         initializeList(user, setList);
     }, [user]);
@@ -38,6 +39,7 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
     useEffect(() => {
         initializeBrandsOnClient(setBrands);
     }, [setBrands]);
+    
 
     useEffect(() => {
         if (minPrice && maxPrice && productsData) {
@@ -74,7 +76,7 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
         <Box sx={{ flexGrow: 1, marginLeft: 10, marginTop: 5, marginBottom: 10 }}>
             <div className={styles.wrapper}>
                 {filteredProducts &&
-                    (filteredProducts.map(async (item: Product, index: number) => {
+                    (filteredProducts.map((item: Product, index: number) => {
                         const link = getProductLink(item);
                         const discount = item.discountedPercent;
                         const price = item.price;

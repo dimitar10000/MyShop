@@ -1,6 +1,6 @@
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { addToList, removeFromList } from '@/app/actions/wishlist';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import {useMutation } from '@tanstack/react-query'; 
@@ -13,6 +13,12 @@ export default function WishlistButton({ product, initialSelected, onAddToListNo
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
     const {setListItems} = useList();
+    
+    // update the initial value for the button
+    // when the wishlist is set in ancestor products box component
+    useEffect(() => {
+        setSelected(initialSelected);
+    },[initialSelected]);
 
     const mutationAdd = useMutation({
         mutationFn: () => {

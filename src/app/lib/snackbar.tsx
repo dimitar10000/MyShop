@@ -17,15 +17,12 @@ export function useSnackbar(message: string, color?: string, keyIndex?: number) 
     });
     const { open, vertical, horizontal } = state;
 
-    console.log("snackbar open state = ", open);
-
     const handleClick = (newState: SnackbarOrigin) => () => {
         setState({ ...newState, open: true });
     };
 
     const handleClose = () => {
         setState({ ...state, open: false });
-        console.log("on close handler triggered");
     }
 
     let alertColor: 'success' | 'error' | 'warning' | 'info' | "custom";
