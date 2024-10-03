@@ -17,8 +17,8 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
       });
 
       let session = await getSession();
-      let user = session?.user!;
-      const userID = user?.user_id;
+      let user = session?.user;
+      const userID = user?.sub;
       
       console.log('SESSION ',session);
       console.log('USER ',session?.user);
