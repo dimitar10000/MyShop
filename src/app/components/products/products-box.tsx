@@ -56,18 +56,22 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
     useEffect(() => {
         if (addedToList) {
             (clickHandlerGreen({ vertical: 'bottom', horizontal: 'left' }))();
+            setAddedToList(null);
         }
         else if (addedToList === false) {
             (clickHandlerRed({ vertical: 'bottom', horizontal: 'left' }))();
+            setAddedToList(null);
         }
     }, [addedToList])
 
     useEffect(() => {
         if (removedFromList) {
             (clickHandlerGreen2({ vertical: 'bottom', horizontal: 'left' }))();
+            setRemovedFromList(null);
         }
         else if (removedFromList === false) {
             (clickHandlerRed2({ vertical: 'bottom', horizontal: 'left' }))();
+            setRemovedFromList(null);
         }
     }, [removedFromList])
 

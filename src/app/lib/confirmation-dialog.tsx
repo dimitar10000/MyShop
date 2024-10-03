@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState,Dispatch,SetStateAction } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { UseMutationResult } from '@tanstack/react-query';
-import {isAsyncType,Wishlist} from '@/app/lib/definitions';
+import {Wishlist} from '@/app/lib/definitions';
 
 export interface DialogProperties {
     title: string,
@@ -21,10 +21,13 @@ export interface DialogProperties {
     openState: boolean,
     setOpenState: any,
     onConfirmFunction: ((...args: any[]) => Promise<void>) | UseMutationResult<Wishlist|null|undefined> | null,
+    confirmSetter?: Dispatch<SetStateAction<boolean | null>>,
+    closeSetter?: Dispatch<SetStateAction<boolean | null>>,
     onCloseFunction: ((...args: any[]) => void) | null
 }
 
-const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConfirmFunction, onCloseFunction}: DialogProperties) => {
+const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConfirmFunction, onCloseFunction,
+    confirmSetter,closeSetter}: DialogProperties) => {
 
     const handleClose = () => {
         if(onCloseFunction) {
@@ -32,6 +35,10 @@ const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConf
         }
 
         setOpenState(false);
+        
+        if(closeSetter) {
+            closeSetter(true);
+        }
     };
 
     return (
@@ -87,11 +94,8 @@ const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConf
                 </Button>
                 <Button onClick={async (e) => {
                     e.stopPropagation();
-                    if(onConfirmFunction && isAsyncType(onConfirmFunction)) {
-                        await onConfirmFunction();
-                    }
-                    else if(onConfirmFunction) {
-                        onConfirmFunction.mutate(undefined);
+                    if(confirmSetter) {
+                        confirmSetter(true);
                     }
                     handleClose();
                 }} autoFocus
@@ -107,7 +111,9 @@ const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConf
 // takes title, content and text values for confirm and cancel button of confirmation dialog
 // returns the dialog, function to open it and setters for the functions executed on confirm
 // and cancel button
-export function useConfirmationDialog(title: string, content: string, buttons: { confirm: string, cancel: string }) {
+export function useConfirmationDialog(title: string, content: string, buttons: { confirm: string, cancel: string },
+    confirmSetter?: Dispatch<SetStateAction<boolean | null>>, closeSetter?: Dispatch<SetStateAction<boolean | null>>) {
+        
     const [open, setOpen] = useState(false);
     const [onConfirm, setOnConfirm] = useState<DialogProperties['onConfirmFunction']>(null);
     const [onClose, setOnClose] = useState<DialogProperties['onCloseFunction']>(null);
@@ -117,7 +123,8 @@ export function useConfirmationDialog(title: string, content: string, buttons: {
     };
 
     const dialog= <ConfirmationDialog title={title} content={content} buttons={{ confirm: buttons.confirm, cancel: buttons.cancel }}
-        openState={open} setOpenState={setOpen} onConfirmFunction={onConfirm} onCloseFunction={onClose}/>;
+        openState={open} setOpenState={setOpen} onConfirmFunction={onConfirm} onCloseFunction={onClose} confirmSetter={confirmSetter}
+        closeSetter={closeSetter}/>;
     
     return { confirmationDialog: dialog, openFunction: handleClickOpen, setConfirmFunction: setOnConfirm, setCloseFunction: setOnClose};
 }

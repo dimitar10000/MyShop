@@ -21,13 +21,19 @@ function RemoveProductLoader() {
         </div>);
 }
 
-export default function WishlistWrapper({ link, product, setAddedToCart, brands, dialog,
-    openDialog, confirmSetter,setRemovedItemFail}: {
+interface WrapperType {
     link: string, product: WishlistItemType,
     setAddedToCart: Dispatch<SetStateAction<null | boolean>>,
-    brands: Brand[] | null,
-    dialog: JSX.Element, openDialog: () => void, confirmSetter: any,
-    setRemovedItemFail: Dispatch<SetStateAction<true | null>>}) {
+    brands: Brand[] | null, dialog: JSX.Element, openDialog: () => void,
+    setRemovedItemFail: Dispatch<SetStateAction<true | null>>,
+    confirmedDeletion: null | boolean,
+    closedDialog: null | boolean,
+    deleteProductSetter: Dispatch<SetStateAction<WishlistItemType | null>>,
+    needToDelete: boolean
+}
+
+export default function WishlistWrapper({ link, product, setAddedToCart, brands, dialog,
+    openDialog,setRemovedItemFail, confirmedDeletion, closedDialog,deleteProductSetter,needToDelete}: WrapperType) {
 
     const [showCart, setShowCart] = useState(false);
     const [showButton, setShowButton] = useState(false);
@@ -80,8 +86,10 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands,
                 />
                 {showLoader && <RemoveProductLoader />}
                 <RemoveButton show={showButton} product={product} dialog={dialog} openDialog={openDialog}
-                 confirmSetter={confirmSetter} onRemoveProductLoad={removeProductEmitter}
-                 onRemoveItemFailNotify={removeItemFailEmitter}/>
+                 onRemoveProductLoad={removeProductEmitter} onRemoveItemFailNotify={removeItemFailEmitter}
+                 confirmedDeletion={confirmedDeletion} closedDialog={closedDialog}
+                 deleteProductSetter={deleteProductSetter} needToDelete={needToDelete}/>
+                    
                 <WishlistCartButton show={showCart} product={product} onAddToCartNotify={addToCartEmitter}
                 onRemoveFromListNotify={removeItemFailEmitter}/>
                 {discount
