@@ -20,9 +20,13 @@ export default function WishlistBox({ productsData }: {
     const [brands, setBrands] = useState<Brand[] | null>(null);
     const { snackbar: snackbarRed, clickHandler: clickHandlerRed } = useSnackbar("The product couldn't be added to the cart...", 'red', 1);
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the cart!", 'green', 2);
-    const { snackbar: snackbarRed2, clickHandler: clickHandlerRed2 } = useSnackbar("There was a problem removing the item... Please try again later.", 'red');
-    const { confirmationDialog, openFunction, setConfirmFunction } = useConfirmationDialog('Are you sure you want to remove the product from the wishlist?', '',
-        { confirm: 'Yes', cancel: 'No' });
+    const { snackbar: snackbarRed2, clickHandler: clickHandlerRed2 } = useSnackbar("There was a problem removing the item... Please try again later.", 'red',3);
+
+    const [confirmHappened, setConfirmHappened] = useState<null | boolean>(null);
+    const [closeHappened, setCloseHappened] = useState<null | boolean>(null);
+    const [productToDelete, setProductToDelete] = useState<WishlistItemType | null>(null);
+    const { confirmationDialog, openFunction } = useConfirmationDialog('Are you sure you want to remove the product from the wishlist?', '',
+        { confirm: 'Yes', cancel: 'No' },setConfirmHappened,setCloseHappened);
 
     useEffect(() => {
         if (addedToCart) {
@@ -42,6 +46,18 @@ export default function WishlistBox({ productsData }: {
     useEffect(() => {
         initializeBrandsOnClient(setBrands);
     }, [setBrands]);
+
+    useEffect(() => {
+        if(productToDelete) {
+            setProductToDelete(null);
+        }
+    },[productToDelete])
+
+    useEffect(() => {
+        if(confirmHappened) {
+            setConfirmHappened(false);
+        }
+    },[confirmHappened])
 
     return (
         <div className='mb-10 mt-1'>
@@ -65,13 +81,20 @@ export default function WishlistBox({ productsData }: {
                             const discount = item.discountedPercent;
                             const price = item.price;
                             const brand = item.brand;
+                            const needToDelete = productToDelete === item;
+
+                            if(needToDelete) {
+                                console.log('NEED TO DELETE ',item.productID);
+                            }
 
                             return (
                                 <div key={'product' + index}>
                                     <div className='flex flex-col gap-y-2'>
                                         <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart}
-                                        openDialog={openFunction} dialog={confirmationDialog} confirmSetter={setConfirmFunction}
-                                        setRemovedItemFail={setRemovedItemFail} />
+                                        openDialog={openFunction} dialog={confirmationDialog} setRemovedItemFail={setRemovedItemFail}
+                                        confirmedDeletion={confirmHappened} deleteProductSetter={setProductToDelete}
+                                        needToDelete={needToDelete} closedDialog={closeHappened}/>
+
                                         <ProductDetails brand={brand} price={price} discount={discount} />
                                     </div>
                                 </div>

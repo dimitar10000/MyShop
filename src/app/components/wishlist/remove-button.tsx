@@ -3,16 +3,17 @@ import { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import { removeFromList } from '@/app/actions/wishlist';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useMutation } from '@tanstack/react-query';
-import { WishlistItemType } from '@/app/lib/definitions';
+import { WishlistItemType,Product } from '@/app/lib/definitions';
 import {useList} from '@/app/lib/list/list-provider';
 
 interface ButtonProperties {
     hoveredUpdater: Dispatch<SetStateAction<boolean>>,
     extraStyles?: React.CSSProperties,
-    openDialog: () => void
+    openDialog: () => void,
+    openedUpdater: Dispatch<SetStateAction<boolean>>
 }
 
-function ButtonComponent({hoveredUpdater, extraStyles, openDialog }: ButtonProperties) {
+function ButtonComponent({hoveredUpdater, extraStyles, openDialog,openedUpdater }: ButtonProperties) {
     const circle = <div className='absolute right-4 top-3 rounded-full bg-gray-500 size-6' />
 
     return (
@@ -30,21 +31,27 @@ function ButtonComponent({hoveredUpdater, extraStyles, openDialog }: ButtonPrope
                     e.preventDefault();
                     e.stopPropagation();
                     openDialog();
+                    openedUpdater(true);
                 }}
             />
         </>
     )
 }
 
-export default function RemoveButton({ show, product, onRemoveProductLoad,openDialog,confirmSetter,
-    onRemoveItemFailNotify}: {
+interface ComponentProps {
     show: boolean, product: WishlistItemType, onRemoveProductLoad: (load: boolean) => void,
-    dialog: JSX.Element, openDialog: () => void, confirmSetter: any,
-    onRemoveItemFailNotify: () => void
-}) {
+    dialog: JSX.Element, openDialog: () => void,onRemoveItemFailNotify: () => void,
+    confirmedDeletion: null | boolean, closedDialog: null | boolean,
+    deleteProductSetter: Dispatch<SetStateAction<WishlistItemType | null>>,needToDelete: boolean
+}
+
+export default function RemoveButton({ show, product, onRemoveProductLoad,openDialog,
+    onRemoveItemFailNotify, confirmedDeletion, deleteProductSetter, closedDialog,needToDelete}: ComponentProps) {
+
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
     const {setListItems} = useList();
+    const [openedDialog, setOpenedDialog] = useState<boolean>(false);
 
     const mutationRemove = useMutation({
         mutationFn: () => {
@@ -59,8 +66,22 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
     });
 
     useEffect(() => {
-        confirmSetter(mutationRemove);
-    }, []);
+        if(openedDialog && confirmedDeletion) {
+            deleteProductSetter(product);
+        }
+    },[openedDialog,confirmedDeletion,deleteProductSetter])
+
+    useEffect(() => {
+        if(closedDialog) {
+            setOpenedDialog(false);
+        }
+    },[closedDialog,setOpenedDialog])
+
+    useEffect(() => {
+        if(needToDelete) {
+            mutationRemove.mutate();
+        }
+    },[needToDelete])
 
     useEffect(() => {
         if (mutationRemove.isPending) {
@@ -73,9 +94,10 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
             {show
                 ? !hovered
                     ? <ButtonComponent hoveredUpdater={setHovered}
-                        openDialog={openDialog}/>
+                        openDialog={openDialog} openedUpdater={setOpenedDialog}/>
                     : <ButtonComponent hoveredUpdater={setHovered}
-                        openDialog={openDialog} extraStyles={{ filter: 'brightness(90%' }} />
+                        openDialog={openDialog} openedUpdater={setOpenedDialog}
+                        extraStyles={{ filter: 'brightness(90%' }} />
                 : null
             }
         </div>)
