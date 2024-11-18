@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { UseMutationResult } from '@tanstack/react-query';
-import {Wishlist} from '@/app/lib/definitions';
+import {Wishlist,isAsyncType} from '@/app/lib/definitions';
 
 export interface DialogProperties {
     title: string,
@@ -40,6 +40,22 @@ const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConf
             closeSetter(true);
         }
     };
+
+    const handleConfirm = () => {
+        if(onConfirmFunction) {
+            if(isAsyncType(onConfirmFunction)) {
+                const asyncFunc = async () => {
+                    await onConfirmFunction();
+                }
+
+                asyncFunc();
+            }
+        }
+
+        if(confirmSetter) {
+            confirmSetter(true);
+        }
+    }
 
     return (
         <Dialog
@@ -94,9 +110,7 @@ const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConf
                 </Button>
                 <Button onClick={async (e) => {
                     e.stopPropagation();
-                    if(confirmSetter) {
-                        confirmSetter(true);
-                    }
+                    handleConfirm();
                     handleClose();
                 }} autoFocus
                         sx={{':hover': {backgroundColor: 'green', filter: 'brightness(90%)'}, textTransform: 'none', fontSize: 18,
@@ -109,7 +123,8 @@ const ConfirmationDialog = ({title,content,buttons,openState,setOpenState,onConf
 }
 
 // takes title, content and text values for confirm and cancel button of confirmation dialog
-// returns the dialog, function to open it and setters for the functions executed on confirm
+// optionally it can update states for the confirmation and close dialog actions defined in other components
+// returns the dialog, function to open it, and setters for the functions executed on confirm
 // and cancel button
 export function useConfirmationDialog(title: string, content: string, buttons: { confirm: string, cancel: string },
     confirmSetter?: Dispatch<SetStateAction<boolean | null>>, closeSetter?: Dispatch<SetStateAction<boolean | null>>) {
