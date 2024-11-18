@@ -15,7 +15,7 @@ export default function WishlistButton({ item, initialSelected }: {
     initialSelected: boolean
 }) {
     const { user } = useUser();
-    const {listItems,setListItems} = useList();
+    const {setListItems} = useList();
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the wishlist!", undefined, 1);

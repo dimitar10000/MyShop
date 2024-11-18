@@ -5,6 +5,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { useMutation } from '@tanstack/react-query';
 import { WishlistItemType,Product } from '@/app/lib/definitions';
 import {useList} from '@/app/lib/list/list-provider';
+import { useRouter } from 'next/navigation'
 
 interface ButtonProperties {
     hoveredUpdater: Dispatch<SetStateAction<boolean>>,
@@ -54,6 +55,7 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
     const {setListItems} = useList();
+    const router = useRouter();
     const [openedDialog, setOpenedDialog] = useState<boolean>(false);
 
     const mutationRemove = useMutation({
@@ -65,6 +67,7 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
         }, onSuccess: (data) => {
             setListItems(data?.items);
             onRemoveProductLoad(false);
+            router.refresh();
         }
     });
 

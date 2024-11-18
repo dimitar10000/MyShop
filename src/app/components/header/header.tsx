@@ -18,7 +18,7 @@ export default function Header() {
     const {cartItems,setCartItems} = useCart();
     const {listItems, setListItems} = useList();
 
-    //console.log('USER ', user);
+    console.log('USER ', user);
     //console.log('CART ITEMS ',cartItems);
     //console.log('LIST ITEMS ',listItems);
 
