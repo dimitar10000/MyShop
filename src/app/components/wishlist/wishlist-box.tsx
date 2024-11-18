@@ -91,7 +91,7 @@ export default function WishlistBox({ productsData }: {
                                 <div key={'product' + index}>
                                     <div className='flex flex-col gap-y-2'>
                                         <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart}
-                                        openDialog={openFunction} dialog={confirmationDialog} setRemovedItemFail={setRemovedItemFail}
+                                        openDialog={openFunction} setRemovedItemFail={setRemovedItemFail}
                                         confirmedDeletion={confirmHappened} deleteProductSetter={setProductToDelete}
                                         needToDelete={needToDelete} closedDialog={closeHappened}/>
 

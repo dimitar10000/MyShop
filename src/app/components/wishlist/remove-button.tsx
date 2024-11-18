@@ -40,7 +40,7 @@ function ButtonComponent({hoveredUpdater, extraStyles, openDialog,openedUpdater 
 
 interface ComponentProps {
     show: boolean, product: WishlistItemType, onRemoveProductLoad: (load: boolean) => void,
-    dialog: JSX.Element, openDialog: () => void,onRemoveItemFailNotify: () => void,
+    openDialog: () => void,onRemoveItemFailNotify: () => void,
     confirmedDeletion: null | boolean, closedDialog: null | boolean,
     deleteProductSetter: Dispatch<SetStateAction<WishlistItemType | null>>,needToDelete: boolean
 }
