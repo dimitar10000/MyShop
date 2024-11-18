@@ -45,6 +45,9 @@ interface ComponentProps {
     deleteProductSetter: Dispatch<SetStateAction<WishlistItemType | null>>,needToDelete: boolean
 }
 
+// the button controls whether the product wrapper should show load effect on removal from list
+// if a deletion is confirmed by the dialog, the product needs to be set for deletion here
+// then the wishlist box element sets the needToDelete property to trigger the react query action
 export default function RemoveButton({ show, product, onRemoveProductLoad,openDialog,
     onRemoveItemFailNotify, confirmedDeletion, deleteProductSetter, closedDialog,needToDelete}: ComponentProps) {
 
