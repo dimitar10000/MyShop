@@ -7,9 +7,9 @@ import {useContext} from 'react'
 export const useCart = () => useContext(CartContext);
 
 export default function CartProvider({children} : {children: React.ReactNode} ) {
-    const [cartItems, setCartItems] = useState<Nullable<ShoppingCart['items']>>(null);
+    const [cart, setCart] = useState<Nullable<ShoppingCart>>(null);
 
-    return <CartContext.Provider value={{cartItems, setCartItems}}>
+    return <CartContext.Provider value={{cart, setCart}}>
             {children}
         </CartContext.Provider>
 }

@@ -13,8 +13,6 @@ export default function ProfileMenu({ user }: { user: UserProfile }) {
     const open = Boolean(anchorEl);
     let timeoutId: NodeJS.Timeout | null = null;
 
-    console.log(anchorEl);
-
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {        
         if (timeoutId) {
             clearTimeout(timeoutId);

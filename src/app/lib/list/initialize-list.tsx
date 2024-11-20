@@ -3,11 +3,9 @@ import {Nullable,Wishlist} from '@/app/lib/definitions';
 import {Dispatch, SetStateAction} from 'react'
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 
-type ListItemsSetterType = Dispatch<SetStateAction<Nullable<Wishlist['items']>>>;
-type ListSetterType = Dispatch<SetStateAction<Wishlist | null>>;
+type ListSetterType = Dispatch<SetStateAction<Nullable<Wishlist>>>;
 
-export const initializeList = async (user: UserProfile | undefined, listSetter?: ListSetterType,
-    listItemsSetter?: ListItemsSetterType) => {
+export const initializeList = async (user: UserProfile | undefined, listSetter?: ListSetterType) => {
 
     let res;
 
@@ -20,8 +18,5 @@ export const initializeList = async (user: UserProfile | undefined, listSetter?:
 
     if(listSetter) {
         listSetter(res);
-    }
-    if(listItemsSetter) {
-        listItemsSetter(res?.items);
     }
 }

@@ -12,7 +12,7 @@ export default function WishlistButton({ product, initialSelected, onAddToListNo
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
-    const {setListItems} = useList();
+    const {setList} = useList();
     
     // update the initial value for the button
     // when the wishlist is set in ancestor products box component
@@ -26,7 +26,7 @@ export default function WishlistButton({ product, initialSelected, onAddToListNo
         },
         onSuccess: (data) => {
             onAddToListNotify(true);
-            setListItems(data?.items);
+            setList(data);
         },
         onError: () => {
             onAddToListNotify(false);
@@ -39,7 +39,7 @@ export default function WishlistButton({ product, initialSelected, onAddToListNo
         },
         onSuccess: (data) => {
             onRemoveFromListNotify(true);
-            setListItems(data?.items);
+            setList(data);
         },
         onError: () => {
             onRemoveFromListNotify(false);

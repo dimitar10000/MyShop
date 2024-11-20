@@ -3,8 +3,8 @@ import {Nullable,ShoppingCart} from '@/app/lib/definitions';
 import {Dispatch, SetStateAction} from 'react'
 
 type ContextType = {
-    cartItems: Nullable<ShoppingCart['items']>,
-    setCartItems: Dispatch<SetStateAction<Nullable<ShoppingCart['items']>>>
+    cart: Nullable<ShoppingCart>,
+    setCart: Dispatch<SetStateAction<Nullable<ShoppingCart>>>
 };
 
-export const CartContext = createContext<ContextType>({cartItems: null, setCartItems: () => {}});
+export const CartContext = createContext<ContextType>({cart: null, setCart: () => {}});

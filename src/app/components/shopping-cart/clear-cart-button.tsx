@@ -3,26 +3,26 @@ import { Button } from "@mui/material";
 import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
 import { useCart } from '@/app/lib/cart/cart-provider';
 import { useUser, UserProfile } from '@auth0/nextjs-auth0/client';
-import { Nullable, ShoppingCartItemType } from '@/app/lib/definitions';
+import { Nullable, ShoppingCart } from '@/app/lib/definitions';
 import { deleteCart } from '@/app/actions/shopping-cart';
 import { useEffect,Dispatch, SetStateAction } from 'react';
 
 const handleClearCart = async (user: UserProfile | undefined,
-    updater: Dispatch<SetStateAction<Nullable<ShoppingCartItemType[]>>>) => {
+    updater: Dispatch<SetStateAction<Nullable<ShoppingCart>>>) => {
 
     const newCart = await deleteCart(user?.sub!);
-    updater(newCart?.items);
+    updater(newCart);
 }
 
 export default function ClearCartButton() {
     const { user } = useUser();
     const { confirmationDialog, openFunction, setConfirmFunction } = useConfirmationDialog('This will remove all the products from the cart and cannot be undone. Do you want to proceed?', '',
         { confirm: 'Yes', cancel: 'No' });
-    const {setCartItems} = useCart();
+    const {setCart} = useCart();
 
     useEffect(() => {
-        setConfirmFunction(() => async () => { await handleClearCart(user, setCartItems) });
-    }, [setCartItems,user,setConfirmFunction]);
+        setConfirmFunction(() => async () => { await handleClearCart(user, setCart) });
+    }, [setCart,user,setConfirmFunction]);
 
     return (
         <div>

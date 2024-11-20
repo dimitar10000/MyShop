@@ -11,6 +11,8 @@ export default async function Wishlist() {
 
     data = await fetchListItems(user);
 
+    console.log("list items on wishlist page ", data);
+
     return (
     <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
         <BreadcrumbTemplate labels={["Home", "My Wishlist"]} links={['/']}/>

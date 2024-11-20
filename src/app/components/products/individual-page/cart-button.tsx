@@ -11,7 +11,7 @@ import {Product} from '@/app/lib/definitions';
 
 export default function CartButton({ product }: { product: Product | WishlistItemType | ShoppingCartItemType}) {
     const { user } = useUser();
-    const {cartItems, setCartItems} = useCart();
+    const {cart, setCart} = useCart();
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the cart!", undefined, 1);
     const { snackbar: snackbarRed, clickHandler: clickHandlerRed } = useSnackbar("The product couldn't be added to the cart... Please try again later.", 'red', 2);
 
@@ -20,8 +20,8 @@ export default function CartButton({ product }: { product: Product | WishlistIte
             return addToCart(user?.sub!, product);
         },
         onSuccess: (data) => {
-            setCartItems(data?.items);
-            console.log('changed items ',cartItems);
+            setCart(data);
+            console.log('changed items ',cart);
             displayPopup('green');
         },
         onError: () => {

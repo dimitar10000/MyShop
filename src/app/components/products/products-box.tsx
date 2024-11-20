@@ -12,7 +12,7 @@ import { initializeBrandsOnClient } from '@/app/lib/fetch-brands';
 import { initializeList } from '@/app/lib/list/initialize-list';
 import { useProducts } from '@/app/lib/product/products-provider';
 import { useSnackbar } from '@/app/lib/snackbar';
-
+ 
 export default function ProductsBox({ productsData, minPrice, maxPrice }: {
     productsData: Nullable<Product[]>,
     minPrice?: number, maxPrice?: number

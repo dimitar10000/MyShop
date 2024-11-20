@@ -166,6 +166,7 @@ export function isWishlist(data: Wishlist | UserCookie): data is Wishlist {
   return (data as Wishlist).items !== undefined;
 }
 
+// functions to narrow the data type between products, shopping or wishlist items
 export function isProduct(data: Product | WishlistItemType): data is Product {
   return (data as Product).id !== undefined;
 }

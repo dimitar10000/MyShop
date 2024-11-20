@@ -10,11 +10,11 @@ import {initializeCart} from '@/app/lib/cart/initialize-cart';
 
 export default function ShoppingCart() {
     const { user } = useUser();
-    const {cartItems,setCartItems} = useCart();
+    const {cart,setCart} = useCart();
 
     useEffect(() => {
-        initializeCart(setCartItems,user);
-    }, [user,setCartItems]);
+        initializeCart(user,setCart);
+    }, [user,setCart]);
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
@@ -35,9 +35,9 @@ export default function ShoppingCart() {
                 </div>
 
                 <div className='mt-5 flex flex-col gap-y-1'>
-                    <ShoppingBox cartItems={cartItems} />
+                    <ShoppingBox cartItems={cart?.items} />
                     <div className='self-end me-10 mb-10'>
-                        {cartItems && cartItems.length > 0 &&
+                        {cart?.items && cart?.items.length > 0 &&
                             <ClearCartButton />
                         }
                     </div>

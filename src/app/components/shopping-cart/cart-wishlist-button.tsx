@@ -5,7 +5,7 @@ import { useSnackbar } from '@/app/lib/snackbar';
 import { ShoppingCartItemType } from '@/app/lib/definitions';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {useList} from '@/app/lib/list/list-provider';
 
 export default function CartWishlistButton({ item, initialSelected }: {
@@ -15,12 +15,16 @@ export default function CartWishlistButton({ item, initialSelected }: {
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
-    const {setListItems} = useList();
+    const {setList} = useList();
 
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the wishlist!", undefined, 1);
     const { snackbar: snackbarRed, clickHandler: clickHandlerRed } = useSnackbar("The product couldn't be added to the list...", 'red', 2);
     const { snackbar: snackbarGreen2, clickHandler: clickHandlerGreen2 } = useSnackbar("The product was removed from the wishlist!", 'grey', 3);
     const { snackbar: snackbarRed2, clickHandler: clickHandlerRed2 } = useSnackbar("The product couldn't be removed from the list...", 'red', 4);
+
+    useEffect(() => {
+        setSelected(initialSelected);
+    },[initialSelected]);
 
     return (<>
         {hovered && selected
@@ -38,7 +42,7 @@ export default function CartWishlistButton({ item, initialSelected }: {
                 onClick={async () => {
                     try {
                         const newList = await removeFromList(user?.sub!, item.productID);
-                        setListItems(newList?.items);
+                        setList(newList);
                         clickHandlerGreen2({ horizontal: 'left', vertical: 'top' })();
                         setSelected(false);
                     }
@@ -60,7 +64,7 @@ export default function CartWishlistButton({ item, initialSelected }: {
                 onClick={async () => {
                     try {
                         const newList = await addToList(user?.sub!, item);
-                        setListItems(newList?.items);
+                        setList(newList);
                         clickHandlerGreen({ horizontal: 'left', vertical: 'top' })();
                         setSelected(true);
                     }

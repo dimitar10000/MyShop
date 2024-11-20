@@ -15,22 +15,22 @@ import {initializeList} from '@/app/lib/list/initialize-list';
 
 export default function Header() {
     const { user } = useUser();
-    const {cartItems,setCartItems} = useCart();
-    const {listItems, setListItems} = useList();
+    const {cart,setCart} = useCart();
+    const {list, setList} = useList();
 
-    //console.log('USER ', user);
+    console.log('USER ', user);
     //console.log('CART ITEMS ',cartItems);
     //console.log('LIST ITEMS ',listItems);
 
     console.log('REFRESHING HEADER');
 
     useEffect(() => {
-        initializeCart(setCartItems,user);
-    }, [user,setCartItems]);
+        initializeCart(user,setCart);
+    }, [user,setCart]);
     
     useEffect(() => {
-        initializeList(user,undefined,setListItems);
-    }, [user,setListItems]);
+        initializeList(user,setList);
+    }, [user,setList]);
 
     return (
         <div className="flex flex-row bg-slate-400 border-0 border-b-2 border-slate-700 border-solid h-100">
@@ -56,8 +56,8 @@ export default function Header() {
                 : <LogIn />}
 
             <div className="flex flex-row mr-5 gap-x-5">
-                <WishList listItems={listItems} />
-                <ShoppingCart cartItems={cartItems} />
+                <WishList listItems={list?.items} />
+                <ShoppingCart cartItems={cart?.items} />
             </div>
 
         </div>

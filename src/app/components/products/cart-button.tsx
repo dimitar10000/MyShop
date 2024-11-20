@@ -11,7 +11,7 @@ import { useCart } from '@/app/lib/cart/cart-provider';
 export default function CartButton({ show, product }: { show: boolean, product: Product
 }) {
     const { user} = useUser();
-    const {setCartItems} = useCart();
+    const {setCart} = useCart();
     const {snackbar: snackbarGreen,clickHandler: clickHandlerGreen} = useSnackbar("Your product was added to the cart!",undefined,1);
     const {snackbar: snackbarRed,clickHandler: clickHandlerRed} = useSnackbar("The product couldn't be added to the cart... Please try again later.", 'red',2);
 
@@ -21,7 +21,7 @@ export default function CartButton({ show, product }: { show: boolean, product: 
         },
         onSuccess: (data) => {
             displayPopup('green');
-            setCartItems(data?.items);
+            setCart(data);
         },
         onError: () => {
             displayPopup('red');

@@ -24,7 +24,7 @@ function RemoveProductLoader() {
 interface WrapperType {
     link: string, product: WishlistItemType,
     setAddedToCart: Dispatch<SetStateAction<null | boolean>>,
-    brands: Brand[] | null, dialog: JSX.Element, openDialog: () => void,
+    brands: Brand[] | null, openDialog: () => void,
     setRemovedItemFail: Dispatch<SetStateAction<true | null>>,
     confirmedDeletion: null | boolean,
     closedDialog: null | boolean,
@@ -32,7 +32,7 @@ interface WrapperType {
     needToDelete: boolean
 }
 
-export default function WishlistWrapper({ link, product, setAddedToCart, brands, dialog,
+export default function WishlistWrapper({ link, product, setAddedToCart, brands,
     openDialog,setRemovedItemFail, confirmedDeletion, closedDialog,deleteProductSetter,needToDelete}: WrapperType) {
 
     const [showCart, setShowCart] = useState(false);
@@ -85,7 +85,7 @@ export default function WishlistWrapper({ link, product, setAddedToCart, brands,
                     sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 {showLoader && <RemoveProductLoader />}
-                <RemoveButton show={showButton} product={product} dialog={dialog} openDialog={openDialog}
+                <RemoveButton show={showButton} product={product} openDialog={openDialog}
                  onRemoveProductLoad={removeProductEmitter} onRemoveItemFailNotify={removeItemFailEmitter}
                  confirmedDeletion={confirmedDeletion} closedDialog={closedDialog}
                  deleteProductSetter={deleteProductSetter} needToDelete={needToDelete}/>

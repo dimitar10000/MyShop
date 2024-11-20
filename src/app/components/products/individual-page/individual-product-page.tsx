@@ -31,7 +31,7 @@ export default function IndividualProductPage() {
     img = itemImage ? itemImage : null;
     inWishlist = included ? (included === "true") : false;
 
-    console.log('product ',product);
+    console.log('product ',product?.name);
     console.log('img ',img);
     console.log('in wishlist ',inWishlist);
 

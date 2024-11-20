@@ -124,7 +124,7 @@ export function getBrandImageOfProduct(product: Nullable<Product | WishlistItemT
     return brandImg;
 }
 
-export function isInWishlist(item: Product | ShoppingCartItemType | null, list: Wishlist | UserCookie | null) {
+export function isInWishlist(item: Product | ShoppingCartItemType | null, list: Nullable<Wishlist> | UserCookie) {
     if (item === null) {
         return false;
     }

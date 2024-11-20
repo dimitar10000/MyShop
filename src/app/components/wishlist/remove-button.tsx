@@ -5,6 +5,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { useMutation } from '@tanstack/react-query';
 import { WishlistItemType,Product } from '@/app/lib/definitions';
 import {useList} from '@/app/lib/list/list-provider';
+import { useRouter } from 'next/navigation'
 
 interface ButtonProperties {
     hoveredUpdater: Dispatch<SetStateAction<boolean>>,
@@ -40,17 +41,21 @@ function ButtonComponent({hoveredUpdater, extraStyles, openDialog,openedUpdater 
 
 interface ComponentProps {
     show: boolean, product: WishlistItemType, onRemoveProductLoad: (load: boolean) => void,
-    dialog: JSX.Element, openDialog: () => void,onRemoveItemFailNotify: () => void,
+    openDialog: () => void,onRemoveItemFailNotify: () => void,
     confirmedDeletion: null | boolean, closedDialog: null | boolean,
     deleteProductSetter: Dispatch<SetStateAction<WishlistItemType | null>>,needToDelete: boolean
 }
 
+// the button controls whether the product wrapper should show load effect on removal from list
+// if a deletion is confirmed by the dialog, the product needs to be set for deletion here
+// then the wishlist box element sets the needToDelete property to trigger the react query action
 export default function RemoveButton({ show, product, onRemoveProductLoad,openDialog,
     onRemoveItemFailNotify, confirmedDeletion, deleteProductSetter, closedDialog,needToDelete}: ComponentProps) {
 
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
-    const {setListItems} = useList();
+    const {setList} = useList();
+    const router = useRouter();
     const [openedDialog, setOpenedDialog] = useState<boolean>(false);
 
     const mutationRemove = useMutation({
@@ -60,8 +65,9 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
             onRemoveItemFailNotify();
             onRemoveProductLoad(false);
         }, onSuccess: (data) => {
-            setListItems(data?.items);
+            setList(data);
             onRemoveProductLoad(false);
+            router.refresh();
         }
     });
 

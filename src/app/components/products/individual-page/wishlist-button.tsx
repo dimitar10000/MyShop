@@ -15,7 +15,7 @@ export default function WishlistButton({ item, initialSelected }: {
     initialSelected: boolean
 }) {
     const { user } = useUser();
-    const {listItems,setListItems} = useList();
+    const {setList} = useList();
     const [hovered, setHovered] = useState(false);
     const [selected, setSelected] = useState(initialSelected);
     const { snackbar: snackbarGreen, clickHandler: clickHandlerGreen } = useSnackbar("Your product was added to the wishlist!", undefined, 1);
@@ -46,7 +46,7 @@ export default function WishlistButton({ item, initialSelected }: {
                         else {
                             newList = await removeFromList(user?.sub!, item.productID);
                         }
-                        setListItems(newList?.items);
+                        setList(newList);
                         setLocalStorageForProduct(undefined,undefined,false);
 
                         clickHandlerGreen2({ horizontal: 'left', vertical: 'top' })();
@@ -71,7 +71,7 @@ export default function WishlistButton({ item, initialSelected }: {
                 onClick={async () => {
                     try {
                         const newList = await addToList(user?.sub!, item);
-                        setListItems(newList?.items);
+                        setList(newList);
                         setLocalStorageForProduct(undefined,undefined,true);
 
                         clickHandlerGreen({ horizontal: 'left', vertical: 'top' })();

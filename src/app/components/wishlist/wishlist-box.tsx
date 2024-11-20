@@ -12,6 +12,9 @@ import { initializeBrandsOnClient } from '@/app/lib/fetch-brands';
 import WishlistSkeleton from '@/app/components/loadings/wishlist-skeleton';
 import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
 
+// states for product being added to cart or failed to remove are passed down to remove button
+// states for confirming deletion and closing dialog are passed down to remove button again
+// confirmation dialog resides here and the function for opening it is passed down
 export default function WishlistBox({ productsData }: {
     productsData: Nullable<Wishlist['items']>
 }) {
@@ -91,7 +94,7 @@ export default function WishlistBox({ productsData }: {
                                 <div key={'product' + index}>
                                     <div className='flex flex-col gap-y-2'>
                                         <WishlistWrapper link={link} product={item} brands={brands} setAddedToCart={setAddedToCart}
-                                        openDialog={openFunction} dialog={confirmationDialog} setRemovedItemFail={setRemovedItemFail}
+                                        openDialog={openFunction} setRemovedItemFail={setRemovedItemFail}
                                         confirmedDeletion={confirmHappened} deleteProductSetter={setProductToDelete}
                                         needToDelete={needToDelete} closedDialog={closeHappened}/>
 
