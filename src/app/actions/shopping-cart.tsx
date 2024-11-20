@@ -22,12 +22,8 @@ export async function addToCart(userID: string, product: Product | WishlistItemT
         if (isProduct3(product)) {
             if (userID === undefined) {
                 await addToCartCookie(product.id, 1);
-                const items = await getDetailedCartOfCookie();
-
-                if(items) {
-                    return {userID: undefined, items: items};
-                }
-                return null;
+                const cart = await getDetailedCartOfCookie();
+                return cart;
             }
 
             let itemExists;
@@ -83,12 +79,8 @@ export async function addToCart(userID: string, product: Product | WishlistItemT
         else if(!('quantity' in product)) {
             if (userID === undefined) {
                 await addToCartCookie(product.productID, 1);
-                const items = await getDetailedCartOfCookie();
-
-                if(items) {
-                    return {userID: undefined, items: items};
-                }
-                return null;
+                const cart = await getDetailedCartOfCookie();
+                return cart;
             }
 
             let itemExists;
@@ -143,12 +135,8 @@ export async function addToCart(userID: string, product: Product | WishlistItemT
         else {
             if (userID === undefined) {
                 await addToCartCookie(product.productID,quantity!);
-                const items = await getDetailedCartOfCookie();
-
-                if(items) {
-                    return {userID: undefined, items: items};
-                }
-                return null;
+                const cart = await getDetailedCartOfCookie();
+                return cart;
             }
 
             await prisma.shopping_carts.updateMany({
@@ -195,12 +183,8 @@ export async function removeFromCart(userID: string, product: ShoppingCartItemTy
     try {
         if (userID === undefined) {
             await removeFromCartCookie(product.productID, quantity);
-            const items = await getDetailedCartOfCookie();
-
-                if(items) {
-                    return {userID: undefined, items: items};
-                }
-                return null;
+            const cart = await getDetailedCartOfCookie();
+            return cart;
         }
 
         let productAmount;
@@ -283,12 +267,8 @@ export async function deleteCart(userID: string) {
     try {
         if (userID === undefined) {
             await deleteCartCookie();
-            const items = await getDetailedCartOfCookie();
-
-                if(items) {
-                    return {userID: undefined, items: items};
-                }
-                return null;
+            const cart = await getDetailedCartOfCookie();
+            return cart;
         }
 
         await prisma.shopping_carts.updateMany({
@@ -398,7 +378,7 @@ export async function getDetailedCartOfCookie() {
         else {
             return 0;
         }
-    });
+    }); 
     const quantities = cart.map((x) => x.quantity);
 
     const prisma = new PrismaClient().$extends({
@@ -451,10 +431,10 @@ export async function getDetailedCartOfCookie() {
     });
 
     if((res as ShoppingCart['items']) !== undefined) {
-        return res as ShoppingCart['items'];
+        return {userID: undefined, items: res} as ShoppingCart
     }
 
-    return [];
+    return {userID: undefined, items: []};
 }
 
 async function checkForSufficientProducts(product: products, quantity: number) {

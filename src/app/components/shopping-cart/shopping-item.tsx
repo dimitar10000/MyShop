@@ -17,10 +17,10 @@ import {getBrandImageOfProduct,setLocalStorageForProduct} from '@/app/lib/util-f
 import { useRouter } from "next/navigation";
 
 const handleRemoveItem = async (user: UserProfile | undefined, cartItem: ShoppingCartItemType,
-    updater: (newCart: Nullable<ShoppingCart["items"]>) => void) => {
+    updater: (newCart: Nullable<ShoppingCart>) => void) => {
 
     const newCart = await removeFromCart(user?.sub!, cartItem!, cartItem!.quantity);
-    updater(newCart?.items);
+    updater(newCart);
 }
 
 interface ItemType {
@@ -29,12 +29,12 @@ interface ItemType {
     inWishlist: boolean,
     isLastItem: boolean,
     brands: Brand[] | null
-}
+} 
 
 export default function ShoppingItem({ item, index, inWishlist, isLastItem, brands }: ItemType) {
     const { user } = useUser();
     const theme = useTheme(); 
-    const {setCartItems} = useCart();
+    const {setCart} = useCart();
     const [brandImg, setBrandImg] = useState("");
     const router = useRouter();
     const themeBorderColor = theme.palette.primary.light;
@@ -48,8 +48,8 @@ export default function ShoppingItem({ item, index, inWishlist, isLastItem, bran
     }, [item, brands]);
 
     useEffect(() => {
-        setOnConfirm(() => async () => { await handleRemoveItem(user, item, setCartItems) });
-    }, [user, item, setCartItems,setOnConfirm]);
+        setOnConfirm(() => async () => { await handleRemoveItem(user, item, setCart) });
+    }, [user, item, setCart,setOnConfirm]);
 
     const link = getProductLink(item);
 

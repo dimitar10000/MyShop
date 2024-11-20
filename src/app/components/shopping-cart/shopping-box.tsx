@@ -1,21 +1,20 @@
 import Box from '@mui/material/Box';
 import LoadError from '@/app/components/load-error';
-import { ShoppingCart, Nullable, Wishlist, UserCookie,Brand } from '@/app/lib/definitions';
+import { ShoppingCart, Nullable, Wishlist,Brand } from '@/app/lib/definitions';
 import {isInWishlist} from '@/app/lib/util-funcs';
 import { useTheme } from '@mui/material/styles';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useState, useEffect } from 'react';
-import { getListByUser } from '@/app/actions/wishlist';
-import { getUserCookie } from '@/app/actions/cookies';
+import { initializeList } from '@/app/lib/list/initialize-list';
 import ShoppingItem from './shopping-item';
 import ShoppingSkeleton from '@/app/components/loadings/shopping-skeleton';
 import {initializeBrandsOnClient} from '@/app/lib/fetch-brands';
-
+ 
 export default function ShoppingBox({ cartItems }: {cartItems: Nullable<ShoppingCart['items']>,}) {
     const { user } = useUser();
     const theme = useTheme();
     const [itemCount, setItemCount] = useState(0);
-    const [listData, setListData] = useState<Wishlist | UserCookie | null>(null);
+    const [list, setList] = useState<Nullable<Wishlist>>(null);
     const [brands, setBrands] = useState<Brand[] | null>(null);
 
     useEffect(() => {
@@ -28,18 +27,7 @@ export default function ShoppingBox({ cartItems }: {cartItems: Nullable<Shopping
     }, [cartItems]);
 
     useEffect(() => {
-        const fetchList = async () => {
-            if (user) {
-                const data = await getListByUser(user.sub!);
-                setListData(data);
-            }
-            else {
-                const data = await getUserCookie();
-                setListData(data);
-            }
-        }
-
-        fetchList();
+        initializeList(user, setList);
     }, [user]);
 
     useEffect(() => {
@@ -65,8 +53,10 @@ export default function ShoppingBox({ cartItems }: {cartItems: Nullable<Shopping
 
                     {
                         cartItems.map((item, index) => {
-                            const inWishlist = isInWishlist(item,listData);
+                            const inWishlist = isInWishlist(item,list);
                             const isLastItem = index === itemCount - 1;
+
+                            console.log(`item ${item.name} is in wishlist -> ${inWishlist}`);
 
                             return (
                             <ShoppingItem key={'shopping item' + index} item={item} index={index} inWishlist={inWishlist}

@@ -254,5 +254,5 @@ export async function getDetailedListOfCookie() : Promise<Wishlist | null> {
         return {userID: undefined, items: items} as Wishlist;
     }
 
-    return {userID: undefined, items: []};
+    return {userID: undefined, items: []}; 
 }

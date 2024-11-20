@@ -14,15 +14,15 @@ export default function WishlistCartButton({ show, product, onAddToCartNotify,on
     onRemoveFromListNotify: () => void
 }) {
     const { user } = useUser();
-    const {setCartItems} = useCart();
-    const {setListItems} = useList();
+    const {setCart} = useCart();
+    const {setList} = useList();
 
     const mutationAdd = useMutation({
         mutationFn: () => {
             return addToCart(user?.sub!, product);
         },
         onSuccess: (data) => {
-            setCartItems(data?.items);
+            setCart(data);
             onAddToCartNotify(true);
             mutationRemove.mutate();
         },
@@ -39,7 +39,7 @@ export default function WishlistCartButton({ show, product, onAddToCartNotify,on
             onRemoveFromListNotify();
         },
         onSuccess: (data) => {
-            setListItems(data?.items);
+            setList(data);
         }
     })
 

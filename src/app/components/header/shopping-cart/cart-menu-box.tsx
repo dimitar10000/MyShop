@@ -21,14 +21,14 @@ export default function CartMenuBox({ cartItem, brands, inWishlist }: { cartItem
     const {confirmationDialog, openFunction,setConfirmFunction} = useConfirmationDialog('Are you sure you want to remove the product from the cart?', '',
         { confirm: 'Yes', cancel: 'No' });
     const router = useRouter();
-    const {setCartItems} = useCart();
+    const {setCart} = useCart();
     const [brandImg, setBrandImg] = useState("");
     const link = getProductLink(cartItem);
     
     const handleRemoveItem = useCallback(async () => {
         const newCart = await removeFromCart(user?.sub!,cartItem!,cartItem!.quantity);
-        setCartItems(newCart?.items);
-    },[user,cartItem,setCartItems]);
+        setCart(newCart);
+    },[user,cartItem,setCart]);
     
     useEffect(() => {
         setConfirmFunction(() => async () => {await handleRemoveItem()});
