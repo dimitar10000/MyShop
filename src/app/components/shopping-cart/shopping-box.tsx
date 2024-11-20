@@ -5,6 +5,7 @@ import {isInWishlist} from '@/app/lib/util-funcs';
 import { useTheme } from '@mui/material/styles';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useState, useEffect } from 'react';
+import {useList} from '@/app/lib/list/list-provider';
 import { initializeList } from '@/app/lib/list/initialize-list';
 import ShoppingItem from './shopping-item';
 import ShoppingSkeleton from '@/app/components/loadings/shopping-skeleton';
@@ -14,7 +15,7 @@ export default function ShoppingBox({ cartItems }: {cartItems: Nullable<Shopping
     const { user } = useUser();
     const theme = useTheme();
     const [itemCount, setItemCount] = useState(0);
-    const [list, setList] = useState<Nullable<Wishlist>>(null);
+    const {list,setList} = useList();
     const [brands, setBrands] = useState<Brand[] | null>(null);
 
     useEffect(() => {
