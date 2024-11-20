@@ -54,7 +54,7 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
 
     const { user } = useUser();
     const [hovered, setHovered] = useState(false);
-    const {setListItems} = useList();
+    const {setList} = useList();
     const router = useRouter();
     const [openedDialog, setOpenedDialog] = useState<boolean>(false);
 
@@ -65,7 +65,7 @@ export default function RemoveButton({ show, product, onRemoveProductLoad,openDi
             onRemoveItemFailNotify();
             onRemoveProductLoad(false);
         }, onSuccess: (data) => {
-            setListItems(data?.items);
+            setList(data);
             onRemoveProductLoad(false);
             router.refresh();
         }
