@@ -14,6 +14,7 @@ import LoadError from '@/app/components/load-error';
 import { getCartItemsTotalPrice, getCartItemsTotalDiscount,isInWishlist } from '@/app/lib/util-funcs';
 import {initializeBrandsOnClient} from '@/app/lib/fetch-brands';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import {useList} from '@/app/lib/list/list-provider';
 import {initializeList} from '@/app/lib/list/initialize-list';
 
 export default function CartMenu({ cartItems, numItems }: {numItems: number,
@@ -22,7 +23,7 @@ export default function CartMenu({ cartItems, numItems }: {numItems: number,
     const { user } = useUser();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [brands, setBrands] = useState<Brand[] | null>(null);
-    const [list, setList] = useState<Nullable<Wishlist>>(null);
+    const {list, setList} = useList();
     const open = Boolean(anchorEl);
     let timeoutId: NodeJS.Timeout | null = null;
     

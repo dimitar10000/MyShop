@@ -8,12 +8,13 @@ import {initializeList} from '@/app/lib/list/initialize-list';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import SearchProductWrapper from './search-product-wrapper';
 import SearchProductDetails from './search-product-details';
+import {useList} from '@/app/lib/list/list-provider';
 
 export default function SearchProductBox({ productsData, brands }: {
     productsData: Nullable<Product[]>, brands: Brand[] | null}) {
 
     const { user } = useUser();
-    const [list, setList] = useState<Wishlist | null>(null);
+    const {list, setList} = useList();
 
     useEffect(() => {
         initializeList(user,setList);

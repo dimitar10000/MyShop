@@ -12,13 +12,14 @@ import { initializeBrandsOnClient } from '@/app/lib/fetch-brands';
 import { initializeList } from '@/app/lib/list/initialize-list';
 import { useProducts } from '@/app/lib/product/products-provider';
 import { useSnackbar } from '@/app/lib/snackbar';
+import {useList} from '@/app/lib/list/list-provider';
  
 export default function ProductsBox({ productsData, minPrice, maxPrice }: {
     productsData: Nullable<Product[]>,
     minPrice?: number, maxPrice?: number
 }) {
     const { user } = useUser();
-    const [list, setList] = useState<Wishlist | null>(null);
+    const {list, setList} = useList();
     const [brands, setBrands] = useState<Brand[] | null>(null);
     const [filteredProducts, setFilteredProducts] = useState<Nullable<Product[]>>(undefined);
     const { setProducts } = useProducts();
