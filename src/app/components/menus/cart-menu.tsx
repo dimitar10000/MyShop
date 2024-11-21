@@ -22,7 +22,7 @@ export default function CartMenu({ cartItems, numItems }: {numItems: number,
     const { user } = useUser();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [brands, setBrands] = useState<Brand[] | null>(null);
-    const [list, setList] = useState<Wishlist | null>(null);
+    const [list, setList] = useState<Nullable<Wishlist>>(null);
     const open = Boolean(anchorEl);
     let timeoutId: NodeJS.Timeout | null = null;
     
