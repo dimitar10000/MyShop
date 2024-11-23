@@ -6,6 +6,7 @@ import { useFormStatus, useFormState } from 'react-dom'
 import { useState, useEffect } from 'react';
 import { useSnackbar } from '@/app/lib/snackbar';
 import { updateUserPassword } from '@/app/actions/profile';
+import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
 
 function ChangePassButton({ notPendingEmitter }: { notPendingEmitter: () => void }) {
     const { pending } = useFormStatus();
@@ -69,19 +70,24 @@ export default function ChangePassForm() {
         };
     }, [textBox3LostFocus])
 
-    const SHORT_PASS_MESSAGE = 'New password is too short, it should be at least 6 characters long!';
-    const MIN_PASSWORD_LENGTH = 6;
-
     const { snackbar, clickHandler } = useSnackbar('Password updated successfully', undefined, 1);
-    const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(SHORT_PASS_MESSAGE, 'red', 2);
-    const { snackbar: snackbar3, clickHandler: clickHandlerRed2 } = useSnackbar('Something went wrong. Try again later!', 'red', 3);
+    const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(ChangePassConstants.SHORT_PASS_MESSAGE, 'red', 2);
+    const { snackbar: snackbar3, clickHandler: clickHandlerRed2 } = useSnackbar(ChangePassConstants.CURR_PASS_MESSAGE, 'red', 3);
+    const { snackbar: snackbar4, clickHandler: clickHandlerRed3 } = useSnackbar('Something went wrong. Try again later!', 'red', 4);
+    
 
     const notPendingHandler = () => {
-        if (state?.errors?.error === SHORT_PASS_MESSAGE) {
-            (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();
-        }
         if (!state?.errors) {
             (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
+        }
+        else if (state?.errors?.error === ChangePassConstants.SHORT_PASS_MESSAGE) {
+            (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();
+        }
+        else if(state?.errors?.error === ChangePassConstants.CURR_PASS_MESSAGE) {
+            (clickHandlerRed2({ vertical: 'bottom', horizontal: 'right' }))();
+        }
+        else {
+            (clickHandlerRed3({ vertical: 'bottom', horizontal: 'right' }))();
         }
     }
 
@@ -93,7 +99,8 @@ export default function ChangePassForm() {
     const newPassSameAsOld = () => !!currPassword && currPassword === newPassword;
 
     const repeatPassWrong = () => !!newPassword && !!newPasswordRepeat &&
-        newPasswordRepeat.length >= MIN_PASSWORD_LENGTH && newPasswordRepeat !== newPassword;
+        newPasswordRepeat.length >= ChangePassConstants.MIN_PASSWORD_LENGTH &&
+        newPasswordRepeat !== newPassword;
 
     const returnHelperText1 = () => {
         if (textBox1LostFocus) {
@@ -133,8 +140,9 @@ export default function ChangePassForm() {
             {snackbar}
             {snackbar2}
             {snackbar3}
+            {snackbar4}
             <Box
-                action={""}
+                action={action}
                 component="form"
                 sx={{
                     '& .MuiTextField-root': {

@@ -2,6 +2,7 @@
 import {getSession,updateSession } from '@auth0/nextjs-auth0';
 import { ManagementClient } from 'auth0';
 import axios from 'axios'
+import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
 
 export type FormState = {
     errors?: {
@@ -82,13 +83,15 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
     const userID = user?.sub;
     const currPass = formData.get('current-password')?.toString();
     const newPass = formData.get('new-password')?.toString();
-    const MIN_PASSWORD_LENGTH = 6;
-    const SHORT_PASS_MESSAGE = 'New password is too short, it should be at least 6 characters long!';
+
+    if(currPass === null || currPass === undefined) {
+
+    }
 
     if(newPass === null || newPass === undefined || 
-        !!newPass && newPass.length < MIN_PASSWORD_LENGTH) {
+        !!newPass && newPass.length < ChangePassConstants.MIN_PASSWORD_LENGTH) {
         return {errors: {
-            error: SHORT_PASS_MESSAGE
+            error: ChangePassConstants.SHORT_PASS_MESSAGE
         }}
     }
 
