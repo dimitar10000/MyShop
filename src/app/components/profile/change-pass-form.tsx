@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useSnackbar } from '@/app/lib/snackbar';
 import { updateUserPassword } from '@/app/actions/profile';
 import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
+import {forceLogout} from '@/app/lib/util-funcs';
 
 function ChangePassButton({ notPendingEmitter }: { notPendingEmitter: () => void }) {
     const { pending } = useFormStatus();
@@ -72,22 +73,27 @@ export default function ChangePassForm() {
 
     const { snackbar, clickHandler } = useSnackbar('Password updated successfully', undefined, 1);
     const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(ChangePassConstants.SHORT_PASS_MESSAGE, 'red', 2);
-    const { snackbar: snackbar3, clickHandler: clickHandlerRed2 } = useSnackbar(ChangePassConstants.CURR_PASS_MESSAGE, 'red', 3);
-    const { snackbar: snackbar4, clickHandler: clickHandlerRed3 } = useSnackbar('Something went wrong. Try again later!', 'red', 4);
+    const { snackbar: snackbar3, clickHandler: clickHandlerRed2 } = useSnackbar(ChangePassConstants.EMPTY_FIELDS, 'red', 3);
+    const { snackbar: snackbar4, clickHandler: clickHandlerRed3 } = useSnackbar(ChangePassConstants.PASS_MISMATCH, 'red', 4);
+    const { snackbar: snackbar5, clickHandler: clickHandlerRed4 } = useSnackbar(ChangePassConstants.OTHER_ERRORS, 'red', 5);
     
-
     const notPendingHandler = () => {
+
         if (!state?.errors) {
             (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
+            forceLogout();
         }
         else if (state?.errors?.error === ChangePassConstants.SHORT_PASS_MESSAGE) {
             (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();
         }
-        else if(state?.errors?.error === ChangePassConstants.CURR_PASS_MESSAGE) {
+        else if(state?.errors?.error === ChangePassConstants.EMPTY_FIELDS) {
             (clickHandlerRed2({ vertical: 'bottom', horizontal: 'right' }))();
         }
-        else {
+        else if(state?.errors?.error === ChangePassConstants.PASS_MISMATCH) {
             (clickHandlerRed3({ vertical: 'bottom', horizontal: 'right' }))();
+        }
+        else {
+            (clickHandlerRed4({ vertical: 'bottom', horizontal: 'right' }))();
         }
     }
 
@@ -141,6 +147,7 @@ export default function ChangePassForm() {
             {snackbar2}
             {snackbar3}
             {snackbar4}
+            {snackbar5}
             <Box
                 action={action}
                 component="form"
