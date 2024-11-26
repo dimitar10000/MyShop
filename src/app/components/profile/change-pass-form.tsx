@@ -5,9 +5,9 @@ import Button from '@mui/material/Button';
 import { useFormStatus, useFormState } from 'react-dom'
 import { useState, useEffect } from 'react';
 import { useSnackbar } from '@/app/lib/snackbar';
-import { updateUserPassword } from '@/app/actions/profile';
+import { updateUserPassword} from '@/app/actions/profile';
+import {useLogout} from '@/app/lib/logout-element';
 import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
-import {forceLogout} from '@/app/lib/util-funcs';
 
 function ChangePassButton({ notPendingEmitter }: { notPendingEmitter: () => void }) {
     const { pending } = useFormStatus();
@@ -71,17 +71,20 @@ export default function ChangePassForm() {
         };
     }, [textBox3LostFocus])
 
-    const { snackbar, clickHandler } = useSnackbar('Password updated successfully', undefined, 1);
+    const { snackbar, clickHandler } = useSnackbar('Password updated successfully! You will be logged out shortly.', undefined, 1);
     const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(ChangePassConstants.SHORT_PASS_MESSAGE, 'red', 2);
     const { snackbar: snackbar3, clickHandler: clickHandlerRed2 } = useSnackbar(ChangePassConstants.EMPTY_FIELDS, 'red', 3);
     const { snackbar: snackbar4, clickHandler: clickHandlerRed3 } = useSnackbar(ChangePassConstants.PASS_MISMATCH, 'red', 4);
     const { snackbar: snackbar5, clickHandler: clickHandlerRed4 } = useSnackbar(ChangePassConstants.OTHER_ERRORS, 'red', 5);
+    const {logout, activate: triggerLogout} = useLogout();
     
     const notPendingHandler = () => {
 
         if (!state?.errors) {
             (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
-            forceLogout();
+            setTimeout(() => {
+                triggerLogout(true);
+            },5000);
         }
         else if (state?.errors?.error === ChangePassConstants.SHORT_PASS_MESSAGE) {
             (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();
@@ -148,6 +151,7 @@ export default function ChangePassForm() {
             {snackbar3}
             {snackbar4}
             {snackbar5}
+            {logout}
             <Box
                 action={action}
                 component="form"

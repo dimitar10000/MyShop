@@ -4,7 +4,6 @@ import {
     Category,Product
 } from '@/app/lib/definitions';
 import EastRoundedIcon from '@mui/icons-material/EastRounded';
-import auth0 from 'auth0-js';
 
 export function capitalizeFirstLetter(word: Nullable<string>) {
     if (!word) {
@@ -234,21 +233,4 @@ export function setLocalStorageForProduct(product?: Product | WishlistItemType |
     console.log(localStorage.getItem("product"));
     console.log(localStorage.getItem("product image"));
     console.log(localStorage.getItem("in wishlist"));
-}
-
-const DOMAIN = 'dev-22pxfwuc6cwn74ws.eu.auth0.com';
-const CLIENT_ID = 'BsW2h1eMGEdiFuYF5teNs12rUz5LQ6qW';
-
-export function forceLogout() {
-
-    const webAuth = new auth0.WebAuth({
-        domain: DOMAIN,
-        clientID: CLIENT_ID,
-        redirectUri: '/'
-      });
-
-      webAuth.logout({
-        returnTo: '/',
-        clientID: CLIENT_ID
-      });
 }
