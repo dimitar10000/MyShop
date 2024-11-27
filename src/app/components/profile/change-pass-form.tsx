@@ -1,6 +1,5 @@
 'use client'
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormStatus, useFormState } from 'react-dom'
 import { useState, useEffect } from 'react';
@@ -54,24 +53,6 @@ export default function ChangePassForm() {
     const [textBox3LostFocus, setTextBox3LostFocus] = useState<boolean>(false);
 
     const [state, action] = useFormState(updateUserPassword, { errors: undefined });
-
-    useEffect(() => {
-        if (textBox1LostFocus && currPassword === "") {
-            setCurrPassword(null);
-        };
-    }, [textBox1LostFocus])
-
-    useEffect(() => {
-        if (textBox2LostFocus && newPassword === "") {
-            setNewPassword(null);
-        };
-    }, [textBox2LostFocus])
-
-    useEffect(() => {
-        if (textBox3LostFocus && newPasswordRepeat === "") {
-            setNewPasswordRepeat(null);
-        };
-    }, [textBox3LostFocus])
 
     const { snackbar, clickHandler } = useSnackbar('Password updated successfully! You will be logged out shortly.', undefined, 1);
     const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(ChangePassConstants.SHORT_PASS_MESSAGE, 'red', 2);
@@ -175,46 +156,24 @@ export default function ChangePassForm() {
                 <div className='flex flex-col justify-center items-center'>
 
                     <ChangePassField fieldLabel={"Current password"} fieldName={"current-password"}
-                     autocompleteValue={"current-password"} helperTextFunc={returnHelperText1}
-                     errorFunc={isEmptyValue}
-                    />
-                    
-                    <TextField
-                        error={isEmptyValue(newPassword) || newPassSameAsOld()}
-                        label="New password"
-                        type='password'
-                        name='new-password'
-                        helperText={returnHelperText2()}
-                        variant='outlined'
-                        value={newPassword}
-                        onChange={(event) => { setNewPassword(event.target.value) }}
-                        onBlur={(event) => setTextBox2LostFocus(true)}
-                        onFocus={(event) => setTextBox2LostFocus(false)}
-                        style={{
-                            border: isEmptyValue(newPassword) || newPassSameAsOld()
-                                ? errorBorderStyle
-                                : normalBorderStyle
-                        }}
+                     passValue={currPassword} setPassValue={setCurrPassword}
+                     autocompleteValue={"current-password"} textBoxLostFocus={textBox1LostFocus}
+                     setTextBoxLostFocus={setTextBox1LostFocus}
+                     helperTextFunc={returnHelperText1}
+                     errorResult={isEmptyValue(currPassword)}
                     />
 
-                    <TextField
-                        error={isEmptyValue(newPasswordRepeat)
-                            || repeatPassWrong()}
-                        label="Repeat new password"
-                        type='password'
-                        name='new-password-repeat'
-                        helperText={returnHelperText3()}
-                        variant='outlined'
-                        value={newPasswordRepeat}
-                        onChange={(event) => { setNewPasswordRepeat(event.target.value) }}
-                        onBlur={(event) => setTextBox3LostFocus(true)}
-                        onFocus={(event) => setTextBox3LostFocus(false)}
-                        style={{
-                            border: isEmptyValue(newPasswordRepeat) || repeatPassWrong()
-                                ? errorBorderStyle
-                                : normalBorderStyle
-                        }}
-                    />
+                    <ChangePassField fieldLabel={"New password"} fieldName={"new-password"}
+                    passValue={newPassword} setPassValue={setNewPassword}
+                    textBoxLostFocus={textBox2LostFocus} setTextBoxLostFocus={setTextBox2LostFocus}
+                    helperTextFunc={returnHelperText2}
+                    errorResult={isEmptyValue(newPassword) || newPassSameAsOld()}/>
+
+                    <ChangePassField fieldLabel={"Repeat new password"} fieldName={'new-password-repeat'}
+                    passValue={newPasswordRepeat} setPassValue={setNewPasswordRepeat}
+                    textBoxLostFocus={textBox3LostFocus} setTextBoxLostFocus={setTextBox3LostFocus}
+                    helperTextFunc={returnHelperText3}
+                    errorResult={isEmptyValue(newPasswordRepeat) || repeatPassWrong()}/>
 
                     <ChangePassButton notPendingEmitter={notPendingHandler} />
                 </div>

@@ -3,24 +3,32 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
-import {useState,useEffect} from 'react';
-import {isType1ErrorFunction,isType2ErrorFunction} from '@/app/lib/definitions';
+import {useState,Dispatch,SetStateAction,useEffect} from 'react';
 
 interface FieldProps {
-    errorFunc: (value: string | null) => boolean | (() => boolean),
+    errorResult: boolean,
+    passValue: string | null,
+    setPassValue: Dispatch<SetStateAction<string | null>>,
     fieldLabel: string,
     fieldName: string,
-    autocompleteValue: string,
+    autocompleteValue?: string,
+    textBoxLostFocus: boolean,
+    setTextBoxLostFocus: Dispatch<SetStateAction<boolean>>,
     helperTextFunc: () => string
 
 }
 
-export default function ChangePassField({errorFunc, fieldLabel, fieldName,
-    autocompleteValue, helperTextFunc} : FieldProps) {
+export default function ChangePassField({errorResult, fieldLabel, fieldName,
+    passValue, setPassValue, autocompleteValue, textBoxLostFocus, setTextBoxLostFocus,
+    helperTextFunc} : FieldProps) {
 
-        const [passValue, setPassValue] = useState<string | null>(null);
         const [showPassword,setShowPassword] = useState<boolean>(false);
-        const [textBoxLostFocus, setTextBoxLostFocus] = useState<boolean>(false);
+
+        useEffect(() => {
+            if (textBoxLostFocus && passValue === "") {
+                setPassValue(null);
+            };
+        }, [textBoxLostFocus])
 
         const normalBorderStyle = "solid 1px grey";
         const errorBorderStyle = "solid 1px red";
@@ -28,20 +36,11 @@ export default function ChangePassField({errorFunc, fieldLabel, fieldName,
         const handleClickShowPassword = () => setShowPassword(!showPassword);
         const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-        const errorResult = () => {
-            if(isType1ErrorFunction(errorFunc)) {
-                return errorFunc(passValue);
-            }
-            if(isType2ErrorFunction(errorFunc)){
-                return errorFunc();
-            }
-        }
-
     return (
         <TextField
-            error={errorResult()}
+            error={errorResult}
             label={fieldLabel}
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             name={fieldName}
             autoComplete={autocompleteValue}
             helperText={helperTextFunc()}
@@ -51,7 +50,7 @@ export default function ChangePassField({errorFunc, fieldLabel, fieldName,
             onBlur={(event) => setTextBoxLostFocus(true)}
             onFocus={(event) => setTextBoxLostFocus(false)}
             style={{
-                border: errorResult() ? errorBorderStyle : normalBorderStyle
+                border: errorResult ? errorBorderStyle : normalBorderStyle
             }}
             InputProps={{
                 endAdornment: (
