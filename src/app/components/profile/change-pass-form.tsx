@@ -8,6 +8,8 @@ import { useSnackbar } from '@/app/lib/snackbar';
 import { updateUserPassword} from '@/app/actions/profile';
 import {useLogout} from '@/app/lib/logout-element';
 import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
+import ChangePassField from './change-pass-field';
+
 
 function ChangePassButton({ notPendingEmitter }: { notPendingEmitter: () => void }) {
     const { pending } = useFormStatus();
@@ -78,6 +80,8 @@ export default function ChangePassForm() {
     const { snackbar: snackbar5, clickHandler: clickHandlerRed4 } = useSnackbar(ChangePassConstants.OTHER_ERRORS, 'red', 5);
     const {logout, activate: triggerLogout} = useLogout();
     
+    const normalBorderStyle = "solid 1px grey";
+
     const notPendingHandler = () => {
 
         if (!state?.errors) {
@@ -100,9 +104,6 @@ export default function ChangePassForm() {
         }
     }
 
-    const normalBorderStyle = "solid 1px grey";
-    const errorBorderStyle = "solid 1px red";
-
     const isEmptyValue = (value: string | null) => value === "";
 
     const newPassSameAsOld = () => !!currPassword && currPassword === newPassword;
@@ -118,6 +119,8 @@ export default function ChangePassForm() {
         else if (isEmptyValue(currPassword)) {
             return 'This field cannot be empty.';
         }
+
+        return "";
     }
 
     const returnHelperText2 = () => {
@@ -130,6 +133,8 @@ export default function ChangePassForm() {
         else if (newPassSameAsOld()) {
             return 'The new password must be different from the old one.'
         }
+
+        return "";
     }
 
     const returnHelperText3 = () => {
@@ -142,6 +147,8 @@ export default function ChangePassForm() {
         else if (repeatPassWrong()) {
             return 'Passwords must match, check for typos.'
         }
+
+        return "";
     }
 
     return (
@@ -166,23 +173,12 @@ export default function ChangePassForm() {
                 noValidate
             >
                 <div className='flex flex-col justify-center items-center'>
-                    <TextField
-                        error={isEmptyValue(currPassword)}
-                        label="Current password"
-                        type='password'
-                        name='current-password'
-                        autoComplete='current-password'
-                        helperText={returnHelperText1()}
-                        variant='outlined'
-                        value={currPassword}
-                        onChange={(event) => { setCurrPassword(event.target.value) }}
-                        onBlur={(event) => setTextBox1LostFocus(true)}
-                        onFocus={(event) => setTextBox1LostFocus(false)}
-                        style={{
-                            border: isEmptyValue(currPassword) ? errorBorderStyle : normalBorderStyle
-                        }}
-                    />
 
+                    <ChangePassField fieldLabel={"Current password"} fieldName={"current-password"}
+                     autocompleteValue={"current-password"} helperTextFunc={returnHelperText1}
+                     errorFunc={isEmptyValue}
+                    />
+                    
                     <TextField
                         error={isEmptyValue(newPassword) || newPassSameAsOld()}
                         label="New password"

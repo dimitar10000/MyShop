@@ -179,6 +179,14 @@ export function isProduct3(data: Product | WishlistItemType | ShoppingCartItemTy
   return (data as Product).id !== undefined;
 }
 
+export function isType1ErrorFunction(func: (value: string | null) => boolean | (() => boolean)): func is (value: string | null) => boolean {
+  return (func as (value: string | null) => boolean) !== undefined;
+}
+
+export function isType2ErrorFunction(func: (value: string | null) => boolean | (() => boolean)): func is () => boolean {
+  return (func as () => boolean) !== undefined;
+}
+
 type AsyncFunction = (...args: any[]) => Promise<void>;
 
 export function isAsyncType(func: UseMutationResult | Function): func is AsyncFunction {
