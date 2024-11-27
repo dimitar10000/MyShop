@@ -1,6 +1,5 @@
 'use client'
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormStatus, useFormState } from 'react-dom'
 import { useState, useEffect } from 'react';
@@ -8,6 +7,8 @@ import { useSnackbar } from '@/app/lib/snackbar';
 import { updateUserPassword} from '@/app/actions/profile';
 import {useLogout} from '@/app/lib/logout-element';
 import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
+import ChangePassField from './change-pass-field';
+
 
 function ChangePassButton({ notPendingEmitter }: { notPendingEmitter: () => void }) {
     const { pending } = useFormStatus();
@@ -53,24 +54,6 @@ export default function ChangePassForm() {
 
     const [state, action] = useFormState(updateUserPassword, { errors: undefined });
 
-    useEffect(() => {
-        if (textBox1LostFocus && currPassword === "") {
-            setCurrPassword(null);
-        };
-    }, [textBox1LostFocus])
-
-    useEffect(() => {
-        if (textBox2LostFocus && newPassword === "") {
-            setNewPassword(null);
-        };
-    }, [textBox2LostFocus])
-
-    useEffect(() => {
-        if (textBox3LostFocus && newPasswordRepeat === "") {
-            setNewPasswordRepeat(null);
-        };
-    }, [textBox3LostFocus])
-
     const { snackbar, clickHandler } = useSnackbar('Password updated successfully! You will be logged out shortly.', undefined, 1);
     const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(ChangePassConstants.SHORT_PASS_MESSAGE, 'red', 2);
     const { snackbar: snackbar3, clickHandler: clickHandlerRed2 } = useSnackbar(ChangePassConstants.EMPTY_FIELDS, 'red', 3);
@@ -78,6 +61,8 @@ export default function ChangePassForm() {
     const { snackbar: snackbar5, clickHandler: clickHandlerRed4 } = useSnackbar(ChangePassConstants.OTHER_ERRORS, 'red', 5);
     const {logout, activate: triggerLogout} = useLogout();
     
+    const normalBorderStyle = "solid 1px grey";
+
     const notPendingHandler = () => {
 
         if (!state?.errors) {
@@ -100,9 +85,6 @@ export default function ChangePassForm() {
         }
     }
 
-    const normalBorderStyle = "solid 1px grey";
-    const errorBorderStyle = "solid 1px red";
-
     const isEmptyValue = (value: string | null) => value === "";
 
     const newPassSameAsOld = () => !!currPassword && currPassword === newPassword;
@@ -118,6 +100,8 @@ export default function ChangePassForm() {
         else if (isEmptyValue(currPassword)) {
             return 'This field cannot be empty.';
         }
+
+        return "";
     }
 
     const returnHelperText2 = () => {
@@ -130,6 +114,8 @@ export default function ChangePassForm() {
         else if (newPassSameAsOld()) {
             return 'The new password must be different from the old one.'
         }
+
+        return "";
     }
 
     const returnHelperText3 = () => {
@@ -142,6 +128,8 @@ export default function ChangePassForm() {
         else if (repeatPassWrong()) {
             return 'Passwords must match, check for typos.'
         }
+
+        return "";
     }
 
     return (
@@ -166,59 +154,26 @@ export default function ChangePassForm() {
                 noValidate
             >
                 <div className='flex flex-col justify-center items-center'>
-                    <TextField
-                        error={isEmptyValue(currPassword)}
-                        label="Current password"
-                        type='password'
-                        name='current-password'
-                        autoComplete='current-password'
-                        helperText={returnHelperText1()}
-                        variant='outlined'
-                        value={currPassword}
-                        onChange={(event) => { setCurrPassword(event.target.value) }}
-                        onBlur={(event) => setTextBox1LostFocus(true)}
-                        onFocus={(event) => setTextBox1LostFocus(false)}
-                        style={{
-                            border: isEmptyValue(currPassword) ? errorBorderStyle : normalBorderStyle
-                        }}
+
+                    <ChangePassField fieldLabel={"Current password"} fieldName={"current-password"}
+                     passValue={currPassword} setPassValue={setCurrPassword}
+                     autocompleteValue={"current-password"} textBoxLostFocus={textBox1LostFocus}
+                     setTextBoxLostFocus={setTextBox1LostFocus}
+                     helperTextFunc={returnHelperText1}
+                     errorResult={isEmptyValue(currPassword)}
                     />
 
-                    <TextField
-                        error={isEmptyValue(newPassword) || newPassSameAsOld()}
-                        label="New password"
-                        type='password'
-                        name='new-password'
-                        helperText={returnHelperText2()}
-                        variant='outlined'
-                        value={newPassword}
-                        onChange={(event) => { setNewPassword(event.target.value) }}
-                        onBlur={(event) => setTextBox2LostFocus(true)}
-                        onFocus={(event) => setTextBox2LostFocus(false)}
-                        style={{
-                            border: isEmptyValue(newPassword) || newPassSameAsOld()
-                                ? errorBorderStyle
-                                : normalBorderStyle
-                        }}
-                    />
+                    <ChangePassField fieldLabel={"New password"} fieldName={"new-password"}
+                    passValue={newPassword} setPassValue={setNewPassword}
+                    textBoxLostFocus={textBox2LostFocus} setTextBoxLostFocus={setTextBox2LostFocus}
+                    helperTextFunc={returnHelperText2}
+                    errorResult={isEmptyValue(newPassword) || newPassSameAsOld()}/>
 
-                    <TextField
-                        error={isEmptyValue(newPasswordRepeat)
-                            || repeatPassWrong()}
-                        label="Repeat new password"
-                        type='password'
-                        name='new-password-repeat'
-                        helperText={returnHelperText3()}
-                        variant='outlined'
-                        value={newPasswordRepeat}
-                        onChange={(event) => { setNewPasswordRepeat(event.target.value) }}
-                        onBlur={(event) => setTextBox3LostFocus(true)}
-                        onFocus={(event) => setTextBox3LostFocus(false)}
-                        style={{
-                            border: isEmptyValue(newPasswordRepeat) || repeatPassWrong()
-                                ? errorBorderStyle
-                                : normalBorderStyle
-                        }}
-                    />
+                    <ChangePassField fieldLabel={"Repeat new password"} fieldName={'new-password-repeat'}
+                    passValue={newPasswordRepeat} setPassValue={setNewPasswordRepeat}
+                    textBoxLostFocus={textBox3LostFocus} setTextBoxLostFocus={setTextBox3LostFocus}
+                    helperTextFunc={returnHelperText3}
+                    errorResult={isEmptyValue(newPasswordRepeat) || repeatPassWrong()}/>
 
                     <ChangePassButton notPendingEmitter={notPendingHandler} />
                 </div>
