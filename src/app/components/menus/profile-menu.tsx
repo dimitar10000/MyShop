@@ -105,9 +105,10 @@ export default function ProfileMenu({ user }: { user: UserProfile }) {
                     </Link>
                 </MenuItem>
                 <MenuItem className={`${styles['menu-item']}`} onClick={handleClose}>
-                    <Link prefetch={false} href={'/api/auth/logout'}>
+                    {<Link prefetch={false} href={'/api/auth/logout'}>
                         Log out
                     </Link>
+                    }
                 </MenuItem>
             </Menu>
         </div>

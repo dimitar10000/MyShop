@@ -26,9 +26,7 @@ export default function Profile() {
                         <ProfileButton href='/profile/delete-account' label='Delete account' color='red'/>
                     </div>
 
-                    <div className="flex flex-row justify-center text-base font-semibold mt-5"> User information </div>
-
-                    <div className="mt-3">
+                    <div className="mt-5">
                         <UserInfoForm user={user}/>
                     </div>
 
