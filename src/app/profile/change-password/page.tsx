@@ -9,7 +9,7 @@ export default function ChangePassword() {
 
     return (
         user && (<div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1 mb-10'>
-                <BreadcrumbTemplate labels={['Home', 'Profile']} links={['/']} />
+                <BreadcrumbTemplate labels={['Home', 'Change password']} links={['/']} />
 
                 <div className='mt-5'>
                     <div className="text-2xl font-semibold"> Change password </div>

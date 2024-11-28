@@ -22,11 +22,9 @@ export default function DeleteAccount() {
                 </div>
 
                 <div className="mt-5">
-                    <DeleteAccountForm />
+                    <DeleteAccountForm loggedUsername={user?.name}/>
                 </div>
-
             </div>
-
         </div>)
     )
 }
