@@ -16,10 +16,6 @@ export default function ProfileSkeleton() {
                         <Skeleton height={40} width={300}/>
                     </div>
 
-                    <div className="flex flex-row justify-center mt-5">
-                        <Skeleton height={24} width={150}/>
-                    </div>
-
                     <div className="mt-3">
                         <Skeleton width={'100%'} height={350}/>
                     </div>

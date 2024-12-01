@@ -3,9 +3,14 @@ import BreadcrumbTemplate from "@/app/components/breadcrumbs/breadcrumb-template
 import ProfileButton from "@/app/components/profile/profile-button"
 import { useUser } from '@auth0/nextjs-auth0/client';
 import ChangePassForm from '@/app/components/profile/change-pass-form';
+import ProfileSkeleton from '@/app/components/loadings/profile-skeleton';
 
 export default function ChangePassword() {
     const { user } = useUser();
+
+    if(!user) {
+        return <ProfileSkeleton/>;
+    }
 
     return (
         user && (<div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1 mb-10'>
