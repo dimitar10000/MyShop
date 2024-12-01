@@ -1,8 +1,8 @@
 'use server'
-import {getSession,updateSession } from '@auth0/nextjs-auth0';
+import { getSession, updateSession } from '@auth0/nextjs-auth0';
 import { ManagementClient } from 'auth0';
 import axios from 'axios'
-import {ChangePassConstants} from '@/app/components/profile/change-pass-constants';
+import { ChangePassConstants } from '@/app/components/profile/change-pass-constants';
 
 const DOMAIN = 'dev-22pxfwuc6cwn74ws.eu.auth0.com';
 const CLIENT_ID = 'BsW2h1eMGEdiFuYF5teNs12rUz5LQ6qW'; // for auth0 management api
@@ -21,22 +21,19 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         audience: 'https://dev-22pxfwuc6cwn74ws.eu.auth0.com/api/v2/'
-      });
+    });
 
-      let session = await getSession();
-      let user = session?.user;
-      const userID = user?.sub;
-      
-      console.log('SESSION ',session);
-      console.log('USER ',session?.user);
+    let session = await getSession();
+    let user = session?.user;
+    const userID = user?.sub;
 
-      const givenName = formData.get('first-name')?.toString();
-      const familyName = formData.get('last-name')?.toString();
-      const email = formData.get('email')?.toString();
-      const phone = formData.get('phone')?.toString();
+    const givenName = formData.get('first-name')?.toString();
+    const familyName = formData.get('last-name')?.toString();
+    const email = formData.get('email')?.toString();
+    const phone = formData.get('phone')?.toString();
 
-      let data: any = {
-        user_metadata: { 
+    let data: any = {
+        user_metadata: {
             phone: phone ?? ''
         }
     };
@@ -49,20 +46,22 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
     }
 
     try {
-        const response = await management.users.update({id: userID}, data);
+        const response = await management.users.update({ id: userID }, data);
         console.log('new user data is ', response.data);
 
         session = await getSession();
-        await updateSession({...session, user: {...session?.user}});
+        await updateSession({ ...session, user: { ...session?.user } });
     } catch (e) {
         console.error(e);
-        
-        return {errors: {
-            error: (e instanceof Error) ? e.message : 'error'
-        }};
+
+        return {
+            errors: {
+                error: (e instanceof Error) ? e.message : 'error'
+            }
+        };
     }
-    
-    return {errors: undefined};
+
+    return { errors: undefined };
 }
 
 async function verifyUserPassword(domain: string, clientId: string, clientSecret: string,
@@ -76,28 +75,28 @@ async function verifyUserPassword(domain: string, clientId: string, clientSecret
             },
             {
                 headers: {
-                  Authorization: `Bearer ${API_TOKEN}`,
-                  'Content-Type': 'application/json',
+                    Authorization: `Bearer ${API_TOKEN}`,
+                    'Content-Type': 'application/json',
                 }
             }
-          );
+        );
 
         // making a call to verify the current password
         await axios.post(`https://${domain}/oauth/token`, {
-          grant_type: 'password',
-          username: username,
-          password: currPass,
-          client_id: clientId,
-          client_secret: clientSecret,
-          audience: 'https://dev-22pxfwuc6cwn74ws.eu.auth0.com/api/v2/',
-          scope: 'openid'
+            grant_type: 'password',
+            username: username,
+            password: currPass,
+            client_id: clientId,
+            client_secret: clientSecret,
+            audience: 'https://dev-22pxfwuc6cwn74ws.eu.auth0.com/api/v2/',
+            scope: 'openid'
         });
         return true;
-      } catch (error) {
+    } catch (error) {
         console.error(error);
 
         return false;
-      }
+    }
 }
 
 export async function updateUserPassword(state: FormState, formData: FormData) {
@@ -108,58 +107,91 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
     const newPass = formData.get('new-password')?.toString();
     const newPassRepeat = formData.get('new-password-repeat')?.toString();
 
-    console.log('USER',user);
-    console.log('CURR AND NEW PASS ', currPass,newPass);
-
-    if(!currPass || !newPass || !newPassRepeat) {
-        return {errors: {
-            error: ChangePassConstants.EMPTY_FIELDS
-        }}
-    }   
-
-    if(!newPass || !!newPass && newPass.length < ChangePassConstants.MIN_PASSWORD_LENGTH) {
-        return {errors: {
-            error: ChangePassConstants.SHORT_PASS_MESSAGE
-        }}
-    }
-
-    if(!!newPass && !!newPassRepeat && newPass !== newPassRepeat) {
-        return {errors: {
-            error: ChangePassConstants.PASS_MISMATCH
-        }}
-    }
-
-    const verifiedPass = await verifyUserPassword(DOMAIN, CLIENT_ID, CLIENT_SECRET, user?.name,currPass ?? '');
-
-    if(verifiedPass) {
-        try {
-        await axios.patch(
-            `https://${DOMAIN}/api/v2/users/${userID}`,
-            {
-              password: newPass,
-              connection: 'Username-Password-Authentication',
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${API_TOKEN}`,
-                'Content-Type': 'application/json',
-              },
+    if (!currPass || !newPass || !newPassRepeat) {
+        return {
+            errors: {
+                error: ChangePassConstants.EMPTY_FIELDS
             }
-          );
+        }
+    }
+
+    if (!newPass || !!newPass && newPass.length < ChangePassConstants.MIN_PASSWORD_LENGTH) {
+        return {
+            errors: {
+                error: ChangePassConstants.SHORT_PASS_MESSAGE
+            }
+        }
+    }
+
+    if (!!newPass && !!newPassRepeat && newPass !== newPassRepeat) {
+        return {
+            errors: {
+                error: ChangePassConstants.PASS_MISMATCH
+            }
+        }
+    }
+
+    const verifiedPass = await verifyUserPassword(DOMAIN, CLIENT_ID, CLIENT_SECRET, user?.name, currPass ?? '');
+
+    if (verifiedPass) {
+        try {
+            await axios.patch(
+                `https://${DOMAIN}/api/v2/users/${userID}`,
+                {
+                    password: newPass,
+                    connection: 'Username-Password-Authentication',
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${API_TOKEN}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
         } catch (e) {
             console.error(e);
-        
-            return {errors: {
-                error: (e instanceof Error) ? e.message : 'error'
-            }};
+
+            return {
+                errors: {
+                    error: (e instanceof Error) ? e.message : 'error'
+                }
+            };
         }
     }
     else {
-        return {errors: {
-            error: ChangePassConstants.OTHER_ERRORS
+        return {
+            errors: {
+                error: ChangePassConstants.OTHER_ERRORS
+            }
         }
     }
-    }
 
-    return {errors: undefined};
+    return { errors: undefined };
+}
+
+export async function deleteUserAccount(state: FormState, formData: FormData) {
+    let session = await getSession();
+    let user = session?.user;
+    const userID = user?.sub;
+
+    const management = new ManagementClient({
+        domain: DOMAIN,
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        audience: 'https://dev-22pxfwuc6cwn74ws.eu.auth0.com/api/v2/'
+    });
+
+    try {
+        const response = await management.users.delete({ id: userID });
+        console.log(response.data);
+    } catch (e) {
+        console.error(e);
+        return {
+            errors: {
+                error: (e instanceof Error) ? e.message : 'error'
+            }
+        }
+    };
+
+    return { errors: undefined };
 }
