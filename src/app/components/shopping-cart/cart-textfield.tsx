@@ -22,6 +22,15 @@ export default function CartTextfield({ user, item, textBoxValue, setTextBoxValu
                 width: 110,
                 input: {
                     textAlign: 'center'
+                },
+                '& fieldset': {
+                    borderColor: 'black'
+                },
+                '&:hover fieldset': {
+                    borderColor: 'black'
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderWidth: 2
                 }
             }}
             onChange={(e) => {
