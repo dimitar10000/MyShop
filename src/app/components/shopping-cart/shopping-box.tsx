@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import LoadError from '@/app/components/load-error';
-import { ShoppingCart, Nullable, Wishlist,Brand } from '@/app/lib/definitions';
+import { ShoppingCart, Nullable,Brand } from '@/app/lib/definitions';
 import {isInWishlist} from '@/app/lib/util-funcs';
 import { useTheme } from '@mui/material/styles';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -11,7 +11,7 @@ import ShoppingItem from './shopping-item';
 import ShoppingSkeleton from '@/app/components/loadings/shopping-skeleton';
 import {initializeBrandsOnClient} from '@/app/lib/fetch-brands';
  
-export default function ShoppingBox({ cartItems }: {cartItems: Nullable<ShoppingCart['items']>,}) {
+export default function ShoppingBox({ cartItems }: {cartItems: Nullable<ShoppingCart['items']>}) {
     const { user } = useUser();
     const theme = useTheme();
     const [itemCount, setItemCount] = useState(0);

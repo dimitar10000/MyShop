@@ -34,14 +34,16 @@ export default function ShoppingCart() {
                 <div className='flex flex-col gap-y-1'>
                     <ShoppingBox cartItems={cart?.items} />
                     <div className='self-end me-10 mb-10'>
-                        {cart?.items && cart?.items.length > 0 &&
+                        {cart?.items && cart.items.length > 0 &&
                             <ClearCartButton />
                         }
                     </div>
                 </div>
 
                 <div className='flex flex-col mx-auto'>
-                    <ShoppingCartStats />
+                    {cart?.items && cart.items.length > 0 &&
+                        <ShoppingCartStats cartItems={cart?.items}/>
+                    }
                 </div>
             </div>
         </div>

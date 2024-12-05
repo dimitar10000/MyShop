@@ -6,21 +6,29 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Button } from "@mui/material";
-import { useState } from 'react'
+import { useState,useMemo } from 'react'
 import { useTheme } from '@mui/material/styles';
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '@/../tailwind.config'
+import { ShoppingCart, Nullable} from '@/app/lib/definitions';
+import {getCartItemsTotalPrice, getCartItemsTotalDiscount} from '@/app/lib/util-funcs';
 
-export default function ShoppingCartStats() {
+export default function ShoppingCartStats({ cartItems }:{cartItems: Nullable<ShoppingCart['items']>}) {
     const [focusedInput, setFocusedInput] = useState<boolean>(false);
     const theme = useTheme();
-    const fullConfig = resolveConfig(tailwindConfig)
+    const fullConfig = resolveConfig(tailwindConfig);
+    const TAX_PERCENT = 10;
+
+    const totalPrice = Number(getCartItemsTotalPrice(cartItems));
+    const taxedPrice = totalPrice + TAX_PERCENT / 100.0 * totalPrice;
+    const totalDiscount =Number(getCartItemsTotalDiscount(cartItems));
+    const amountToPay = 4.99 + 2.99 + taxedPrice;
 
     return (
         <div style={{ minWidth: 350, marginBottom: 20 }}>
             <div className='flex flex-row items-center justify-center mx-auto'>
                 <LocalShippingOutlinedIcon sx={{ fontSize: 40 }} />
-                <div className='text-lg ml-4 font-semibold'> X $ until free delivery</div>
+                <div className='text-lg ml-4 font-semibold'> {(200 - taxedPrice).toFixed(2)} $ until free delivery</div>
             </div>
 
             <div className='flex flex-row items-center justify-center mt-3'>
@@ -31,7 +39,7 @@ export default function ShoppingCartStats() {
             <div className='mt-3'>
                 <div className='flex flex-row justify-between text-red-700'>
                     <div> Saved: </div>
-                    <div> X $</div>
+                    <div> {totalDiscount} $</div>
                 </div>
 
                 <div className='flex flex-row justify-between mt-1'>
@@ -46,8 +54,8 @@ export default function ShoppingCartStats() {
 
                 <div className='flex flex-row justify-between mt-2'>
                     <div className='font-semibold'> You pay (tax included): </div>
-                    <div className='text-red-700 text-lg'> XXX $</div>
-                </div>
+                    <div className='text-red-700 text-lg'> {amountToPay.toFixed(2)} $</div>
+                </div> 
 
                 <div className='flex flex-row items-center justify-between mt-2'>
                     <OutlinedInput
@@ -107,7 +115,7 @@ export default function ShoppingCartStats() {
                                 backgroundColor: fullConfig.theme.colors.orange[700]
                             }
                         }}
-                        >
+                    >
                         CONTINUE
                     </Button>
                 </div>
