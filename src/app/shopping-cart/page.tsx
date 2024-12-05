@@ -3,7 +3,7 @@ import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template
 import { useUser } from '@auth0/nextjs-auth0/client';
 import CartStepper from '@/app/components/shopping-cart/cart-stepper';
 import ShoppingBox from '@/app/components/shopping-cart/shopping-box';
-import { useEffect } from 'react'
+import { useEffect,useState } from 'react'
 import { useCart } from '@/app/lib/cart/cart-provider';
 import ClearCartButton from '@/app/components/shopping-cart/clear-cart-button';
 import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stats';
@@ -12,6 +12,7 @@ import {initializeCart} from '@/app/lib/cart/initialize-cart';
 export default function ShoppingCart() {
     const { user } = useUser();
     const {cart,setCart} = useCart();
+    const [insuranceIncluded, setInsuranceIncluded] = useState<boolean>(true);
 
     useEffect(() => {
         initializeCart(user,setCart);
@@ -32,7 +33,8 @@ export default function ShoppingCart() {
 
             <div className='flex flex-row mt-5 justify-between'>
                 <div className='flex flex-col gap-y-1'>
-                    <ShoppingBox cartItems={cart?.items} />
+                    <ShoppingBox cartItems={cart?.items} insuranceIncluded={insuranceIncluded}
+                                insuranceUpdater={setInsuranceIncluded}/>
                     <div className='self-end me-10 mb-10'>
                         {cart?.items && cart.items.length > 0 &&
                             <ClearCartButton />
@@ -42,7 +44,7 @@ export default function ShoppingCart() {
 
                 <div className='flex flex-col mx-auto'>
                     {cart?.items && cart.items.length > 0 &&
-                        <ShoppingCartStats cartItems={cart?.items}/>
+                        <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} />
                     }
                 </div>
             </div>

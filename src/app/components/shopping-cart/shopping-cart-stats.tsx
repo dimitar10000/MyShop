@@ -6,14 +6,15 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Button } from "@mui/material";
-import { useState,useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useTheme } from '@mui/material/styles';
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '@/../tailwind.config'
-import { ShoppingCart, Nullable} from '@/app/lib/definitions';
-import {getCartItemsTotalPrice, getCartItemsTotalDiscount} from '@/app/lib/util-funcs';
+import { ShoppingCart, Nullable } from '@/app/lib/definitions';
+import { getCartItemsTotalPrice, getCartItemsTotalDiscount } from '@/app/lib/util-funcs';
 
-export default function ShoppingCartStats({ cartItems }:{cartItems: Nullable<ShoppingCart['items']>}) {
+export default function ShoppingCartStats({ cartItems, insuranceIncluded }:
+    { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean }) {
     const [focusedInput, setFocusedInput] = useState<boolean>(false);
     const theme = useTheme();
     const fullConfig = resolveConfig(tailwindConfig);
@@ -21,8 +22,8 @@ export default function ShoppingCartStats({ cartItems }:{cartItems: Nullable<Sho
 
     const totalPrice = Number(getCartItemsTotalPrice(cartItems));
     const taxedPrice = totalPrice + TAX_PERCENT / 100.0 * totalPrice;
-    const totalDiscount =Number(getCartItemsTotalDiscount(cartItems));
-    const amountToPay = 4.99 + 2.99 + taxedPrice;
+    const totalDiscount = Number(getCartItemsTotalDiscount(cartItems));
+    const amountToPay = 4.99 + (insuranceIncluded ? 2.99 : 0) + taxedPrice;
 
     return (
         <div style={{ minWidth: 350, marginBottom: 20 }}>
@@ -47,15 +48,18 @@ export default function ShoppingCartStats({ cartItems }:{cartItems: Nullable<Sho
                     <div> 4.99 $</div>
                 </div>
 
-                <div className='flex flex-row justify-between mt-1'>
+                {insuranceIncluded
+                ? <div className='flex flex-row justify-between mt-1'>
                     <div> Package insurance: </div>
                     <div> 2.99 $</div>
                 </div>
+                : null
+                }
 
                 <div className='flex flex-row justify-between mt-2'>
                     <div className='font-semibold'> You pay (tax included): </div>
                     <div className='text-red-700 text-lg'> {amountToPay.toFixed(2)} $</div>
-                </div> 
+                </div>
 
                 <div className='flex flex-row items-center justify-between mt-2'>
                     <OutlinedInput

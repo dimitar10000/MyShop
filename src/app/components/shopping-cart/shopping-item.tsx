@@ -27,11 +27,10 @@ interface ItemType {
     item: ShoppingCartItemType,
     index: number,
     inWishlist: boolean,
-    isLastItem: boolean,
     brands: Brand[] | null
 } 
 
-export default function ShoppingItem({ item, index, inWishlist, isLastItem, brands }: ItemType) {
+export default function ShoppingItem({ item, index, inWishlist, brands }: ItemType) {
     const { user } = useUser();
     const theme = useTheme(); 
     const {setCart} = useCart();
@@ -55,10 +54,7 @@ export default function ShoppingItem({ item, index, inWishlist, isLastItem, bran
 
     return (
         <div key={'cart-item' + index} className={`${styles.wrapper} py-3 ps-5`}
-            style={isLastItem
-                ? {}
-                : { borderColor: themeBorderColor, borderBottomWidth: "2px", borderStyle: 'solid' }
-            }>
+            style={{ borderColor: themeBorderColor, borderBottomWidth: "2px", borderStyle: 'solid' }}>
 
             <Link href={link}
                 style={{ height: 100, width: 100, position: 'relative' }}
