@@ -41,7 +41,7 @@ export default function ShoppingBox({ cartItems }: {cartItems: Nullable<Shopping
         !cartItems
         ? <ShoppingSkeleton />
         : <Box sx={{
-            width: '800px', borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
+            width: "60vw",borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
             paddingTop: 3, paddingBottom: 3, marginBottom: 3
         }}>
             {
@@ -56,8 +56,6 @@ export default function ShoppingBox({ cartItems }: {cartItems: Nullable<Shopping
                         cartItems.map((item, index) => {
                             const inWishlist = isInWishlist(item,list);
                             const isLastItem = index === itemCount - 1;
-
-                            console.log(`item ${item.name} is in wishlist -> ${inWishlist}`);
 
                             return (
                             <ShoppingItem key={'shopping item' + index} item={item} index={index} inWishlist={inWishlist}
