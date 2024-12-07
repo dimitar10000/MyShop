@@ -1,29 +1,25 @@
 'use client'
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import {grey} from '@mui/material/colors';
+import { usePathname } from 'next/navigation';
 
 export default function CartStepper() {
-  const steps = ['Review products in the cart', 'Billing and payment', 'Delivery address'];
   const [activeStep, setActiveStep] = useState(0);
+  const currentPath = usePathname();
+  const steps = ['Review products in the cart', 'Billing and payment', 'Delivery address'];
 
-  const handleNext = () => {
-    // logic for when 1st and 2nd step are completed
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  useEffect(() => {
+    if(currentPath === '/delivery-payment') {
+      setActiveStep(1);
+    }
+    else if(currentPath === '/delivery-address') {
+      setActiveStep(2);
+    }
+  },[])
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -40,6 +36,9 @@ export default function CartStepper() {
               '& .MuiSvgIcon-root': {
                 color: grey[600],
                 fontSize: '28px'
+              },
+              '& .Mui-active .MuiSvgIcon-root': {
+                color: grey[600]
               }
               }}>
                 {label}
@@ -48,17 +47,6 @@ export default function CartStepper() {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
-        <div>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&lsquo;re finished
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </div>
-      ) : null}
     </Box>
   );
 }

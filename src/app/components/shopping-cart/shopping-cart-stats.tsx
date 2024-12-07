@@ -4,12 +4,9 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Button } from "@mui/material";
 import { useState, useMemo } from 'react'
 import { useTheme } from '@mui/material/styles';
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from '@/../tailwind.config'
 import { ShoppingCart, Nullable } from '@/app/lib/definitions';
 import { getCartItemsTotalPrice, getCartItemsTotalDiscount } from '@/app/lib/util-funcs';
 
@@ -17,7 +14,6 @@ export default function ShoppingCartStats({ cartItems, insuranceIncluded }:
     { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean }) {
     const [focusedInput, setFocusedInput] = useState<boolean>(false);
     const theme = useTheme();
-    const fullConfig = resolveConfig(tailwindConfig);
     const TAX_PERCENT = 10;
 
     const totalPrice = Number(getCartItemsTotalPrice(cartItems));
@@ -49,11 +45,11 @@ export default function ShoppingCartStats({ cartItems, insuranceIncluded }:
                 </div>
 
                 {insuranceIncluded
-                ? <div className='flex flex-row justify-between mt-1'>
-                    <div> Package insurance: </div>
-                    <div> 2.99 $</div>
-                </div>
-                : null
+                    ? <div className='flex flex-row justify-between mt-1'>
+                        <div> Package insurance: </div>
+                        <div> 2.99 $</div>
+                    </div>
+                    : null
                 }
 
                 <div className='flex flex-row justify-between mt-2'>
@@ -107,22 +103,6 @@ export default function ShoppingCartStats({ cartItems, insuranceIncluded }:
                     }
                 </div>
 
-                <div className='flex flex-row justify-end mt-4'>
-                    <Button variant="contained"
-                        size='large'
-                        endIcon={
-                            <ChevronRightIcon />
-                        }
-                        sx={{
-                            backgroundColor: fullConfig.theme.colors.orange[600],
-                            '&:hover': {
-                                backgroundColor: fullConfig.theme.colors.orange[700]
-                            }
-                        }}
-                    >
-                        CONTINUE
-                    </Button>
-                </div>
             </div>
 
         </div>
