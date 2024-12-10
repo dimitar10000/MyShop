@@ -35,7 +35,7 @@ export default function ShoppingBox({ cartItems,insuranceIncluded, insuranceUpda
             ? <ShoppingSkeleton />
             : <Box sx={{
                 width: "60vw", borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
-                paddingTop: 3, paddingBottom: 3, marginBottom: 3
+                paddingTop: 3, paddingBottom: 1, marginBottom: 3
             }}>
                 {
                     <div>

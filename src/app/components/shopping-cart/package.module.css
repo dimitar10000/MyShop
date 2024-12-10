@@ -1,0 +1,16 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 100px 210px 140px 160px 1fr;
+    grid-template-rows: auto 60px;
+    column-gap: 10px;
+    width: 100%;
+}
+
+.card {
+    width: 64px;
+    height: 40px;
+    border: solid 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

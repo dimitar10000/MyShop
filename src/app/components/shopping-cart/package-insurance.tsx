@@ -1,4 +1,4 @@
-import styles from './cart.module.css';
+import styles from './package.module.css';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -10,16 +10,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTheme } from '@mui/material/styles';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 export default function PackageInsurance({ insuranceIncluded, insuranceUpdater }:
     { insuranceIncluded: boolean, insuranceUpdater: Dispatch<SetStateAction<boolean>> }) {
     const [open, setOpen] = useState<boolean>(false);
+    const theme = useTheme();
+    const borderColor = theme.palette.primary.light;
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
-        <div key={'cart-package-insurance'} className={`${styles.wrapper} py-3 ps-5`}>
+        <div key={'cart-package-insurance'} className={`${styles.wrapper} pt-3 ps-5`}>
 
             <div className='flex flex-row justify-center'>
                 <Inventory2OutlinedIcon sx={{ width: 55, height: 55 }} />
@@ -97,6 +101,26 @@ export default function PackageInsurance({ insuranceIncluded, insuranceUpdater }
                     </DialogContent>
                 </Dialog>
 
+            </div>
+
+            <div style={{ gridRowStart: 2, gridColumnStart: 1, gridColumnEnd: 4 }} 
+                className='flex flex-row justify-start gap-x-1 mt-5'>
+                <div className={`${styles.card}`} style={{borderColor: borderColor}}>
+                    <div> Card 1 </div>
+                </div>
+
+                <div className={`${styles.card}`} style={{borderColor: borderColor}}>
+                    <div> Card 2 </div>
+                </div>
+
+                <div className={`${styles.card}`} style={{borderColor: borderColor}}>
+                    <div> Card 3 </div>
+                </div>
+                
+                <div className='flex flex-row items-center ml-3'>
+                    <LockOutlinedIcon />
+                    <div> Secure purchase guarantee </div>
+                </div>                
             </div>
         </div>
     )
