@@ -4,6 +4,7 @@ import { useState } from 'react'
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
 import CartStepper from '@/app/components/shopping-cart/cart-stepper';
 import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stats';
+import DeliveryBox from '@/app/components/delivery-payment/delivery-box';
 
 export default function DeliveryPayment() {
     const { cart } = useCart();
@@ -22,10 +23,16 @@ export default function DeliveryPayment() {
                 </div>
             </div>
 
-            <div className='flex flex-col mx-auto'>
-                {cart?.items && cart.items.length > 0 &&
-                    <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} />
-                }
+            <div className='flex flex-row mt-5 justify-between'>
+                <div>
+                    <DeliveryBox />
+                </div>
+
+                <div className='flex flex-col mx-auto'>
+                    {cart?.items && cart.items.length > 0 &&
+                        <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} />
+                    }
+                </div>
             </div>
         </div>
     )
