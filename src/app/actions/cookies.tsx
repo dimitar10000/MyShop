@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 async function getUserCookieString() {
     let cookie;
 
-    cookie = cookies().get('user')!.value;
+    cookie = (await cookies()).get('user')!.value;
     return cookie;
 }
 
@@ -24,7 +24,7 @@ export async function getUserCookie() {
 }
 
 async function deleteUserCookie() {
-    cookies().delete('user');
+    (await cookies()).delete('user');
 }
 
 async function updateUserCookie(oldCookie: UserCookie | null) {
@@ -36,7 +36,7 @@ async function updateUserCookie(oldCookie: UserCookie | null) {
         // get the old expiration date and keep it
         const expirationDate = oldCookie.expiration;
 
-        cookies().set('user',
+        (await cookies()).set('user',
             JSON.stringify(oldCookie), {
             maxAge: 60 * 60 * 24 * 7 * 4,
             httpOnly: true,
