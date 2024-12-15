@@ -1,82 +1,40 @@
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import Radio from '@mui/material/Radio';
-import { useState,useEffect,useRef } from 'react';
+import { useState,useRef,useEffect } from 'react';
 import blue from '@mui/material/colors/blue';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import HomeIcon from '@mui/icons-material/Home';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import {APIProvider,ControlPosition,MapControl,AdvancedMarker,
-    Map,useMap,useMapsLibrary,useAdvancedMarkerRef,AdvancedMarkerRef} 
-    from '@vis.gl/react-google-maps';
-
-    interface MapHandlerProps {
-        place: google.maps.places.PlaceResult | null;
-        marker: google.maps.marker.AdvancedMarkerElement | null;
-      }
-
-      const MapHandler = ({ place, marker }: MapHandlerProps) => {
-        const map = useMap();
-      
-        useEffect(() => {
-          if (!map || !place || !marker) return;
-      
-          if (place.geometry?.viewport) {
-            map.fitBounds(place.geometry?.viewport);
-          }
-          marker.position = place.geometry?.location;
-        }, [map, place, marker]);
-      
-        return null;
-      };
-
-      interface PlaceAutocompleteProps {
-        onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
-      }
-
-      const PlaceAutocomplete = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
-        const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-        const inputRef = useRef<HTMLInputElement>(null);
-        const places = useMapsLibrary('places');
-      
-        useEffect(() => {
-          if (!places || !inputRef.current) return;
-      
-          const options = {
-            fields: ['geometry', 'name', 'formatted_address']
-          };
-      
-          setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
-        }, [places]);
-      
-        useEffect(() => {
-          if (!placeAutocomplete) return;
-      
-          placeAutocomplete.addListener('place_changed', () => {
-            onPlaceSelect(placeAutocomplete.getPlace());
-          });
-        }, [onPlaceSelect, placeAutocomplete]);
-      
-        return (
-          <div className="autocomplete-container">
-            <input ref={inputRef} 
-            style={{height: '5vh', width: '20vw', marginTop: 10}}/>
-          </div>
-        );
-      };
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import GoogleMaps from './google-maps';
+import AddressInput from './address-input';
 
 export default function DeliveryBox() {
     const theme = useTheme();
     const themeBorderColor = theme.palette.primary.light;
     const option1Text = "Delivery option 1 - address";
     const [selectedValue, setSelectedValue] = useState<string>(option1Text);
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleOpen = () => setOpenDialog(true);
+    const handleClose = () => setOpenDialog(false);
+
+    useEffect(() => {
+        if (!openDialog) {
+          inputRef.current?.blur();
+        }
+      }, [openDialog]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedValue(event.target.value);
     }
 
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [markerRef, marker] = useAdvancedMarkerRef();
 
     return (
         <>
@@ -106,46 +64,35 @@ export default function DeliveryBox() {
                         </div>
                         <div className='self-center mr-3'> 3.99 $ </div>
                     </div>
-                    <OutlinedInput sx={{
-                        width: '80%',
-                        ml: 2,
-                        '& fieldset': {
-                            borderColor: 'black'
-                        },
-                        '&:hover fieldset': {
-                            borderColor: 'black'
-                        },
-                        input: {
-                            paddingY: 1
-                        }
-                    }}
-                        placeholder='Choose an address by clicking here'
-                    />
+                    <AddressInput openDialog={handleOpen} ref={inputRef} selectedPlace={selectedPlace}/>
                 </div>
 
                 <div>
-                <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}
-                solutionChannel='GMP_devsite_samples_v3_rgmautocomplete'>
-                    <Map
-                        mapId={'bf51a910020fa25a'}
-                        defaultZoom={10}
-                        defaultCenter={{ lat:  42.698334, lng: 23.319941 }}
-                        gestureHandling={'greedy'}
-                        disableDefaultUI={true}
-                        zoomControl fullscreenControl
-                        style={{
-                            width: '40vw', height: '40vh'
-                        }}
+                    <Dialog
+                        open={openDialog}
+                        onClose={() => {handleClose();}}
+                        aria-labelledby="dialog-title"
+                    >
+                        <DialogTitle sx={{ m: 0, p: 2, textAlign: 'center' }} id="dialog-title">
+                            Search for your address on the map
+                        </DialogTitle>
+                        <IconButton
+                            aria-label="close"
+                            onClick={() => {handleClose();}}
+                            sx={(theme) => ({
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                                color: theme.palette.grey[500],
+                            })}
                         >
-                        <AdvancedMarker ref={markerRef} position={null} />
-                    </Map>
-                        <MapControl position={ControlPosition.TOP}>
-                            <div className="autocomplete-control">
-                                <PlaceAutocomplete onPlaceSelect={setSelectedPlace} />
-                            </div>
-                        </MapControl>
-                        <MapHandler place={selectedPlace} marker={marker} />
-                </APIProvider>
+                            <CloseIcon />
+                        </IconButton>
+                        <DialogContent dividers>
+                            <GoogleMaps selectedPlace={selectedPlace}
+                            selectedPlaceUpdater={setSelectedPlace}/>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </Box>
         </>

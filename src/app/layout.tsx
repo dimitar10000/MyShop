@@ -9,6 +9,7 @@ import TopMenu from "./components/menus/top-menu";
 import Footer from "./components/footer/footer";
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '@/app/lib/theme';
+import CssBaseline from '@mui/material/CssBaseline';
 import QueryClientProviderWrapper from './query-client-provider';
 import CartProvider from '@/app/lib/cart/cart-provider';
 import ListProvider from '@/app/lib/list/list-provider';
@@ -52,6 +53,7 @@ export default function RootLayout({
         <ListProvider>
           <CartProvider>
             <ThemeProvider theme={theme}>
+              <CssBaseline />
               <UserProvider>
                 {/*<a href="https://www.flaticon.com/free-icons/branding" title="branding icons">Branding icons created by Freepik - Flaticon</a> */}
                 {/*<a href="https://www.flaticon.com/free-icons/architecture-and-city" title="architecture-and-city icons">Architecture-and-city icons created by Rendyudha - Flaticon</a>*/}

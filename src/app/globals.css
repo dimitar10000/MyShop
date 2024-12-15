@@ -25,6 +25,10 @@ body {
   html {
       @apply bg-slate-400 bg-no-repeat;
   }
+
+  body {
+    @apply bg-slate-400 bg-no-repeat;
+  }
 }
 
 @layer utilities {

@@ -34,7 +34,7 @@ declare module '@mui/material/styles' {
 }
 
 export const theme = createTheme(
-    {
+  {
     palette: {
       primary: {
         main: '#94A3B8',
@@ -64,5 +64,16 @@ export const theme = createTheme(
   },
   {
     cssVariables: true
+  },
+  {
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: `
+          .pac-container {
+            z-index: 1500 !important;
+          }
+        `
+      }
+    }
   }
 );
