@@ -1,51 +1,30 @@
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import Radio from '@mui/material/Radio';
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import blue from '@mui/material/colors/blue';
-import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
-import BusinessIcon from '@mui/icons-material/Business';
-import HomeIcon from '@mui/icons-material/Home';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import GoogleMaps from './google-maps';
-import AddressInput from './address-input';
-import SelectOffice from './select-office';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 
-export default function DeliveryBox({ deliveryPriceUpdater }: {
-    deliveryPriceUpdater: Dispatch<SetStateAction<number>>
+export default function PaymentBox({ paymentPriceUpdater }: {
+    paymentPriceUpdater: Dispatch<SetStateAction<number>>
 }) {
     const theme = useTheme();
     const themeBorderColor = theme.palette.primary.light;
-    const option1Text = "Delivery option 1 - address";
-    const option2Text = "Delivery option 2 - offices";
-    const option3Text = "Placeholder option 3";
-    const option4Text = "Placeholder option 4";
+    const option1Text = "Payment option 1 - card";
+    const option2Text = "Payment option 2 - online service";
+    const option3Text = "Payment option 3 - online service";
+    const option4Text = "Payment on delivery";
     const [selectedValue, setSelectedValue] = useState<string>(option1Text);
-    const [openDialog, setOpenDialog] = useState<boolean>(false);
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-
-    const handleOpen = () => setOpenDialog(true);
-    const handleClose = () => setOpenDialog(false);
-
-    useEffect(() => {
-        if (!openDialog) {
-            inputRef.current?.blur();
-        }
-    }, [openDialog]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedValue(event.target.value);
 
-        if(event.target.value === option1Text) {
-            deliveryPriceUpdater(3.99);
+        if(event.target.value === option4Text) {
+            paymentPriceUpdater(3.99);
         }
         else {
-            deliveryPriceUpdater(2.99);
+            paymentPriceUpdater(0);
         }
     }
 
@@ -58,7 +37,7 @@ export default function DeliveryBox({ deliveryPriceUpdater }: {
 
     return (
         <>
-            <div className='mb-1 ml-3'> Delivery </div>
+            <div className='mb-1 ml-3'> Payment </div>
             <Box sx={{
                 width: "50vw", borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
                 paddingTop: 1, paddingBottom: 1, display: 'flex', flexDirection: 'column'
@@ -80,14 +59,11 @@ export default function DeliveryBox({ deliveryPriceUpdater }: {
                                     mt: 1
                                 }}
                             />
-                            <HomeIcon fontSize='large' />
+                            <CreditCardIcon fontSize='large' />
                             <div className='ms-3 mt-2 text-lg'> {option1Text} </div>
                         </div>
-                        <div className='self-center mr-3'> 3.99 $ </div>
+                        <div className='self-center mr-3'> FREE </div>
                     </div>
-                    {selectedValue === option1Text &&
-                        <AddressInput openDialog={handleOpen} ref={inputRef} selectedPlace={selectedPlace} />
-                    }
                 </div>
 
                 <div className='mx-2 pb-3 border-2'
@@ -107,12 +83,11 @@ export default function DeliveryBox({ deliveryPriceUpdater }: {
                                     mt: 1
                                 }}
                             />
-                            <BusinessIcon fontSize='large' />
+                            <CreditCardIcon fontSize='large' />
                             <div className='ms-3 mt-2 text-lg'> {option2Text} </div>
                         </div>
-                        <div className='self-center mr-3'> 2.99 $ </div>
+                        <div className='self-center mr-3'> FREE </div>
                     </div>
-                    {selectedValue === option2Text && <SelectOffice />}
                 </div>
 
                 <div className='flex flex-row justify-between mx-2 pb-3 border-2'
@@ -131,10 +106,10 @@ export default function DeliveryBox({ deliveryPriceUpdater }: {
                                 mt: 1
                             }}
                         />
-                        <DeliveryDiningIcon fontSize='large' />
+                        <CreditCardIcon fontSize='large' />
                         <div className='ms-3 mt-2 text-lg'> {option3Text} </div>
                     </div>
-                    <div className='self-center mr-3'> 2.99 $ </div>
+                    <div className='self-center mr-3'> FREE </div>
                 </div>
 
                 <div className='flex flex-row justify-between mb-2 mx-2 pb-3 border-2'
@@ -153,40 +128,12 @@ export default function DeliveryBox({ deliveryPriceUpdater }: {
                                 mt: 1
                             }}
                         />
-                        <DeliveryDiningIcon fontSize='large' />
+                        <LocalPostOfficeIcon fontSize='large' />
                         <div className='ms-3 mt-2 text-lg'> {option4Text} </div>
                     </div>
-                    <div className='self-center mr-3'> 2.99 $ </div>
-                </div>
-
-                <div>
-                    <Dialog
-                        open={openDialog}
-                        onClose={() => { handleClose(); }}
-                        aria-labelledby="dialog-title"
-                    >
-                        <DialogTitle sx={{ m: 0, p: 2, textAlign: 'center' }} id="dialog-title">
-                            Search for your address on the map
-                        </DialogTitle>
-                        <IconButton
-                            aria-label="close"
-                            onClick={() => { handleClose(); }}
-                            sx={(theme) => ({
-                                position: 'absolute',
-                                right: 8,
-                                top: 8,
-                                color: theme.palette.grey[500],
-                            })}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <DialogContent dividers>
-                            <GoogleMaps selectedPlace={selectedPlace}
-                                selectedPlaceUpdater={setSelectedPlace} />
-                        </DialogContent>
-                    </Dialog>
+                    <div className='self-center mr-3'> 3.99 $ </div>
                 </div>
             </Box>
         </>
-    )
+    );
 }

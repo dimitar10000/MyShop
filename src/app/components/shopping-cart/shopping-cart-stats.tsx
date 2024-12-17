@@ -5,22 +5,22 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Button } from "@mui/material";
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useTheme } from '@mui/material/styles';
 import { ShoppingCart, Nullable } from '@/app/lib/definitions';
 import { getCartItemsTotalPrice, getCartItemsTotalDiscount } from '@/app/lib/util-funcs';
 
-export default function ShoppingCartStats({ cartItems, insuranceIncluded, deliveryPrice }:
-    { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean,
-        deliveryPrice: number | null}) {
+export default function ShoppingCartStats({ cartItems, insuranceIncluded, deliveryPrice,
+    paymentPrice}: { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean,
+        deliveryPrice: number, paymentPrice: number}) {
     const [focusedInput, setFocusedInput] = useState<boolean>(false);
     const theme = useTheme();
-    const TAX_PERCENT = 10;
 
+    const TAX_PERCENT = 10;
     const totalPrice = Number(getCartItemsTotalPrice(cartItems));
     const taxedPrice = totalPrice + TAX_PERCENT / 100.0 * totalPrice;
     const totalDiscount = Number(getCartItemsTotalDiscount(cartItems));
-    const amountToPay = 4.99 + (insuranceIncluded ? 2.99 : 0) + taxedPrice;
+    const amountToPay = (taxedPrice >= 200 ? 0 : deliveryPrice) + paymentPrice + (insuranceIncluded ? 2.99 : 0) + taxedPrice;
 
     return (
         <div style={{ minWidth: 350, marginBottom: 20 }}>
@@ -42,7 +42,12 @@ export default function ShoppingCartStats({ cartItems, insuranceIncluded, delive
 
                 <div className='flex flex-row justify-between mt-1'>
                     <div> Delivery price: </div>
-                    <div> {deliveryPrice} $ </div>
+                    <div> {taxedPrice < 200 ? deliveryPrice + " $" : "FREE"} </div>
+                </div>
+
+                <div className='flex flex-row justify-between mt-1'>
+                    <div> Payment price: </div>
+                    <div> {paymentPrice !== 0 ? paymentPrice + " $" : "FREE"} </div>
                 </div>
 
                 {insuranceIncluded
