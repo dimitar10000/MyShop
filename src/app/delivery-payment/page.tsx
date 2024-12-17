@@ -9,6 +9,7 @@ import DeliveryBox from '@/app/components/delivery-payment/delivery-box';
 export default function DeliveryPayment() {
     const { cart } = useCart();
     const [insuranceIncluded] = useState<boolean>(true);
+    const [deliveryPrice, setDeliveryPrice] = useState<number | null>(3.99);
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
@@ -23,14 +24,15 @@ export default function DeliveryPayment() {
                 </div>
             </div>
 
-            <div className='flex flex-row mt-5 justify-between'>
+            <div className='flex flex-row mt-5 mb-3 justify-between'>
                 <div>
-                    <DeliveryBox />
+                    <DeliveryBox deliveryPriceUpdater={setDeliveryPrice}/>
                 </div>
 
                 <div className='flex flex-col mx-auto'>
                     {cart?.items && cart.items.length > 0 &&
-                        <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} />
+                        <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} 
+                        deliveryPrice={deliveryPrice}/>
                     }
                 </div>
             </div>

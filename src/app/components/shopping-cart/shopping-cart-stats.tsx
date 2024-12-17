@@ -5,13 +5,14 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Button } from "@mui/material";
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useTheme } from '@mui/material/styles';
 import { ShoppingCart, Nullable } from '@/app/lib/definitions';
 import { getCartItemsTotalPrice, getCartItemsTotalDiscount } from '@/app/lib/util-funcs';
 
-export default function ShoppingCartStats({ cartItems, insuranceIncluded }:
-    { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean }) {
+export default function ShoppingCartStats({ cartItems, insuranceIncluded, deliveryPrice }:
+    { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean,
+        deliveryPrice: number | null}) {
     const [focusedInput, setFocusedInput] = useState<boolean>(false);
     const theme = useTheme();
     const TAX_PERCENT = 10;
@@ -41,7 +42,7 @@ export default function ShoppingCartStats({ cartItems, insuranceIncluded }:
 
                 <div className='flex flex-row justify-between mt-1'>
                     <div> Delivery price: </div>
-                    <div> 4.99 $</div>
+                    <div> {deliveryPrice} $ </div>
                 </div>
 
                 {insuranceIncluded
