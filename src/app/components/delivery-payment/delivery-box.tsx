@@ -4,6 +4,7 @@ import Radio from '@mui/material/Radio';
 import { useState,useRef,useEffect } from 'react';
 import blue from '@mui/material/colors/blue';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import BusinessIcon from '@mui/icons-material/Business';
 import HomeIcon from '@mui/icons-material/Home';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -12,11 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import GoogleMaps from './google-maps';
 import AddressInput from './address-input';
+import SelectOffice from './select-office';
 
 export default function DeliveryBox() {
     const theme = useTheme();
     const themeBorderColor = theme.palette.primary.light;
     const option1Text = "Delivery option 1 - address";
+    const option2Text = "Delivery option 2 - offices";
     const [selectedValue, setSelectedValue] = useState<string>(option1Text);
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -64,8 +67,35 @@ export default function DeliveryBox() {
                         </div>
                         <div className='self-center mr-3'> 3.99 $ </div>
                     </div>
-                    <AddressInput openDialog={handleOpen} ref={inputRef} selectedPlace={selectedPlace}/>
+                    {selectedValue === option1Text &&
+                        <AddressInput openDialog={handleOpen} ref={inputRef} selectedPlace={selectedPlace} />
+                    }
                 </div>
+
+                <div>
+                    <div className='flex flex-row justify-between'>
+                        <div className='flex flex-row items-center'>
+                            <Radio
+                                checked={selectedValue === option2Text}
+                                onChange={handleChange}
+                                value={option2Text}
+                                name="radio-button-1"
+                                inputProps={{ 'aria-label': option2Text }}
+                                sx={{
+                                    '&.Mui-checked': {
+                                        color: blue[600]
+                                    },
+                                    mt: 1
+                                }}
+                            />
+                            <BusinessIcon fontSize='large' />
+                            <div className='ms-3 mt-2 text-lg'> {option2Text} </div>
+                        </div>
+                        <div className='self-center mr-3'> 2.99 $ </div>
+                    </div>
+                    {selectedValue === option2Text && <SelectOffice />}
+                </div>
+
 
                 <div>
                     <Dialog
