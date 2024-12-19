@@ -51,7 +51,8 @@ export default function ShoppingCart() {
                 <div className='flex flex-col mx-auto'>
                     {cart?.items && cart.items.length > 0 &&
                         <>
-                            <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} />
+                            <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} 
+                            deliveryPrice={3.99} paymentPrice={0}/>
                             <div className='flex flex-row justify-end mt-4'>
                                 <Link href={'/delivery-payment'}>
                                     <Button variant="contained"

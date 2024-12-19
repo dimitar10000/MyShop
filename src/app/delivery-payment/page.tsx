@@ -6,6 +6,7 @@ import CartStepper from '@/app/components/shopping-cart/cart-stepper';
 import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stats';
 import DeliveryBox from '@/app/components/delivery-payment/delivery-box';
 import PaymentBox from '@/app/components/delivery-payment/payment-box';
+import BackButton from '@/app/components/delivery-payment/back-button';
 
 export default function DeliveryPayment() {
     const { cart } = useCart();
@@ -26,12 +27,16 @@ export default function DeliveryPayment() {
                 </div>
             </div>
 
-            <div className='flex flex-row mt-5 mb-3 justify-between'>
+            <div className='flex flex-row mt-5 mb-5 justify-between'>
                 <div>
                     <div className='mb-2'>
                         <DeliveryBox deliveryPriceUpdater={setDeliveryPrice}/>
                     </div>
-                    <PaymentBox paymentPriceUpdater={setPaymentPrice}/>
+                    <div className='mb-7'>
+                        <PaymentBox paymentPriceUpdater={setPaymentPrice}/>
+                    </div>
+                    <BackButton />
+
                 </div>
 
                 <div className='flex flex-col mx-auto'>

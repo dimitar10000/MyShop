@@ -26,7 +26,12 @@ export default function ShoppingCartStats({ cartItems, insuranceIncluded, delive
         <div style={{ minWidth: 350, marginBottom: 20 }}>
             <div className='flex flex-row items-center justify-center mx-auto'>
                 <LocalShippingOutlinedIcon sx={{ fontSize: 40 }} />
-                <div className='text-lg ml-4 font-semibold'> {(200 - taxedPrice).toFixed(2)} $ until free delivery</div>
+                <div className='text-lg ml-4 font-semibold'>
+                    {taxedPrice < 200
+                    ? (200 - taxedPrice).toFixed(2) + "$ until free delivery"
+                    : "FREE DELIVERY"
+                    }
+                </div>
             </div>
 
             <div className='flex flex-row items-center justify-center mt-3'>
