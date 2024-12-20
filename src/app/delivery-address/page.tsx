@@ -18,7 +18,8 @@ export default function DeliveryAddress() {
     const deliveryPrice = Number(sessionStorage.getItem("deliveryPrice"));
     const paymentPrice = Number(sessionStorage.getItem("paymentPrice"));
 
-    <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
+    return (
+        <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
             <BreadcrumbTemplate labels={["Home", "Shopping Cart"]} links={['/']} />
 
             <div className='mt-5'>
@@ -32,22 +33,22 @@ export default function DeliveryAddress() {
 
             <div className='flex flex-row mt-5 mb-5 justify-between'>
                 <div>
-                    
+
 
                 </div>
 
-                <div className='flex flex-col mx-auto'>
+                <div className='mx-auto'>
                     {cart?.items && cart.items.length > 0 &&
-                        <>
+                        <div className='sticky top-10'>
                             <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded}
                                 deliveryPrice={deliveryPrice} paymentPrice={paymentPrice} />
                             <div className='flex flex-row justify-end mt-4'>
-                                <ContinueButton sign={'ADDRESS'} link={'/delivery-address'}/>
+                                <ContinueButton sign={'FINISH ORDER'} link={'/'} />
                             </div>
-                        </>
+                        </div>
                     }
                 </div>
             </div>
-    </div>
+        </div>);
 
 }

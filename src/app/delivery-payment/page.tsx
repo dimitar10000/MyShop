@@ -40,15 +40,15 @@ export default function DeliveryPayment() {
 
                 </div>
 
-                <div className='flex flex-col mx-auto'>
+                <div className='mx-auto pb-10'>
                     {cart?.items && cart.items.length > 0 &&
-                        <>
+                        <div className='sticky top-20'>
                             <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded}
                                 deliveryPrice={deliveryPrice} paymentPrice={paymentPrice} />
                             <div className='flex flex-row justify-end mt-4'>
                                 <ContinueButton sign={'ADDRESS'} link={'/delivery-address'}/>
                             </div>
-                        </>
+                        </div>
                     }
                 </div>
             </div>

@@ -61,15 +61,15 @@ export default function ShoppingCart() {
                     </div>
                 </div>
 
-                <div className='flex flex-col mx-auto'>
+                <div className='mx-auto pb-10'>
                     {cart?.items && cart.items.length > 0 &&
-                        <>
+                        <div className='sticky top-10'>
                             <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} 
                             deliveryPrice={3.99} paymentPrice={0}/>
                             <div className='flex flex-row justify-end mt-4'>
                                 <ContinueButton sign={'CONTINUE'} link={'/delivery-payment'}/>
                             </div>
-                        </>
+                        </div>
                     }
                 </div>
             </div>
