@@ -53,7 +53,10 @@ export default function PackageInsurance({ insuranceIncluded, insuranceUpdater }
                 className='flex flex-row justify-center items-center'>
                 {insuranceIncluded
                     ? <ClearRoundedIcon
-                        onClick={() => { insuranceUpdater(false); }}
+                        onClick={() => { 
+                            insuranceUpdater(false); 
+                            sessionStorage.setItem("insuranceIncluded", "false");
+                        }}
                         sx={{
                             '&:hover': {
                                 cursor: 'pointer'
@@ -64,7 +67,10 @@ export default function PackageInsurance({ insuranceIncluded, insuranceUpdater }
                     : <Button variant='contained'
                         color='success'
                         style={{ textTransform: 'none' }}
-                        onClick={() => { insuranceUpdater(true) }}>
+                        onClick={() => { 
+                            insuranceUpdater(true);
+                            sessionStorage.setItem("insuranceIncluded", "true");
+                            }}>
                         <div className='text-base'> Add </div>
                     </Button>
                 }

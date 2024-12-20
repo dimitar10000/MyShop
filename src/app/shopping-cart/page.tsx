@@ -13,11 +13,29 @@ import ContinueButton from '@/app/components/shopping-cart/continue-button';
 export default function ShoppingCart() {
     const { user } = useUser();
     const { cart, setCart } = useCart();
-    const [insuranceIncluded, setInsuranceIncluded] = useState<boolean>(true);
+    const [insuranceIncluded, setInsuranceIncluded] = useState<boolean>(false);
 
     useEffect(() => {
         initializeCart(user, setCart);
     }, [user, setCart]);
+
+    useEffect(() => {
+        if(!sessionStorage.getItem("firstVisitCart")) {
+            sessionStorage.setItem("firstVisitCart", "true");
+            sessionStorage.setItem("insuranceIncluded", "true");
+            setInsuranceIncluded(true);
+        }
+        else {
+            sessionStorage.setItem("firstVisitCart","false");
+            const insuranceValue = sessionStorage.getItem("insuranceIncluded");
+            if(insuranceValue === "true") {
+                setInsuranceIncluded(true);
+            }
+            else {
+                setInsuranceIncluded(false);
+            }
+        }
+    },[])
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>

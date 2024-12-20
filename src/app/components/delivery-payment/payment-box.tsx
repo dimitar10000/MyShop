@@ -22,9 +22,11 @@ export default function PaymentBox({ paymentPriceUpdater }: {
 
         if(event.target.value === option4Text) {
             paymentPriceUpdater(3.99);
+            sessionStorage.setItem("paymentPrice", "3.99");
         }
         else {
             paymentPriceUpdater(0);
+            sessionStorage.setItem("paymentPrice", "0");
         }
     }
 

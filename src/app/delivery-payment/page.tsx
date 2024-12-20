@@ -11,7 +11,7 @@ import ContinueButton from '@/app/components/shopping-cart/continue-button';
 
 export default function DeliveryPayment() {
     const { cart } = useCart();
-    const [insuranceIncluded] = useState<boolean>(true);
+    const insuranceIncluded = sessionStorage.getItem("insuranceIncluded") === "true";
     const [deliveryPrice, setDeliveryPrice] = useState<number>(3.99);
     const [paymentPrice, setPaymentPrice] = useState<number>(0);
 
