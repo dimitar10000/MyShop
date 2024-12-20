@@ -2,18 +2,19 @@
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import CartStepper from '@/app/components/shopping-cart/cart-stepper';
-import ShoppingBox from '@/app/components/shopping-cart/shopping-box';
-import { useEffect, useState } from 'react'
+import Box from '@mui/material/Box';
+import { useEffect, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import { useCart } from '@/app/lib/cart/cart-provider';
-import ClearCartButton from '@/app/components/shopping-cart/clear-cart-button';
 import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stats';
-import { initializeCart } from '@/app/lib/cart/initialize-cart';
 import ContinueButton from '@/app/components/shopping-cart/continue-button';
-
+import UserDetails from '@/app/components/delivery-address/user-details';
 
 export default function DeliveryAddress() {
     const { user } = useUser();
     const { cart } = useCart();
+    const theme = useTheme();
+    const themeBorderColor = theme.palette.primary.light;
     const insuranceIncluded = sessionStorage.getItem("insuranceIncluded") === "true";
     const deliveryPrice = Number(sessionStorage.getItem("deliveryPrice"));
     const paymentPrice = Number(sessionStorage.getItem("paymentPrice"));
@@ -33,8 +34,16 @@ export default function DeliveryAddress() {
 
             <div className='flex flex-row mt-5 mb-5 justify-between'>
                 <div>
-
-
+                    <div className='mb-1 ml-3'> User details </div>
+                    <Box sx={{
+                        width: "50vw", borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
+                        paddingTop: 1, paddingBottom: 1, display: 'flex', flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>
+                        <div className='w-7/12'>
+                            <UserDetails user={user}/>
+                        </div>
+                    </Box>
                 </div>
 
                 <div className='mx-auto'>

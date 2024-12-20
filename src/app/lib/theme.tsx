@@ -47,6 +47,9 @@ export const theme = createTheme(
         light: '#d6cbba',
         dark: '#524023',
         contrastText: '#283240'
+      },
+      background: {
+        default: '#94A3B8'
       }
     },
     analogousColor: {
