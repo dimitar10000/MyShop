@@ -7,6 +7,7 @@ import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stat
 import DeliveryBox from '@/app/components/delivery-payment/delivery-box';
 import PaymentBox from '@/app/components/delivery-payment/payment-box';
 import BackButton from '@/app/components/delivery-payment/back-button';
+import ContinueButton from '@/app/components/shopping-cart/continue-button';
 
 export default function DeliveryPayment() {
     const { cart } = useCart();
@@ -30,10 +31,10 @@ export default function DeliveryPayment() {
             <div className='flex flex-row mt-5 mb-5 justify-between'>
                 <div>
                     <div className='mb-2'>
-                        <DeliveryBox deliveryPriceUpdater={setDeliveryPrice}/>
+                        <DeliveryBox deliveryPriceUpdater={setDeliveryPrice} />
                     </div>
                     <div className='mb-7'>
-                        <PaymentBox paymentPriceUpdater={setPaymentPrice}/>
+                        <PaymentBox paymentPriceUpdater={setPaymentPrice} />
                     </div>
                     <BackButton />
 
@@ -41,8 +42,13 @@ export default function DeliveryPayment() {
 
                 <div className='flex flex-col mx-auto'>
                     {cart?.items && cart.items.length > 0 &&
-                        <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} 
-                        deliveryPrice={deliveryPrice} paymentPrice={paymentPrice}/>
+                        <>
+                            <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded}
+                                deliveryPrice={deliveryPrice} paymentPrice={paymentPrice} />
+                            <div className='flex flex-row justify-end mt-4'>
+                                <ContinueButton sign={'ADDRESS'} link={'/delivery-address'}/>
+                            </div>
+                        </>
                     }
                 </div>
             </div>

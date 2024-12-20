@@ -6,7 +6,7 @@ export default function BackButton() {
         <Button variant='outlined' color='info'
                 href='/shopping-cart'
                 sx={{textTransform: 'none',
-                    width: 200, height: 50,
+                    width: 170, height: 50,
                     borderWidth: 2,
                     '&:hover': {
                         borderWidth: 2
@@ -16,8 +16,8 @@ export default function BackButton() {
                     justifyContent: 'start',
                     pl: 0
                 }}>
-            <NavigateBeforeIcon fontSize='large' className='mr-3'/>
-            <div className='text-xl'> Back to cart</div>
+            <NavigateBeforeIcon className='mr-3' sx={{width: 26, height: 26}}/>
+            <div className='text-lg'> Back to cart</div>
         </Button>
     )
 }

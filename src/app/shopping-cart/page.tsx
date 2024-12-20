@@ -8,17 +8,12 @@ import { useCart } from '@/app/lib/cart/cart-provider';
 import ClearCartButton from '@/app/components/shopping-cart/clear-cart-button';
 import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stats';
 import { initializeCart } from '@/app/lib/cart/initialize-cart';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Link from "next/link";
-import { Button } from "@mui/material";
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from '@/../tailwind.config'
+import ContinueButton from '@/app/components/shopping-cart/continue-button';
 
 export default function ShoppingCart() {
     const { user } = useUser();
     const { cart, setCart } = useCart();
     const [insuranceIncluded, setInsuranceIncluded] = useState<boolean>(true);
-    const fullConfig = resolveConfig(tailwindConfig);
 
     useEffect(() => {
         initializeCart(user, setCart);
@@ -54,22 +49,7 @@ export default function ShoppingCart() {
                             <ShoppingCartStats cartItems={cart?.items} insuranceIncluded={insuranceIncluded} 
                             deliveryPrice={3.99} paymentPrice={0}/>
                             <div className='flex flex-row justify-end mt-4'>
-                                <Link href={'/delivery-payment'}>
-                                    <Button variant="contained"
-                                        size='large'
-                                        endIcon={
-                                            <ChevronRightIcon />
-                                        }
-                                        sx={{
-                                            backgroundColor: fullConfig.theme.colors.orange[600],
-                                            '&:hover': {
-                                                backgroundColor: fullConfig.theme.colors.orange[700]
-                                            }
-                                        }}
-                                    >
-                                        CONTINUE
-                                    </Button>
-                                </Link>
+                                <ContinueButton sign={'CONTINUE'} link={'/delivery-payment'}/>
                             </div>
                         </>
                     }
