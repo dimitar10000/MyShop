@@ -10,7 +10,7 @@ interface FieldProps {
     autocompleteValue?: string,
     textBoxLostFocus: boolean,
     setTextBoxLostFocus: Dispatch<SetStateAction<boolean>>,
-    helperTextFunc: () => string
+    helperTextFunc: () => React.ReactNode
 
 }
 
@@ -46,7 +46,7 @@ export default function InputField({ errorResult, fieldLabel, fieldValue,
             onFocus={(event) => setTextBoxLostFocus(false)}
             style={{
                 border: errorResult ? errorBorderStyle : normalBorderStyle,
-                height: 50
+                height: 60
             }}
         />);
 }
