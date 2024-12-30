@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 import InputField from './input-field';
+import TextField from '@mui/material/TextField';
 
 export default function UserDetails({ user }: { user: UserProfile | undefined }) {
     const [email, setEmail] = useState<string>("");
@@ -20,12 +21,6 @@ export default function UserDetails({ user }: { user: UserProfile | undefined })
     const [textBox2LostFocus, setTextBox2LostFocus] = useState<boolean>(false);
     const [textBox3LostFocus, setTextBox3LostFocus] = useState<boolean>(false);
     const [textBox4LostFocus, setTextBox4LostFocus] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (textBox1LostFocus && email === "") {
-            setTypedEmail(false);
-        };
-    }, [textBox1LostFocus])
 
     const isValidEmail = (email: string) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -118,49 +113,96 @@ export default function UserDetails({ user }: { user: UserProfile | undefined })
     }
 
     return (
-        <Box sx={{
-            '& .MuiTextField-root': {
-                '& label': { color: 'white' }, '& label.Mui-focused': { color: 'white' },
-                '& fieldset': { border: 'none' }, width: "100%", mb: 2
-            },
-            '& .MuiFormHelperText-root': {
-                position: 'absolute', bottom: 0
-            }
-        }}>
-            <div className='text-sm mb-3'>
-                Already have an account? Log in
-                <span className='underline ml-1 mr-1 text-blue-900 hover:brightness-110 hover:cursor-pointer'>
-                    here
-                </span>
-                to fill out the details automatically!
-                <br/>
-                No account yet? Register
-                <span className='underline ml-1 mr-1 text-blue-900 hover:brightness-110 hover:cursor-pointer'>
-                    here
-                </span>
-                to not have to fill this out next time!
-            </div>
+        user !== undefined
+            ? <Box sx={{
+                '& .MuiTextField-root': {
+                    '& label': { color: 'white' }, '& label.Mui-focused': { color: 'white' },
+                    '& fieldset': { border: 'none' }, width: "100%", mb: 2
+                }
+            }}>
+                <TextField
+                    disabled
+                    label="Email"
+                    variant='outlined'
+                    sx={{
+                        backdropFilter: 'brightness(90%)',
+                    }}
+                    defaultValue={user.email}
+                />
 
-            <InputField errorResult={errorCondEmail} fieldLabel={'Email'}
-                fieldValue={email} setFieldValue={setEmail} autocompleteValue='email'
-                textBoxLostFocus={textBox1LostFocus} setTextBoxLostFocus={setTextBox1LostFocus}
-                helperTextFunc={returnHelperText1} setTyped={setTypedEmail} />
+                <TextField
+                    disabled
+                    label="Phone"
+                    variant='outlined'
+                    sx={{
+                        backdropFilter: 'brightness(90%)',
+                    }}
+                    defaultValue={user.phone_number}
+                />
 
-            <InputField errorResult={errorCondPhone} fieldLabel={'Phone'}
-                fieldValue={phone} setFieldValue={setPhone} autocompleteValue='phone'
-                textBoxLostFocus={textBox2LostFocus} setTextBoxLostFocus={setTextBox2LostFocus}
-                helperTextFunc={returnHelperText2} setTyped={setTypedPhone} />
+                <TextField
+                    disabled
+                    label="First name"
+                    variant='outlined'
+                    sx={{
+                        backdropFilter: 'brightness(90%)',
+                    }}
+                    defaultValue={user.given_name}
+                />
 
-            <InputField errorResult={errorCondName} fieldLabel={'First name'}
-                fieldValue={name} setFieldValue={setName} autocompleteValue='first-name'
-                textBoxLostFocus={textBox3LostFocus} setTextBoxLostFocus={setTextBox3LostFocus}
-                helperTextFunc={returnHelperText3} setTyped={setTypedName} />
+                <TextField
+                    disabled
+                    label="Last name"
+                    variant='outlined'
+                    sx={{
+                        backdropFilter: 'brightness(90%)',
+                    }}
+                    defaultValue={user.family_name}
+                />
+            </Box>
+            : <Box sx={{
+                '& .MuiTextField-root': {
+                    '& label': { color: 'white' }, '& label.Mui-focused': { color: 'white' },
+                    '& fieldset': { border: 'none' }, width: "100%", mb: 2
+                },
+                '& .MuiFormHelperText-root': {
+                    position: 'absolute', bottom: 0
+                }
+            }}>
+                <div className='text-sm mb-3'>
+                    Already have an account? Log in
+                    <span className='underline ml-1 mr-1 text-blue-900 hover:brightness-110 hover:cursor-pointer'>
+                        here
+                    </span>
+                    to fill out the details automatically!
+                    <br />
+                    No account yet? Register
+                    <span className='underline ml-1 mr-1 text-blue-900 hover:brightness-110 hover:cursor-pointer'>
+                        here
+                    </span>
+                    to not have to fill this out next time!
+                </div>
 
-            <InputField errorResult={errorCondSurname} fieldLabel={'Last name'}
-                fieldValue={surname} setFieldValue={setSurname} autocompleteValue='last-name'
-                textBoxLostFocus={textBox4LostFocus} setTextBoxLostFocus={setTextBox4LostFocus}
-                helperTextFunc={returnHelperText4} setTyped={setTypedSurname} />
+                <InputField errorResult={errorCondEmail} fieldLabel={'Email'}
+                    fieldValue={email} setFieldValue={setEmail} autocompleteValue='email'
+                    textBoxLostFocus={textBox1LostFocus} setTextBoxLostFocus={setTextBox1LostFocus}
+                    helperTextFunc={returnHelperText1} setTyped={setTypedEmail} />
 
-        </Box>
+                <InputField errorResult={errorCondPhone} fieldLabel={'Phone'}
+                    fieldValue={phone} setFieldValue={setPhone} autocompleteValue='phone'
+                    textBoxLostFocus={textBox2LostFocus} setTextBoxLostFocus={setTextBox2LostFocus}
+                    helperTextFunc={returnHelperText2} setTyped={setTypedPhone} />
+
+                <InputField errorResult={errorCondName} fieldLabel={'First name'}
+                    fieldValue={name} setFieldValue={setName} autocompleteValue='first-name'
+                    textBoxLostFocus={textBox3LostFocus} setTextBoxLostFocus={setTextBox3LostFocus}
+                    helperTextFunc={returnHelperText3} setTyped={setTypedName} />
+
+                <InputField errorResult={errorCondSurname} fieldLabel={'Last name'}
+                    fieldValue={surname} setFieldValue={setSurname} autocompleteValue='family-name'
+                    textBoxLostFocus={textBox4LostFocus} setTextBoxLostFocus={setTextBox4LostFocus}
+                    helperTextFunc={returnHelperText4} setTyped={setTypedSurname} />
+
+            </Box>
     )
 }
