@@ -129,9 +129,9 @@ export default function AddressSection() {
             }}>
                 <Box sx={{
                     '& .MuiFormHelperText-root': {
-                    position: 'absolute', bottom: 0
-                },
-                mr: 1, width: '75%'
+                        position: 'absolute', bottom: 0
+                    },
+                    mr: 1, width: '75%'
                 }}>
                     <InputField errorResult={errorCondStreet} fieldLabel={'Street'}
                         fieldValue={street} setFieldValue={setStreet} autocompleteValue='address'
@@ -142,8 +142,8 @@ export default function AddressSection() {
                 <Box sx={{
                     width: '50%',
                     '& .MuiFormHelperText-root': {
-                        ml: 5
-                }
+                        position: 'relative', top: -60, left: 150
+                    }
                 }}>
                     <InputField errorResult={errorCondStreetNum} fieldLabel={'Number'}
                         fieldValue={streetNum} setFieldValue={setStreetNum} autocompleteValue='address'
@@ -156,19 +156,29 @@ export default function AddressSection() {
                 display: 'flex', flexDirection: 'row',
                 width: '100%'
             }}>
-                <div className='mr-1 w-9/12'>
+                <Box sx={{
+                    '& .MuiFormHelperText-root': {
+                        position: 'absolute', bottom: 0
+                    },
+                    mr: 1, width: '75%'
+                }}>
                     <InputField errorResult={errorCondCity} fieldLabel={'City'}
                         fieldValue={city} setFieldValue={setCity} autocompleteValue='address-level2'
                         textBoxLostFocus={textBox3LostFocus} setTextBoxLostFocus={setTextBox3LostFocus}
                         helperTextFunc={returnHelperText3} setTyped={setTypedCity} />
-                </div>
+                </Box>
 
-                <div className='w-6/12'>
+                <Box sx={{
+                    width: '50%',
+                    '& .MuiFormHelperText-root': {
+                        position: 'relative', top: -60, left: 150
+                    }
+                }}>
                     <InputField errorResult={errorCondPostalCode} fieldLabel={'Postal code'}
                         fieldValue={postalCode} setFieldValue={setPostalCode} autocompleteValue='postal-code'
                         textBoxLostFocus={textBox4LostFocus} setTextBoxLostFocus={setTextBox4LostFocus}
                         helperTextFunc={returnHelperText4} setTyped={setTypedPostalCode} />
-                </div>
+                </Box>
             </Box>
         </Box>
     );

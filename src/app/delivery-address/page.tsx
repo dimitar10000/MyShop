@@ -9,6 +9,7 @@ import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stat
 import ContinueButton from '@/app/components/shopping-cart/continue-button';
 import UserDetails from '@/app/components/delivery-address/user-details';
 import AddressSection from '@/app/components/delivery-address/address-section';
+import BackButton from '@/app/components/delivery-address/back-button';
 
 export default function DeliveryAddress() {
     const { user } = useUser();
@@ -47,7 +48,7 @@ export default function DeliveryAddress() {
                         </Box>
                     </div>
                     
-                    <div>
+                    <div className='mb-7'>
                         <div className='mb-1 ml-3'> Address </div>
                         <Box sx={{
                             width: "50vw", borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
@@ -59,6 +60,8 @@ export default function DeliveryAddress() {
                             </div>
                         </Box>
                     </div>
+
+                    <BackButton />
                 </div>
 
                 <div className='mx-auto'>
