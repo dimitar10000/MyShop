@@ -44,10 +44,14 @@ export default function DeliveryBox({ deliveryPriceUpdater }: {
         if(event.target.value === option1Text) {
             deliveryPriceUpdater(3.99);
             sessionStorage.setItem("deliveryPrice","3.99");
+
+            console.log('deliveryPrice', sessionStorage.getItem("deliveryPrice"));
         }
         else {
             deliveryPriceUpdater(2.99);
             sessionStorage.setItem("deliveryPrice","2.99");
+
+            console.log('deliveryPrice', sessionStorage.getItem("deliveryPrice"));
         }
     }
 

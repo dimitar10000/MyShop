@@ -1,7 +1,7 @@
 'use client'
 import Button from '@mui/material/Button';
-import { useFormStatus, useFormState } from 'react-dom'
-import { useState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom'
+import { useState, useEffect,useActionState } from 'react';
 import { useSnackbar } from '@/app/lib/snackbar';
 import Box from '@mui/material/Box';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -58,7 +58,7 @@ function DeleteAccountButton({ notPendingEmitter, disabledCond }:
 }
 
 export default function DeleteAccountForm({ loggedUsername }: { loggedUsername: Nullable<string> }) {
-    const [state, action] = useFormState(deleteUserAccount, { errors: undefined });
+    const [state, action] = useActionState(deleteUserAccount, { errors: undefined });
     const [usernameValue, setUsernameValue] = useState<string>("");
     const { snackbar, clickHandler } = useSnackbar('Account deletion failed, try again later!', 'red', 2);
     const { snackbar: snackbar2, clickHandler: clickHandlerGreen } = useSnackbar('Account deleted successfully! You will be logged out shortly.', undefined, 1);

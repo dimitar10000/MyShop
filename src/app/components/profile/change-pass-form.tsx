@@ -1,8 +1,8 @@
 'use client'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useFormStatus, useFormState } from 'react-dom'
-import { useState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom'
+import { useState, useEffect,useActionState } from 'react';
 import { useSnackbar } from '@/app/lib/snackbar';
 import { updateUserPassword} from '@/app/actions/profile';
 import {useLogout} from '@/app/lib/logout-element';
@@ -52,7 +52,7 @@ export default function ChangePassForm() {
     const [textBox2LostFocus, setTextBox2LostFocus] = useState<boolean>(false);
     const [textBox3LostFocus, setTextBox3LostFocus] = useState<boolean>(false);
 
-    const [state, action] = useFormState(updateUserPassword, { errors: undefined });
+    const [state, action] = useActionState(updateUserPassword, { errors: undefined });
 
     const { snackbar, clickHandler } = useSnackbar('Password updated successfully! You will be logged out shortly.', undefined, 1);
     const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(ChangePassConstants.SHORT_PASS_MESSAGE, 'red', 2);

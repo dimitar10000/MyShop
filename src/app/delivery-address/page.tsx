@@ -20,6 +20,8 @@ export default function DeliveryAddress() {
     const deliveryPrice = Number(sessionStorage.getItem("deliveryPrice"));
     const paymentPrice = Number(sessionStorage.getItem("paymentPrice"));
 
+    console.log('deliveryPrice', deliveryPrice);
+
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
             <BreadcrumbTemplate labels={["Home", "Shopping Cart"]} links={['/']} />

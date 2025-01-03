@@ -2,8 +2,8 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useFormStatus, useFormState } from 'react-dom'
-import {useState,useEffect} from 'react';
+import { useFormStatus } from 'react-dom'
+import {useState,useEffect,useActionState} from 'react';
 import {useRouter} from 'next/navigation';
 import { saveUserInfo } from '@/app/actions/profile';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
@@ -42,7 +42,7 @@ function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
 }
 
 export default function UserInfoForm({ user }: { user: UserProfile }) {
-    const [state, action] = useFormState(saveUserInfo, {errors: undefined});
+    const [state, action] = useActionState(saveUserInfo, {errors: undefined});
     const { snackbar, clickHandler } = useSnackbar('Profile updated successfully',undefined,1);
     const {snackbar: snackbar2, clickHandler:clickHandlerRed} = useSnackbar(`Profile couldn't be updated... Please try again later.`,'red',2);
     const router = useRouter();
