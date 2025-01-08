@@ -1,7 +1,7 @@
 'use client'
 import BreadcrumbTemplate from "@/app/components/breadcrumbs/breadcrumb-template"
 import ProfileButton from "@/app/components/profile/profile-button"
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import ChangePassForm from '@/app/components/profile/change-pass-form';
 import ProfileSkeleton from '@/app/components/loadings/profile-skeleton';
 

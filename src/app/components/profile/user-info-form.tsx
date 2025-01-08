@@ -6,7 +6,7 @@ import { useFormStatus } from 'react-dom'
 import {useState,useEffect,useActionState} from 'react';
 import {useRouter} from 'next/navigation';
 import { saveUserInfo } from '@/app/actions/profile';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 import { useSnackbar } from '@/app/lib/snackbar';
 
 function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
@@ -41,7 +41,7 @@ function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
     )
 }
 
-export default function UserInfoForm({ user }: { user: UserProfile }) {
+export default function UserInfoForm({ user }: { user: User }) {
     const [state, action] = useActionState(saveUserInfo, {errors: undefined});
     const { snackbar, clickHandler } = useSnackbar('Profile updated successfully',undefined,1);
     const {snackbar: snackbar2, clickHandler:clickHandlerRed} = useSnackbar(`Profile couldn't be updated... Please try again later.`,'red',2);
@@ -80,14 +80,14 @@ export default function UserInfoForm({ user }: { user: UserProfile }) {
                         label="First name"
                         name='first-name'
                         variant='outlined'
-                        defaultValue={user.given_name}
+                        defaultValue={user.givenName}
                     />
 
                     <TextField
                         label="Last name"
                         name='last-name'
                         variant='outlined'
-                        defaultValue={user.family_name}
+                        defaultValue={user.familyName}
                     />
 
                     <TextField
@@ -110,7 +110,7 @@ export default function UserInfoForm({ user }: { user: UserProfile }) {
                         inputProps={{
                             sx: { '&::placeholder': { color: 'white', opacity: 0.65 } }
                         }}
-                        defaultValue={user.phone_number}
+                        defaultValue={user.phone}
                     />
 
                     <SaveInfoButton notPendingEmitter={notPendingHandler}/>

@@ -9,7 +9,7 @@ import WishList from './wishlist';
 import { useEffect } from 'react'
 import { useCart } from '@/app/lib/cart/cart-provider';
 import { useList } from '@/app/lib/list/list-provider';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import { initializeCart } from '@/app/lib/cart/initialize-cart';
 import { initializeList } from '@/app/lib/list/initialize-list';
 

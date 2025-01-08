@@ -2,7 +2,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { useState,useEffect } from 'react';
 import { addToList, removeFromList } from '@/app/actions/wishlist';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import {useMutation } from '@tanstack/react-query'; 
 import {useList} from '@/app/lib/list/list-provider';
 import {Product} from '@/app/lib/definitions';

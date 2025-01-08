@@ -7,7 +7,7 @@ import LoadError from '../load-error';
 import { Wishlist, Brand, Product, Nullable } from '@/app/lib/definitions';
 import { isInWishlist, getProductLink, filterProductsByRange } from '@/app/lib/util-funcs';
 import { useEffect, useState } from 'react'
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import { initializeBrandsOnClient } from '@/app/lib/fetch-brands';
 import { initializeList } from '@/app/lib/list/initialize-list';
 import { useProducts } from '@/app/lib/product/products-provider';

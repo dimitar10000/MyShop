@@ -3,7 +3,7 @@ import LoadError from '@/app/components/load-error';
 import { ShoppingCart, Nullable, Brand } from '@/app/lib/definitions';
 import { isInWishlist } from '@/app/lib/util-funcs';
 import { useTheme } from '@mui/material/styles';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import { useState, useEffect,Dispatch, SetStateAction } from 'react';
 import { useList } from '@/app/lib/list/list-provider';
 import { initializeList } from '@/app/lib/list/initialize-list';

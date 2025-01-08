@@ -1,6 +1,6 @@
 'use client'
 import { addToList, removeFromList } from '@/app/actions/wishlist';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import { useSnackbar } from '@/app/lib/snackbar';
 import { ShoppingCartItemType } from '@/app/lib/definitions';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';

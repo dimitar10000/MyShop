@@ -2,7 +2,7 @@
 import BreadcrumbTemplate from "../components/breadcrumbs/breadcrumb-template"
 import ProfileButton from "../components/profile/profile-button"
 import UserInfoForm from '../components/profile/user-info-form';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import ProfileSkeleton from '@/app/components/loadings/profile-skeleton';
 
 export default function Profile() {

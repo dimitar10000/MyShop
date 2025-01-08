@@ -5,7 +5,7 @@ import styles from './search.module.css';
 import { getProductLink,isInWishlist } from '@/app/lib/util-funcs';
 import { useEffect, useState } from 'react'
 import {initializeList} from '@/app/lib/list/initialize-list';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import SearchProductWrapper from './search-product-wrapper';
 import SearchProductDetails from './search-product-details';
 import {useList} from '@/app/lib/list/list-provider';

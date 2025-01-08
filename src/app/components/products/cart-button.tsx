@@ -2,7 +2,7 @@
 import Button from '@mui/material/Button';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {addToCart} from '@/app/actions/shopping-cart';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import {Product} from '@/app/lib/definitions';
 import { useSnackbar } from '@/app/lib/snackbar';
 import {useMutation } from '@tanstack/react-query';

@@ -8,7 +8,7 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import {displayCartItemDiscount} from '@/app/lib/util-funcs';
 import {useConfirmationDialog} from '@/app/lib/confirmation-dialog';
 import {removeFromCart} from '@/app/actions/shopping-cart';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import {useEffect, useState,useCallback} from 'react'
 import {useCart} from '@/app/lib/cart/cart-provider';
 import {getProductLink, getBrandImageOfProduct, setLocalStorageForProduct} from '@/app/lib/util-funcs';

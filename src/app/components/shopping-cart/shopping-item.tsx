@@ -6,7 +6,8 @@ import CartTextfield from './cart-textfield';
 import CartWishlistButton from './cart-wishlist-button';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { useTheme } from '@mui/material/styles';
-import { useUser, UserProfile } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
+import {User} from '@/app/lib/definitions';
 import { ShoppingCartItemType, Nullable, ShoppingCart,Brand } from '@/app/lib/definitions';
 import { useState, useEffect } from 'react';
 import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
@@ -16,7 +17,7 @@ import {getProductLink} from '@/app/lib/util-funcs';
 import {getBrandImageOfProduct,setLocalStorageForProduct} from '@/app/lib/util-funcs';
 import { useRouter } from "next/navigation";
 
-const handleRemoveItem = async (user: UserProfile | undefined, cartItem: ShoppingCartItemType,
+const handleRemoveItem = async (user: User | undefined, cartItem: ShoppingCartItemType,
     updater: (newCart: Nullable<ShoppingCart>) => void) => {
 
     const newCart = await removeFromCart(user?.sub!, cartItem!, cartItem!.quantity);

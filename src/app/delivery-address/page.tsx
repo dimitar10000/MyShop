@@ -1,6 +1,6 @@
 'use client'
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import CartStepper from '@/app/components/shopping-cart/cart-stepper';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';

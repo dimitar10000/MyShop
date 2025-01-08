@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import LoadError from '@/app/components/load-error';
 import { getCartItemsTotalPrice, getCartItemsTotalDiscount,isInWishlist } from '@/app/lib/util-funcs';
 import {initializeBrandsOnClient} from '@/app/lib/fetch-brands';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
 import {useList} from '@/app/lib/list/list-provider';
 import {initializeList} from '@/app/lib/list/initialize-list';
 

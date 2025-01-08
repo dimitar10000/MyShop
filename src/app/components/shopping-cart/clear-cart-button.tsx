@@ -2,12 +2,13 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import { Button } from "@mui/material";
 import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
 import { useCart } from '@/app/lib/cart/cart-provider';
-import { useUser, UserProfile } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@/app/lib/user';
+import {User} from '@/app/lib/definitions';
 import { Nullable, ShoppingCart } from '@/app/lib/definitions';
 import { deleteCart } from '@/app/actions/shopping-cart';
 import { useEffect,Dispatch, SetStateAction } from 'react';
 
-const handleClearCart = async (user: UserProfile | undefined,
+const handleClearCart = async (user: User | undefined,
     updater: Dispatch<SetStateAction<Nullable<ShoppingCart>>>) => {
 
     const newCart = await deleteCart(user?.sub!);

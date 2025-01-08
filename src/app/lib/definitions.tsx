@@ -35,9 +35,11 @@ export type FormState =
   | undefined
 
 export type User  = {
-  name: string
   email: string
-  password: string
+  givenName?: string
+  familyName?: string
+  phone?: string
+  sub?: string
   created?: Date
 }
 
