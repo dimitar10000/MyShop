@@ -2,11 +2,28 @@
 import BreadcrumbTemplate from "../components/breadcrumbs/breadcrumb-template"
 import ProfileButton from "../components/profile/profile-button"
 import UserInfoForm from '../components/profile/user-info-form';
-import { useUser } from '@/app/lib/user';
+import {getUser} from '@/app/actions/user';
+import { useEffect,useState } from "react";
+import {User} from '@/app/lib/definitions';
+import {useUser} from '@/app/lib/user';
 import ProfileSkeleton from '@/app/components/loadings/profile-skeleton';
 
 export default function Profile() {
     const { user } = useUser();
+    const [myUser,setMyUser] = useState<User | undefined>(undefined);
+
+    useEffect(() => {
+        const getFunc = async () => {
+            const fetchedUser = await getUser(user?.email);
+
+            if(fetchedUser) {
+                setMyUser(fetchedUser);
+            }
+        }
+
+        getFunc();
+
+    },[user,setMyUser])
 
     if(!user) {
         return <ProfileSkeleton/>;
@@ -27,7 +44,7 @@ export default function Profile() {
                     </div>
 
                     <div className="mt-5">
-                        <UserInfoForm user={user}/>
+                        <UserInfoForm user={myUser!}/>
                     </div>
 
                 </div>

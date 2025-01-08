@@ -1,8 +1,9 @@
 'use server'
-import { getSession, updateSession } from '@auth0/nextjs-auth0';
+import { Auth0Client } from '@auth0/nextjs-auth0/server';
 import { ManagementClient } from 'auth0';
 import axios from 'axios'
 import { ChangePassConstants } from '@/app/components/profile/change-pass-constants';
+import {updateUser} from '@/app/actions/user';
 
 const DOMAIN = 'dev-22pxfwuc6cwn74ws.eu.auth0.com';
 const CLIENT_ID = 'BsW2h1eMGEdiFuYF5teNs12rUz5LQ6qW'; // for auth0 management api
@@ -23,13 +24,13 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
         audience: 'https://dev-22pxfwuc6cwn74ws.eu.auth0.com/api/v2/'
     });
 
-    let session = await getSession();
-    let user = session?.user;
-    const userID = user?.sub;
+    const auth0Client = new Auth0Client();
+    let session = await auth0Client.getSession();
+    let user = session!.user;
+    const userID = user!.sub;
 
     const givenName = formData.get('first-name')?.toString();
     const familyName = formData.get('last-name')?.toString();
-    const email = formData.get('email')?.toString();
     const phone = formData.get('phone')?.toString();
 
     let data: any = {
@@ -41,16 +42,18 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
     data['given_name'] = givenName ?? '';
     data['family_name'] = familyName ?? '';
 
-    if (email) {
-        data['email'] = email;
-    }
-
     try {
-        const response = await management.users.update({ id: userID }, data);
+        const response = await management.users.update({ id: userID! }, data);
         console.log('new user data is ', response.data);
 
-        session = await getSession();
-        await updateSession({ ...session, user: { ...session?.user } });
+        const changedUser = {
+            email: user.email!,
+            givenName: user.given_name,
+            familyName: user.family_name,
+            phone: phone
+        };
+
+        await updateUser(changedUser);
     } catch (e) {
         console.error(e);
 
@@ -100,7 +103,8 @@ async function verifyUserPassword(domain: string, clientId: string, clientSecret
 }
 
 export async function updateUserPassword(state: FormState, formData: FormData) {
-    let session = await getSession();
+    const auth0Client = new Auth0Client();
+    let session = await auth0Client.getSession();
     let user = session?.user;
     const userID = user?.sub;
     const currPass = formData.get('current-password')?.toString();
@@ -131,7 +135,7 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
         }
     }
 
-    const verifiedPass = await verifyUserPassword(DOMAIN, CLIENT_ID, CLIENT_SECRET, user?.name, currPass ?? '');
+    const verifiedPass = await verifyUserPassword(DOMAIN, CLIENT_ID, CLIENT_SECRET, user?.name!, currPass ?? '');
 
     if (verifiedPass) {
         try {
@@ -170,7 +174,8 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
 }
 
 export async function deleteUserAccount(state: FormState, formData: FormData) {
-    let session = await getSession();
+    const auth0Client = new Auth0Client();
+    let session = await auth0Client.getSession();
     let user = session?.user;
     const userID = user?.sub;
 
@@ -182,7 +187,7 @@ export async function deleteUserAccount(state: FormState, formData: FormData) {
     });
 
     try {
-        const response = await management.users.delete({ id: userID });
+        const response = await management.users.delete({ id: userID! });
         console.log(response.data);
     } catch (e) {
         console.error(e);

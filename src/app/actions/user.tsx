@@ -2,7 +2,7 @@
 import type { User } from '@/app/lib/definitions';
 import { PrismaClient } from '@prisma/client'
 
-export async function getUser(email: string) {
+export async function getUser(email: string | undefined) {
     const prisma = new PrismaClient();
     let user: User | null;
 
