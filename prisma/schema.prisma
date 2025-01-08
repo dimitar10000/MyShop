@@ -14,15 +14,15 @@ type ProductsBrand {
 
 type ProductsImage {
   description String
-  height      Int
+  height      Int?
   source      String
-  width       Int
+  width       Int?
 }
 
 type ShoppingCartsItems {
   brand             String
   categories        String[]
-  discountedPercent Int
+  discountedPercent Int?
   image             ShoppingCartsItemsImage
   name              String
   price             Float
@@ -32,9 +32,9 @@ type ShoppingCartsItems {
 
 type ShoppingCartsItemsImage {
   description String
-  height      Int
+  height      Int?
   source      String
-  width       Int
+  width       Int?
 }
 
 model brands {
