@@ -6,9 +6,9 @@ import { Button } from "@mui/material";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import { useState } from 'react';
 import styles from './menus.module.css';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 
-export default function ProfileMenu({ user }: { user: UserProfile }) {
+export default function ProfileMenu({ user }: { user: User }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     let timeoutId: NodeJS.Timeout | null = null;
@@ -42,14 +42,14 @@ export default function ProfileMenu({ user }: { user: UserProfile }) {
 
     let displayName;
 
-    if(user.given_name && user.family_name) {
-        displayName = user.given_name as string + ' ' + user.family_name as string;
+    if(user.givenName && user.familyName) {
+        displayName = user.givenName as string + ' ' + user.familyName as string;
     }
-    else if(user.given_name) {
-        displayName = user.given_name as string;
+    else if(user.givenName) {
+        displayName = user.givenName as string;
     }
     else {
-        displayName = user.name;
+        displayName = user.email;
     }
 
     return (
@@ -105,7 +105,7 @@ export default function ProfileMenu({ user }: { user: UserProfile }) {
                     </Link>
                 </MenuItem>
                 <MenuItem className={`${styles['menu-item']}`} onClick={handleClose}>
-                    {<Link prefetch={false} href={'/api/auth/logout'}>
+                    {<Link prefetch={false} href={'/auth/logout'}>
                         Log out
                     </Link>
                     }

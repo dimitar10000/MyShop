@@ -6,7 +6,7 @@ import { useFormStatus } from 'react-dom'
 import {useState,useEffect,useActionState} from 'react';
 import {useRouter} from 'next/navigation';
 import { saveUserInfo } from '@/app/actions/profile';
-import { User } from '@/app/lib/definitions';
+import { User,Nullable } from '@/app/lib/definitions';
 import { useSnackbar } from '@/app/lib/snackbar';
 
 function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
@@ -41,7 +41,7 @@ function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
     )
 }
 
-export default function UserInfoForm({ user }: { user: User }) {
+export default function UserInfoForm({ user }: { user: Nullable<User> }) {
     const [state, action] = useActionState(saveUserInfo, {errors: undefined});
     const { snackbar, clickHandler } = useSnackbar('Profile updated successfully',undefined,1);
     const {snackbar: snackbar2, clickHandler:clickHandlerRed} = useSnackbar(`Profile couldn't be updated... Please try again later.`,'red',2);
@@ -56,6 +56,8 @@ export default function UserInfoForm({ user }: { user: User }) {
             router.refresh();
         }
     }
+
+    console.log('the user in the info form',user);
 
     return (
         <div>
@@ -80,14 +82,14 @@ export default function UserInfoForm({ user }: { user: User }) {
                         label="First name"
                         name='first-name'
                         variant='outlined'
-                        defaultValue={user.givenName}
+                        defaultValue={user?.givenName}
                     />
 
                     <TextField
                         label="Last name"
                         name='last-name'
                         variant='outlined'
-                        defaultValue={user.familyName}
+                        defaultValue={user?.familyName}
                     />
 
                     <TextField
@@ -98,7 +100,7 @@ export default function UserInfoForm({ user }: { user: User }) {
                         sx={{
                             backdropFilter: 'brightness(90%)',
                         }}
-                        defaultValue={user.email}
+                        placeholder={user?.email}
                     />
 
                     <TextField
@@ -110,7 +112,7 @@ export default function UserInfoForm({ user }: { user: User }) {
                         inputProps={{
                             sx: { '&::placeholder': { color: 'white', opacity: 0.65 } }
                         }}
-                        defaultValue={user.phone}
+                        defaultValue={user?.phone}
                     />
 
                     <SaveInfoButton notPendingEmitter={notPendingHandler}/>

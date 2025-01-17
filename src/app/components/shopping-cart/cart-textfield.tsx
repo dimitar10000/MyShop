@@ -6,10 +6,10 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { addToCart, removeFromCart } from '@/app/actions/shopping-cart';
 import { ShoppingCartItemType } from '@/app/lib/definitions';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 
 interface TextfieldType {
-    user: UserProfile | undefined,
+    user: User | undefined,
     item: ShoppingCartItemType,
     textBoxValue: string,
     setTextBoxValue: any

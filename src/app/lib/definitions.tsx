@@ -1,5 +1,5 @@
 import {z} from 'zod'
-import type { products,shopping_carts,wishlists } from '@prisma/client'
+import type { products,shopping_carts,wishlists,users } from '@prisma/client'
 import type { UseMutationResult } from '@tanstack/react-query';
 
 export const SignUpFormSchema = z.object({
@@ -59,6 +59,9 @@ type WomenShoes = "sandals" | "high heels" | "ankle boots";
 
 export type Category = Sex | Sex & BodyPosition | MenClothes | MenShoes | WomenClothes | WomenShoes;
 
+// coerce functions take prisma types and convert them to defined types by me
+// for use in different parts of the application, we remove unnecessary properties
+
 export function coerceToCartType( cart: shopping_carts | null) : ShoppingCart | null {
   if(cart === null) {
     return null;
@@ -87,6 +90,17 @@ export function coerceToListType( list: wishlists | null) : Wishlist | null {
   }
   
   return null;
+}
+
+export function coerceToUserType(user: users | null): User | null {
+  if(user === null) {
+    return null;
+  }
+
+  const {given_name: givenName, family_name: familyName, id, ...rest} = user;
+  const modifiedUser = {givenName, familyName, ...rest};
+
+  return modifiedUser;
 }
 
 export function coerceToProductArrayType( products: products[] | null) : Product[] | null {

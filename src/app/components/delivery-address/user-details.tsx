@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 import InputField from './input-field';
 import TextField from '@mui/material/TextField';
 
-export default function UserDetails({ user }: { user: UserProfile | undefined }) {
+export default function UserDetails({ user }: { user: User | undefined }) {
     const [email, setEmail] = useState<string>("");
     const [typedEmail, setTypedEmail] = useState<boolean>(false);
 
@@ -137,7 +137,7 @@ export default function UserDetails({ user }: { user: UserProfile | undefined })
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.phone_number}
+                    defaultValue={user.phone}
                 />
 
                 <TextField
@@ -147,7 +147,7 @@ export default function UserDetails({ user }: { user: UserProfile | undefined })
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.given_name}
+                    defaultValue={user.givenName}
                 />
 
                 <TextField
@@ -157,7 +157,7 @@ export default function UserDetails({ user }: { user: UserProfile | undefined })
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.family_name}
+                    defaultValue={user.familyName}
                 />
             </Box>
             : <Box sx={{

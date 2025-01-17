@@ -7,7 +7,7 @@ function LogoutRouter({activeState} : {activeState: boolean}) {
 
     useEffect(() => {
         const triggerLogout = () => {
-            router.push('/api/auth/logout');
+            router.push('/auth/logout');
         }
 
         if(activeState) {

@@ -1,15 +1,17 @@
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
-import { getSession } from '@auth0/nextjs-auth0';
+import { Auth0Client } from '@auth0/nextjs-auth0/server';
 import { Wishlist as ListType} from '@/app/lib/definitions';
 import WishlistBox from '@/app/components/wishlist/wishlist-box';
 import {fetchListItems} from '@/app/lib/fetch-list-items';
+import {User} from '@/app/lib/definitions';
 
 export default async function Wishlist() {
-    const session = await getSession();
+    const auth0Client = new Auth0Client();
+    const session = await auth0Client.getSession();
     const user = session?.user;
     let data: ListType['items'] | null;
 
-    data = await fetchListItems(user);
+    data = await fetchListItems(user as User);
 
     console.log("list items on wishlist page ", data);
 

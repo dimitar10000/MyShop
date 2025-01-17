@@ -1,7 +1,7 @@
 import ProfileMenu from '@/app/components/menus/profile-menu';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 
-export default function LoggedIn({ user }: { user: UserProfile }) {
+export default function LoggedIn({ user }: { user: User }) {
     return (
         <ProfileMenu user={user} />
     )

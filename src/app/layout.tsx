@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import Head from "next/head";
 import "./globals.css";
 import ReactDOM from "react-dom";
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Header from "./components/header/header";
 import TopMenu from "./components/menus/top-menu";
 import Footer from "./components/footer/footer";
@@ -54,7 +53,6 @@ export default function RootLayout({
           <CartProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
-              <UserProvider>
                 {/*<a href="https://www.flaticon.com/free-icons/branding" title="branding icons">Branding icons created by Freepik - Flaticon</a> */}
                 {/*<a href="https://www.flaticon.com/free-icons/architecture-and-city" title="architecture-and-city icons">Architecture-and-city icons created by Rendyudha - Flaticon</a>*/}
                 <QueryClientProviderWrapper>
@@ -74,7 +72,6 @@ export default function RootLayout({
                     </ScrollUpProvider>
                   </body>
                 </QueryClientProviderWrapper>
-              </UserProvider>
             </ThemeProvider>
           </CartProvider>
         </ListProvider>

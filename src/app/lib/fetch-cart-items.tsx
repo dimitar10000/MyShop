@@ -1,8 +1,8 @@
 import { cache } from 'react'
 import { getCartByUser, getDetailedCartOfCookie } from '@/app/actions/shopping-cart';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 
-export const fetchCartItems = cache(async (user: UserProfile | undefined) => {
+export const fetchCartItems = cache(async (user: User | undefined) => {
     let res;
 
     if (user) {

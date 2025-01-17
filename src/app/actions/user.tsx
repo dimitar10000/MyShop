@@ -1,10 +1,10 @@
 'use server'
-import type { User } from '@/app/lib/definitions';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient,users } from '@prisma/client'
+import { User } from '../lib/definitions';
 
 export async function getUser(email: string | undefined) {
     const prisma = new PrismaClient();
-    let user: User | null;
+    let user: users | null;
 
     try {
         user = await prisma.users.findFirst({

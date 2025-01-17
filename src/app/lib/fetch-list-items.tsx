@@ -1,8 +1,8 @@
 import { cache } from 'react'
 import { getListByUser, getDetailedListOfCookie } from '@/app/actions/wishlist';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@/app/lib/definitions';
 
-export const fetchListItems = cache(async (user: UserProfile | undefined) => {
+export const fetchListItems = cache(async (user: User | undefined) => {
     let res;
 
     if (user) {

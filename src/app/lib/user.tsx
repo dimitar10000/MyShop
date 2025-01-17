@@ -3,9 +3,10 @@ import {useState,useEffect} from 'react'
 import {User} from '@/app/lib/definitions';
 
 async function fetchUser() {
-    const response = await fetch('/api/auth/me');
+    const response = await fetch('/auth/profile');
     if (response.ok) {
       const user: User = await response.json();
+      console.log('user is ', user);
       return user;
     }
 
@@ -22,7 +23,7 @@ export function useUser() {
         }
 
         myFetchUser();
-    },[user,setUser])
+    },[])
 
     return {user: user};
 }

@@ -18,9 +18,6 @@ export default function Header() {
     const { cart, setCart } = useCart();
     const { list, setList } = useList();
 
-    console.log('USER ', user);
-    console.log('REFRESHING HEADER');
-
     useEffect(() => {
         initializeCart(user, setCart);
     }, [user, setCart]);
