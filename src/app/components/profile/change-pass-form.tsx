@@ -45,9 +45,13 @@ function ChangePassButton({ notPendingEmitter }: { notPendingEmitter: () => void
 }
 
 export default function ChangePassForm() {
-    const [currPassword, setCurrPassword] = useState<string | null>(null);
-    const [newPassword, setNewPassword] = useState<string | null>(null);
-    const [newPasswordRepeat, setNewPasswordRepeat] = useState<string | null>(null);
+    const [currPassword, setCurrPassword] = useState<string>("");
+    const [currPasswordReset,setCurrPasswordReset] = useState<boolean>(false);
+    const [newPassword, setNewPassword] = useState<string>("");
+    const [newPasswordReset, setNewPasswordReset] = useState<boolean>(false);
+    const [newPasswordRepeat, setNewPasswordRepeat] = useState<string>("");
+    const [newPasswordRepeatReset, setNewPasswordRepeatReset] = useState<boolean>(false);
+
     const [textBox1LostFocus, setTextBox1LostFocus] = useState<boolean>(false);
     const [textBox2LostFocus, setTextBox2LostFocus] = useState<boolean>(false);
     const [textBox3LostFocus, setTextBox3LostFocus] = useState<boolean>(false);
@@ -85,7 +89,7 @@ export default function ChangePassForm() {
         }
     }
 
-    const isEmptyValue = (value: string | null) => value === "";
+    const isEmptyValue = (value: string) => value === "";
 
     const newPassSameAsOld = () => !!currPassword && currPassword === newPassword;
 
@@ -93,11 +97,15 @@ export default function ChangePassForm() {
         newPasswordRepeat.length >= ChangePassConstants.MIN_PASSWORD_LENGTH &&
         newPasswordRepeat !== newPassword;
 
+    const errorCondPass = isEmptyValue(currPassword) && currPasswordReset;
+    const errorCondNewPass = isEmptyValue(newPassword) && newPasswordReset;
+    const errorCondNewPassRepeat = isEmptyValue(newPasswordRepeat) && newPasswordRepeatReset;
+
     const returnHelperText1 = () => {
         if (textBox1LostFocus) {
             return "";
         }
-        else if (isEmptyValue(currPassword)) {
+        else if (errorCondPass) {
             return 'This field cannot be empty.';
         }
 
@@ -108,7 +116,7 @@ export default function ChangePassForm() {
         if (textBox2LostFocus) {
             return "";
         }
-        else if (isEmptyValue(newPassword)) {
+        else if (errorCondNewPass) {
             return 'This field cannot be empty.';
         }
         else if (newPassSameAsOld()) {
@@ -122,7 +130,7 @@ export default function ChangePassForm() {
         if (textBox3LostFocus) {
             return "";
         }
-        else if (isEmptyValue(newPasswordRepeat)) {
+        else if (errorCondNewPassRepeat) {
             return 'This field cannot be empty.';
         }
         else if (repeatPassWrong()) {
@@ -157,23 +165,26 @@ export default function ChangePassForm() {
 
                     <ChangePassField fieldLabel={"Current password"} fieldName={"current-password"}
                      passValue={currPassword} setPassValue={setCurrPassword}
+                     passValueReset={currPasswordReset} setPassValueReset={setCurrPasswordReset}
                      autocompleteValue={"current-password"} textBoxLostFocus={textBox1LostFocus}
                      setTextBoxLostFocus={setTextBox1LostFocus}
                      helperTextFunc={returnHelperText1}
-                     errorResult={isEmptyValue(currPassword)}
+                     errorResult={errorCondPass}
                     />
 
                     <ChangePassField fieldLabel={"New password"} fieldName={"new-password"}
                     passValue={newPassword} setPassValue={setNewPassword}
+                    passValueReset={newPasswordReset} setPassValueReset={setNewPasswordReset}
                     textBoxLostFocus={textBox2LostFocus} setTextBoxLostFocus={setTextBox2LostFocus}
                     helperTextFunc={returnHelperText2}
-                    errorResult={isEmptyValue(newPassword) || newPassSameAsOld()}/>
+                    errorResult={errorCondNewPass || newPassSameAsOld()}/>
 
                     <ChangePassField fieldLabel={"Repeat new password"} fieldName={'new-password-repeat'}
                     passValue={newPasswordRepeat} setPassValue={setNewPasswordRepeat}
+                    passValueReset={newPasswordRepeatReset} setPassValueReset={setNewPasswordRepeatReset}
                     textBoxLostFocus={textBox3LostFocus} setTextBoxLostFocus={setTextBox3LostFocus}
                     helperTextFunc={returnHelperText3}
-                    errorResult={isEmptyValue(newPasswordRepeat) || repeatPassWrong()}/>
+                    errorResult={errorCondNewPassRepeat || repeatPassWrong()}/>
 
                     <ChangePassButton notPendingEmitter={notPendingHandler} />
                 </div>

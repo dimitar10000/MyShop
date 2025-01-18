@@ -8,7 +8,9 @@ import {useState,Dispatch,SetStateAction,useEffect} from 'react';
 interface FieldProps {
     errorResult: boolean,
     passValue: string | null,
-    setPassValue: Dispatch<SetStateAction<string | null>>,
+    passValueReset: boolean,
+    setPassValue: Dispatch<SetStateAction<string>>,
+    setPassValueReset: Dispatch<SetStateAction<boolean>>,
     fieldLabel: string,
     fieldName: string,
     autocompleteValue?: string,
@@ -20,13 +22,15 @@ interface FieldProps {
 
 export default function ChangePassField({errorResult, fieldLabel, fieldName,
     passValue, setPassValue, autocompleteValue, textBoxLostFocus, setTextBoxLostFocus,
-    helperTextFunc} : FieldProps) {
+    helperTextFunc, passValueReset, setPassValueReset} : FieldProps) {
 
         const [showPassword,setShowPassword] = useState<boolean>(false);
 
         useEffect(() => {
-            if (textBoxLostFocus && passValue === "") {
-                setPassValue(null);
+            if (textBoxLostFocus && passValue === ""
+                && passValueReset) {
+                setPassValue("");
+                setPassValueReset(false);
             };
         }, [textBoxLostFocus])
 
@@ -35,6 +39,8 @@ export default function ChangePassField({errorResult, fieldLabel, fieldName,
 
         const handleClickShowPassword = () => setShowPassword(!showPassword);
         const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    
+        console.log("pass value needs reset?",passValueReset);
 
     return (
         <TextField
@@ -46,9 +52,14 @@ export default function ChangePassField({errorResult, fieldLabel, fieldName,
             helperText={helperTextFunc()}
             variant='outlined'
             value={passValue}
-            onChange={(event) => { setPassValue(event.target.value) }}
-            onBlur={(event) => setTextBoxLostFocus(true)}
-            onFocus={(event) => setTextBoxLostFocus(false)}
+            onChange={(event) => { 
+                setPassValue(event.target.value);
+                if(event.target.value !== "") {
+                    setPassValueReset(true);
+                }
+            }}
+            onBlur={() => setTextBoxLostFocus(true)}
+            onFocus={() => setTextBoxLostFocus(false)}
             style={{
                 border: errorResult ? errorBorderStyle : normalBorderStyle
             }}
