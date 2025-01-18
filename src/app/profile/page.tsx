@@ -12,8 +12,6 @@ export default function Profile() {
     const { user } = useUser();
     const [myUser,setMyUser] = useState<Nullable<User>>(undefined);
 
-    console.log('my user',myUser);
-
     useEffect(() => {
         const getFunc = async () => {
             const fetchedUser = await getUser(user?.email);

@@ -59,7 +59,7 @@ type WomenShoes = "sandals" | "high heels" | "ankle boots";
 
 export type Category = Sex | Sex & BodyPosition | MenClothes | MenShoes | WomenClothes | WomenShoes;
 
-// coerce functions take prisma types and convert them to defined types by me
+// coerce functions take prisma (or other 3rd party) types and convert them to defined types by me
 // for use in different parts of the application, we remove unnecessary properties
 
 export function coerceToCartType( cart: shopping_carts | null) : ShoppingCart | null {

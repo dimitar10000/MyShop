@@ -5,7 +5,7 @@ import { User } from '@/app/lib/definitions';
 
 type SetterType = Dispatch<SetStateAction<Nullable<ShoppingCart>>>;
 
-export const initializeCart = async (user: User | undefined, cartItemsSetter: SetterType) => {
+export const initializeCart = async (user: Nullable<User>, cartItemsSetter: SetterType) => {
     if(user) {
         let res = await getCartByUser(user?.sub!);
         cartItemsSetter(res);

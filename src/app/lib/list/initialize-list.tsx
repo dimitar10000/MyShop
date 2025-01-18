@@ -5,7 +5,7 @@ import { User } from '@/app/lib/definitions';
 
 type ListSetterType = Dispatch<SetStateAction<Nullable<Wishlist>>>;
 
-export const initializeList = async (user: User | undefined, listSetter?: ListSetterType) => {
+export const initializeList = async (user: Nullable<User>, listSetter?: ListSetterType) => {
 
     let res;
 

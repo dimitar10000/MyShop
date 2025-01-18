@@ -57,8 +57,6 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
         }
     }
 
-    console.log('the user in the info form',user);
-
     return (
         <div>
             {snackbar}
@@ -83,6 +81,7 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                         name='first-name'
                         variant='outlined'
                         defaultValue={user?.givenName}
+                        InputLabelProps={{shrink: true}}
                     />
 
                     <TextField
@@ -90,6 +89,7 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                         name='last-name'
                         variant='outlined'
                         defaultValue={user?.familyName}
+                        InputLabelProps={{shrink: true}}
                     />
 
                     <TextField
@@ -100,7 +100,8 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                         sx={{
                             backdropFilter: 'brightness(90%)',
                         }}
-                        placeholder={user?.email}
+                        defaultValue={user?.email}
+                        InputLabelProps={{shrink: true}}
                     />
 
                     <TextField
@@ -113,6 +114,7 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                             sx: { '&::placeholder': { color: 'white', opacity: 0.65 } }
                         }}
                         defaultValue={user?.phone}
+                        InputLabelProps={{shrink: true}}
                     />
 
                     <SaveInfoButton notPendingEmitter={notPendingHandler}/>

@@ -48,8 +48,8 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
 
         const changedUser = {
             email: user.email!,
-            givenName: user.given_name,
-            familyName: user.family_name,
+            givenName: givenName,
+            familyName: familyName,
             phone: phone
         };
 
