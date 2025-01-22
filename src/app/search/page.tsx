@@ -7,7 +7,8 @@ import LoadError from '@/app/components/load-error';
 import Link from 'next/link';
 import {addHyphens} from '@/app/lib/util-funcs';
 
-export default async function Page({searchParams} : {searchParams?: {query?: string}}) { 
+export default async function Page(props: {searchParams?: Promise<{query?: string}>}) {
+    const searchParams = await props.searchParams;
     const products = await getProductsByQuery(searchParams?.query);
     const brands = await fetchBrands();
     const filteredBrands = await getBrandsByQuery(searchParams?.query);
@@ -76,5 +77,5 @@ export default async function Page({searchParams} : {searchParams?: {query?: str
             </div>
 
         </div>
-    )    
+    )
 }

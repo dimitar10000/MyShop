@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server'
 
 async function createUserCookie() {
     try {
-    cookies().set('user', JSON.stringify({
+    (await cookies()).set('user', JSON.stringify({
         name: 'unregistered',
         cart: [],
         wishlist: [],
@@ -21,7 +21,7 @@ async function createUserCookie() {
 }
 
 export async function GET(request: NextRequest) {
-    const existingCookies = cookies();
+    const existingCookies = await cookies();
 
     if (!existingCookies.get('user')) {
         await createUserCookie();

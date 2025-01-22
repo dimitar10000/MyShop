@@ -78,7 +78,8 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
 
     return (
         <>
-        <Box sx={{ flexGrow: 1, marginLeft: 10, marginTop: 5, marginBottom: 10 }}>
+        <Box sx={{ flexGrow: 1, marginLeft: 10, marginTop: 5, marginBottom: 10,
+            width: 900}}>
             <div className={styles.wrapper}>
                 {filteredProducts &&
                     (filteredProducts.map((item: Product, index: number) => {

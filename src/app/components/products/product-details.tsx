@@ -1,11 +1,13 @@
-import { capitalizeFirstLetter,getDiscountedPrice } from '@/app/lib/util-funcs';
+import { capitalizeFirstLetter, getDiscountedPrice } from '@/app/lib/util-funcs';
 
-export default function ProductDetails({brand, price, discount} : {brand: string, price: number, discount: number | null}) {
-    const discountedPrice = getDiscountedPrice(price,discount,1);
+export default function ProductDetails({ brand, price, discount }:
+    { brand: string, price: number, discount: number | null }) {
+
+    const discountedPrice = getDiscountedPrice(price, discount, 1);
     let strikeThrough = <div className='line-through decoration-2	decoration-red-500'> {price} </div>;
 
     function returnCorrectPrice() {
-        if(discountedPrice) {
+        if (discount) {
             return (
                 <div className='flex flex-row gap-x-2 items-baseline'>
                     {strikeThrough}
@@ -16,17 +18,17 @@ export default function ProductDetails({brand, price, discount} : {brand: string
         else {
             return (
                 <div className='text-base'>
-                    {price} $
+                    {price.toFixed(2)} $
                 </div>
             )
         }
     }
 
-        return (
-            <div className="flex flex-col">
-                <div> {capitalizeFirstLetter(brand)} </div>
-                {returnCorrectPrice()}
-            </div>
-        )
+    return (
+        <div className="flex flex-col">
+            <div> {capitalizeFirstLetter(brand)} </div>
+            {returnCorrectPrice()}
+        </div>
+    )
 
 }
