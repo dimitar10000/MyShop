@@ -171,6 +171,7 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
         }
     }
     else {
+
         return {
             errors: {
                 error: ChangePassConstants.OTHER_ERRORS

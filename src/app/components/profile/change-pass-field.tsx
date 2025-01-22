@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
-import {useState,Dispatch,SetStateAction,useEffect} from 'react';
+import { useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface FieldProps {
     errorResult: boolean,
@@ -20,27 +20,26 @@ interface FieldProps {
 
 }
 
-export default function ChangePassField({errorResult, fieldLabel, fieldName,
+export default function ChangePassField({ errorResult, fieldLabel, fieldName,
     passValue, setPassValue, autocompleteValue, textBoxLostFocus, setTextBoxLostFocus,
-    helperTextFunc, passValueReset, setPassValueReset} : FieldProps) {
+    helperTextFunc, passValueReset, setPassValueReset }: FieldProps) {
 
-        const [showPassword,setShowPassword] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [hoveredIcon, setHoveredIcon] = useState<boolean>(false);
 
-        useEffect(() => {
-            if (textBoxLostFocus && passValue === ""
-                && passValueReset) {
-                setPassValue("");
-                setPassValueReset(false);
-            };
-        }, [textBoxLostFocus])
+    useEffect(() => {
+        if (textBoxLostFocus && passValue === ""
+            && passValueReset) {
+            setPassValue("");
+            setPassValueReset(false);
+        };
+    }, [textBoxLostFocus])
 
-        const normalBorderStyle = "solid 1px grey";
-        const errorBorderStyle = "solid 1px red";
+    const normalBorderStyle = "solid 1px grey";
+    const errorBorderStyle = "solid 1px red";
 
-        const handleClickShowPassword = () => setShowPassword(!showPassword);
-        const handleMouseDownPassword = () => setShowPassword(!showPassword);
-    
-        console.log("pass value needs reset?",passValueReset);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     return (
         <TextField
@@ -52,9 +51,9 @@ export default function ChangePassField({errorResult, fieldLabel, fieldName,
             helperText={helperTextFunc()}
             variant='outlined'
             value={passValue}
-            onChange={(event) => { 
+            onChange={(event) => {
                 setPassValue(event.target.value);
-                if(event.target.value !== "") {
+                if (event.target.value !== "") {
                     setPassValueReset(true);
                 }
             }}
@@ -71,7 +70,22 @@ export default function ChangePassField({errorResult, fieldLabel, fieldName,
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                         >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                            {showPassword
+                                ? <div onMouseOver={() => { setHoveredIcon(true) }}
+                                    onMouseLeave={() => { setHoveredIcon(false) }}>
+                                    {hoveredIcon
+                                        ? <VisibilityOff />
+                                        : <Visibility />
+                                    }
+                                </div>
+                                : <div onMouseOver={() => { setHoveredIcon(true) }}
+                                    onMouseLeave={() => { setHoveredIcon(false) }}>
+                                    {hoveredIcon
+                                        ? <Visibility />
+                                        : <VisibilityOff />
+                                    }
+                                </div>
+                            }
                         </IconButton>
                     </InputAdornment>)
             }}
