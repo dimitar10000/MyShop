@@ -1,6 +1,6 @@
 'use client'
 import BreadcrumbTemplate from "../components/breadcrumbs/breadcrumb-template"
-import ProfileButton from "../components/profile/profile-button"
+import ProfileButton from "../components/profile/profile-button";
 import UserInfoForm from '../components/profile/user-info-form';
 import {getUser} from '@/app/actions/user';
 import { useEffect,useState } from "react";

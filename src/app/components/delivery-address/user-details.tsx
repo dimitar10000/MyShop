@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
-import { User } from '@/app/lib/definitions';
+import { User,Nullable } from '@/app/lib/definitions';
 import InputField from './input-field';
 import TextField from '@mui/material/TextField';
 
-export default function UserDetails({ user }: { user: User | undefined }) {
+export default function UserDetails({ user }: { user: Nullable<User> }) {
     const [email, setEmail] = useState<string>("");
     const [typedEmail, setTypedEmail] = useState<boolean>(false);
 
@@ -127,7 +127,7 @@ export default function UserDetails({ user }: { user: User | undefined }) {
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.email}
+                    defaultValue={user?.email}
                 />
 
                 <TextField
@@ -137,7 +137,7 @@ export default function UserDetails({ user }: { user: User | undefined }) {
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.phone}
+                    defaultValue={user?.phone}
                 />
 
                 <TextField
@@ -147,7 +147,7 @@ export default function UserDetails({ user }: { user: User | undefined }) {
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.givenName}
+                    defaultValue={user?.givenName}
                 />
 
                 <TextField
@@ -157,7 +157,7 @@ export default function UserDetails({ user }: { user: User | undefined }) {
                     sx={{
                         backdropFilter: 'brightness(90%)',
                     }}
-                    defaultValue={user.familyName}
+                    defaultValue={user?.familyName}
                 />
             </Box>
             : <Box sx={{

@@ -10,9 +10,13 @@ import ContinueButton from '@/app/components/shopping-cart/continue-button';
 import UserDetails from '@/app/components/delivery-address/user-details';
 import AddressSection from '@/app/components/delivery-address/address-section';
 import BackButton from '@/app/components/delivery-address/back-button';
+import {User,Nullable,coerceToUserType} from '@/app/lib/definitions';
+import { useEffect,useState } from "react";
+import {getUser} from '@/app/actions/user';
 
 export default function DeliveryAddress() {
     const { user } = useUser();
+    const [myUser,setMyUser] = useState<Nullable<User>>(undefined);
     const { cart } = useCart();
     const theme = useTheme();
     const themeBorderColor = theme.palette.primary.light;
@@ -20,7 +24,18 @@ export default function DeliveryAddress() {
     const deliveryPrice = Number(sessionStorage.getItem("deliveryPrice"));
     const paymentPrice = Number(sessionStorage.getItem("paymentPrice"));
 
-    console.log('deliveryPrice', deliveryPrice);
+    useEffect(() => {
+            const getFunc = async () => {
+                const fetchedUser = await getUser(user?.email);
+    
+                if(fetchedUser) {
+                    setMyUser(coerceToUserType(fetchedUser));
+                }
+            }
+    
+            getFunc();
+    
+        },[user])
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
@@ -45,7 +60,7 @@ export default function DeliveryAddress() {
                             alignItems: 'center'
                         }}>
                             <div className='w-7/12 mb-1'>
-                                <UserDetails user={user} />
+                                <UserDetails user={myUser} />
                             </div>
                         </Box>
                     </div>

@@ -41,6 +41,7 @@ export type User  = {
   phone?: string
   sub?: string
   created?: Date
+  [otherUserProps: string]: any
 }
 
 export type Brand = {
