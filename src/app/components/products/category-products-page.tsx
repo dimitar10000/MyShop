@@ -6,11 +6,10 @@ import MenSidebar from '@/app/components/products/sidebar-menus/men-sidebar';
 import WomenSidebar from '@/app/components/products/sidebar-menus/women-sidebar';
 import { capitalizeAllWords,removeHyphens } from '@/app/lib/util-funcs';
 
-export default function CategoryProductsPage({sex, category} : {sex: string, category: string}) {
-    console.log(sex, category);
+export default function CategoryProductsPage({sex, category,currPage} : 
+    {sex: string, category: string, currPage: number}) {
 
     const properCategory = removeHyphens(category);
-
     const capitalizedSexLabel = capitalizeAllWords(sex);
     const capitalizedItemLabel = capitalizeAllWords(properCategory);
 
@@ -28,8 +27,8 @@ export default function CategoryProductsPage({sex, category} : {sex: string, cat
 
                     <Suspense fallback={<ProductsSkeleton amount={6}/>}>
                         {category === 'sale'
-                        ? <ProductsLoader categories={[sex]} sale={true}/>
-                        : <ProductsLoader categories={[sex,properCategory]}/>
+                        ? <ProductsLoader categories={[sex]} sale={true} currPage={currPage}/>
+                        : <ProductsLoader categories={[sex,properCategory]} currPage={currPage}/>
                         }
                     </Suspense>
                 </div>

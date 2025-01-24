@@ -31,10 +31,6 @@ export default function IndividualProductPage() {
     img = itemImage ? itemImage : null;
     inWishlist = included ? (included === "true") : false;
 
-    console.log('product ',product?.name);
-    console.log('img ',img);
-    console.log('in wishlist ',inWishlist);
-
     const sexLabel = product?.categories?.find(cat => cat === "men" || cat === "women");
     const itemTypeLabel = product?.categories?.find(cat => !cat.includes("men") && !cat.includes("women"));
 

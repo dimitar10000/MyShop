@@ -8,15 +8,18 @@ import { capitalizeAllWords } from '@/app/lib/util-funcs';
 
 export default async function Page(
     props: {params: Promise<{sex: string}>, searchParams?: Promise<{
-        minp?: string, maxp?: string}>}
+        minp?: string, maxp?: string, page?: string}>}
 ) {
 
     const {sex} = await props.params;
     const searchParams = await props.searchParams;
 
+    const currPage = Number(searchParams?.page) || 1;
     const minPrice = Number(searchParams?.minp) || 0;
     const maxPrice = Number(searchParams?.maxp) || 0;
     const capitalizedSexLabel = capitalizeAllWords(sex);
+
+    console.log("curr page",currPage);
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
@@ -29,7 +32,8 @@ export default async function Page(
                     {sex === "women" && <WomenSidebar/>}
 
                     <Suspense fallback={<ProductsSkeleton amount={6}/>}>
-                        <ProductsLoader categories={[sex]} minPrice={minPrice} maxPrice={maxPrice}/>
+                        <ProductsLoader categories={[sex]} minPrice={minPrice} maxPrice={maxPrice}
+                                        currPage={currPage}/>
                     </Suspense>
                 </div>
             </div>

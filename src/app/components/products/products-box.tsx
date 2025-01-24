@@ -4,7 +4,7 @@ import ProductWrapper from '@/app/components/products/product-wrapper';
 import ProductDetails from '@/app/components/products/product-details';
 import styles from './products.module.css';
 import LoadError from '../load-error';
-import { Wishlist, Brand, Product, Nullable } from '@/app/lib/definitions';
+import { Brand, Product, Nullable } from '@/app/lib/definitions';
 import { isInWishlist, getProductLink, filterProductsByRange } from '@/app/lib/util-funcs';
 import { useEffect, useState } from 'react'
 import { useUser } from '@/app/lib/user';
@@ -14,15 +14,17 @@ import { useProducts } from '@/app/lib/product/products-provider';
 import { useSnackbar } from '@/app/lib/snackbar';
 import {useList} from '@/app/lib/list/list-provider';
  
-export default function ProductsBox({ productsData, minPrice, maxPrice }: {
-    productsData: Nullable<Product[]>,
-    minPrice?: number, maxPrice?: number
+export default function ProductsBox({ productsData, minPrice, maxPrice, currPage, itemsPerPage }: {
+    productsData: Nullable<Product[]>,minPrice?: number, maxPrice?: number,
+    currPage: number, itemsPerPage: number
 }) {
     const { user } = useUser();
     const {list, setList} = useList();
     const [brands, setBrands] = useState<Brand[] | null>(null);
     const [filteredProducts, setFilteredProducts] = useState<Nullable<Product[]>>(undefined);
     const { setProducts } = useProducts();
+    const [startIndex, setStartIndex] = useState<number>(0);
+    const [endIndex,setEndIndex] = useState<number>(productsData ? productsData.length-1 : 0);
 
     const [addedToList, setAddedToList] = useState<boolean | null>(null);
     const [removedFromList, setRemovedFromList] = useState<boolean | null>(null);
@@ -76,6 +78,11 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
         }
     }, [removedFromList])
 
+    useEffect(() => {
+        setStartIndex((currPage - 1) * itemsPerPage);
+        setEndIndex(itemsPerPage * currPage - 1);
+    },[currPage])
+
     return (
         <>
         <Box sx={{ flexGrow: 1, marginLeft: 10, marginTop: 5, marginBottom: 10,
@@ -83,6 +90,10 @@ export default function ProductsBox({ productsData, minPrice, maxPrice }: {
             <div className={styles.wrapper}>
                 {filteredProducts &&
                     (filteredProducts.map((item: Product, index: number) => {
+                        if(index < startIndex || index > endIndex) {
+                            return null;
+                        }
+
                         const link = getProductLink(item);
                         const discount = item.discountedPercent;
                         const price = item.price;

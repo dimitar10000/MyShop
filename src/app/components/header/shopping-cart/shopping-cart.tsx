@@ -15,8 +15,6 @@ export default function ShoppingCart({cartItems} : {cartItems: Nullable<Shopping
         }
     },[cartItems]);
 
-    console.log('num cart items', numCartItems);
-
     return (
         numCartItems === 0
         ? <div className="flex flex-row items-center hover:brightness-90">
