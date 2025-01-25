@@ -13,6 +13,9 @@ export default function ShoppingCart({cartItems} : {cartItems: Nullable<Shopping
         if(cartItems) {
             setNumCartItems(cartItems.length);
         }
+        else {
+            setNumCartItems(0);
+        }
     },[cartItems]);
 
     return (

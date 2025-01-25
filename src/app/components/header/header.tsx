@@ -26,6 +26,7 @@ export default function Header() {
         initializeList(user, setList);
     }, [user, setList]);
 
+    console.log("user",user);
     console.log("cart", cart);
     console.log("list",list);
 
