@@ -18,6 +18,7 @@ export type FormState = {
     }
 }
 
+
 export async function saveUserInfo(state: FormState, formData: FormData) {
     const management = new ManagementClient({
         domain: DOMAIN,

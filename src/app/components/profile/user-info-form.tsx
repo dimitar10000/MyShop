@@ -1,35 +1,41 @@
-'use client'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormStatus } from 'react-dom'
-import {useState,useEffect,useActionState} from 'react';
-import {useRouter} from 'next/navigation';
+import { useState, useEffect, useActionState,SetStateAction,Dispatch } from 'react';
 import { saveUserInfo } from '@/app/actions/profile';
-import { User,Nullable } from '@/app/lib/definitions';
+import { User, Nullable,coerceToUserType } from '@/app/lib/definitions';
 import { useSnackbar } from '@/app/lib/snackbar';
+import {getUser} from '@/app/actions/user';
 
-function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
-    const { pending} = useFormStatus();
+function SaveInfoButton({ notPendingEmitter }: { notPendingEmitter: () => Promise<void> }) {
+    const { pending } = useFormStatus();
     const [clicked, setClicked] = useState(false);
-    
+
     useEffect(() => {
-        if(clicked && !pending) {
-            notPendingEmitter();
+        const updateFunc = async () => {
+            if (clicked && !pending) {
+                await notPendingEmitter();
+            }
         }
-    },[pending]);
+
+        updateFunc();
+    }, [pending, clicked]);
 
     return (
         <>
             <Button
                 type="submit"
                 variant="contained"
-                sx={{ mt: 5, mb: 2, backgroundColor: 'grey.700',
+                sx={{
+                    mt: 5, mb: 2, backgroundColor: 'grey.700',
                     textTransform: 'none', fontSize: 16,
-                ':hover': {
-                    backgroundColor: 'grey.800'
-                } }}
+                    ':hover': {
+                        backgroundColor: 'grey.800'
+                    }
+                }}
                 aria-disabled={pending}
+                disabled={pending}
                 onClick={() => {
                     setClicked(true);
                 }}
@@ -41,19 +47,22 @@ function SaveInfoButton({notPendingEmitter} : {notPendingEmitter: () => void}) {
     )
 }
 
-export default function UserInfoForm({ user }: { user: Nullable<User> }) {
-    const [state, action] = useActionState(saveUserInfo, {errors: undefined});
-    const { snackbar, clickHandler } = useSnackbar('Profile updated successfully',undefined,1);
-    const {snackbar: snackbar2, clickHandler:clickHandlerRed} = useSnackbar(`Profile couldn't be updated... Please try again later.`,'red',2);
-    const router = useRouter();
+export default function UserInfoForm({ user,updateUser }: { user: Nullable<User>,
+    updateUser: Dispatch<SetStateAction<Nullable<User>>>
+ }) {
+    const [state, action] = useActionState(saveUserInfo, { errors: undefined });
+    const { snackbar, clickHandler } = useSnackbar('Profile updated successfully', undefined, 1);
+    const { snackbar: snackbar2, clickHandler: clickHandlerRed } = useSnackbar(`Profile couldn't be updated... Please try again later.`, 'red', 2);
 
-    const notPendingHandler = () => {
-        if(state?.errors?.error) {
-            (clickHandlerRed({vertical: 'bottom', horizontal: 'right'}))();
+    const notPendingHandler = async () => {
+        if (state?.errors?.error) {
+            (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();
         }
-        if(!state?.errors) {
-            (clickHandler({vertical: 'bottom', horizontal: 'right'}))();
-            router.refresh();
+        else if (!state?.errors) {
+            (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
+            const newUser = await getUser(user?.email);
+            console.log("new user",newUser);
+            updateUser(coerceToUserType(newUser));
         }
     }
 
@@ -81,7 +90,7 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                         name='first-name'
                         variant='outlined'
                         defaultValue={user?.givenName}
-                        InputLabelProps={{shrink: true}}
+                        InputLabelProps={{ shrink: true }}
                     />
 
                     <TextField
@@ -89,7 +98,7 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                         name='last-name'
                         variant='outlined'
                         defaultValue={user?.familyName}
-                        InputLabelProps={{shrink: true}}
+                        InputLabelProps={{ shrink: true }}
                     />
 
                     <TextField
@@ -101,7 +110,7 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                             backdropFilter: 'brightness(90%)',
                         }}
                         defaultValue={user?.email}
-                        InputLabelProps={{shrink: true}}
+                        InputLabelProps={{ shrink: true }}
                     />
 
                     <TextField
@@ -114,10 +123,10 @@ export default function UserInfoForm({ user }: { user: Nullable<User> }) {
                             sx: { '&::placeholder': { color: 'white', opacity: 0.65 } }
                         }}
                         defaultValue={user?.phone}
-                        InputLabelProps={{shrink: true}}
+                        InputLabelProps={{ shrink: true }}
                     />
 
-                    <SaveInfoButton notPendingEmitter={notPendingHandler}/>
+                    <SaveInfoButton notPendingEmitter={notPendingHandler} />
                 </div>
             </Box>
         </div>

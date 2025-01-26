@@ -93,8 +93,8 @@ export function coerceToListType( list: wishlists | null) : Wishlist | null {
   return null;
 }
 
-export function coerceToUserType(user: users | null): User | null {
-  if(user === null) {
+export function coerceToUserType(user: users | null | undefined): User | null {
+  if(user === null || user === undefined) {
     return null;
   }
 

@@ -26,9 +26,9 @@ export default function Header() {
         initializeList(user, setList);
     }, [user, setList]);
 
-    console.log("user",user);
-    console.log("cart", cart);
-    console.log("list",list);
+    //console.log("user",user);
+    //console.log("cart", cart);
+    //console.log("list",list);
 
     return (
         <div className="flex flex-row bg-slate-400 border-0 border-b-2 border-slate-700 border-solid h-100">

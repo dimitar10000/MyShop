@@ -6,12 +6,45 @@ export async function getUser(email: string | undefined) {
     const prisma = new PrismaClient();
     let user: users | null;
 
+    if(email === undefined) {
+        return;
+    }
+
     try {
         user = await prisma.users.findFirst({
             where: {
                 email: email
             }
         })
+
+    } catch (e: any) {
+        console.error(e);
+        return null;
+    } finally {
+        await prisma.$disconnect();
+    }
+
+    // user didn't exist, need to add them
+    if(user === null) {
+        user = await createUser(email);
+    }
+
+    return user;
+}
+
+export async function createUser(email: string) {
+    const prisma = new PrismaClient();
+    let user: users;
+
+    try {
+        user = await prisma.users.create({
+            data: {
+                email: email,
+                given_name: "",
+                family_name: "",
+                phone: ""
+            }
+        });
 
     } catch (e: any) {
         console.error(e);

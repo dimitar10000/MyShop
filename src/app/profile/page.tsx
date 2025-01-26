@@ -29,6 +29,9 @@ export default function Profile() {
         return <ProfileSkeleton/>;
     }
 
+    console.log('user', user);
+    console.log('myuser',myUser);
+
     return (
         user && (<div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1 mb-10'>
                 <BreadcrumbTemplate labels={['Home', 'Profile']} links={['/']} />
@@ -44,7 +47,7 @@ export default function Profile() {
                     </div>
 
                     <div className="mt-5">
-                        <UserInfoForm user={myUser!}/>
+                        <UserInfoForm user={myUser!} updateUser={setMyUser}/>
                     </div>
 
                 </div>
