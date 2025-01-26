@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Head from "next/head";
 import "./globals.css";
 import ReactDOM from "react-dom";
@@ -16,7 +16,7 @@ import ProductsProvider from '@/app/lib/product/products-provider';
 import ScrollUpProvider from '@/app/lib/scroll-up/scroll-up-provider';
 import ScrollUpButton from '@/app/components/scroll-up-button/scroll-up-button';
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ["latin"], weight: '400' });
 
 export const metadata: Metadata = {
   title: {
@@ -56,7 +56,7 @@ export default function RootLayout({
                 {/*<a href="https://www.flaticon.com/free-icons/branding" title="branding icons">Branding icons created by Freepik - Flaticon</a> */}
                 {/*<a href="https://www.flaticon.com/free-icons/architecture-and-city" title="architecture-and-city icons">Architecture-and-city icons created by Rendyudha - Flaticon</a>*/}
                 <QueryClientProviderWrapper>
-                  <body className={`${inter.className}`}>
+                  <body className={`${poppins.className}`}>
                     <ScrollUpProvider>
                       <Header />
                       <div className="pt-1">

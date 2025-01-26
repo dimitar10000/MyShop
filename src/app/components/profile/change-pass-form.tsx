@@ -72,10 +72,9 @@ export default function ChangePassForm() {
 
         if (state && state.errors === undefined) {
             (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
-            /*setTimeout(() => {
+            setTimeout(() => {
                 triggerLogout(true);
             },5000);
-            */
         }
         else if (state?.errors?.error === ChangePassConstants.SHORT_PASS_MESSAGE) {
             (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();

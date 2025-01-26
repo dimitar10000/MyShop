@@ -144,8 +144,6 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
 
     const verifiedPass = await verifyUserPassword(DOMAIN, APP_CLIENT_ID, APP_CLIENT_SECRET, user?.name!, currPass ?? '');
 
-    console.log("verified pass?", verifiedPass);
-
     if (verifiedPass) {
         try {
             await axios.patch(
