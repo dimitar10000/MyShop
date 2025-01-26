@@ -15,6 +15,7 @@ function SaveInfoButton({ notPendingEmitter }: { notPendingEmitter: () => Promis
     useEffect(() => {
         const updateFunc = async () => {
             if (clicked && !pending) {
+                setClicked(false);
                 await notPendingEmitter();
             }
         }
@@ -34,13 +35,13 @@ function SaveInfoButton({ notPendingEmitter }: { notPendingEmitter: () => Promis
                         backgroundColor: 'grey.800'
                     }
                 }}
-                aria-disabled={pending}
-                disabled={pending}
+                aria-disabled={clicked && pending}
+                disabled={clicked && pending}
                 onClick={() => {
                     setClicked(true);
                 }}
             >
-                {pending ? 'Saving...' : 'Save'}
+                {clicked && pending ? 'Saving...' : 'Save'}
 
             </Button>
         </>
@@ -59,10 +60,12 @@ export default function UserInfoForm({ user,updateUser }: { user: Nullable<User>
             (clickHandlerRed({ vertical: 'bottom', horizontal: 'right' }))();
         }
         else if (!state?.errors) {
-            (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
-            const newUser = await getUser(user?.email);
-            console.log("new user",newUser);
-            updateUser(coerceToUserType(newUser));
+            setTimeout(async () => {
+                const newUser = await getUser(user?.email);
+                updateUser(coerceToUserType(newUser));
+
+                (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
+            },0); // timeout needed to get the latest user data from DB
         }
     }
 
