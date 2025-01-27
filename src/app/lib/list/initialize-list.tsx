@@ -10,7 +10,7 @@ export const initializeList = async (user: Nullable<User>, listSetter?: ListSett
     let res;
 
     if(user) {
-        res = await getListByUser(user?.sub!);
+        res = await getListByUser(user?.sub);
     }
     else {
         res = await getDetailedListOfCookie();  

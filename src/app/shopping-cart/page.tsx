@@ -1,4 +1,5 @@
 'use client'
+import React from 'react';
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
 import { useUser } from '@/app/lib/user';
 import CartStepper from '@/app/components/shopping-cart/cart-stepper';

@@ -86,10 +86,6 @@ export default function WishlistBox({ productsData }: {
                             const brand = item.brand;
                             const needToDelete = productToDelete === item;
 
-                            if(needToDelete) {
-                                console.log('NEED TO DELETE ',item.productID);
-                            }
-
                             return (
                                 <div key={'product' + index}>
                                     <div className='flex flex-col gap-y-2'>

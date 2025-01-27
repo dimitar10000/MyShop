@@ -2,14 +2,15 @@
 import { PrismaClient } from '@prisma/client'
 import type { products } from '@prisma/client';
 import { ShoppingCart, WishlistItemType, ShoppingCartItemType, 
-    isProduct3,UserCookie,coerceToCartType, Product } from '@/app/lib/definitions';
+    isProduct3,UserCookie,coerceToCartType, Product,Nullable } from '@/app/lib/definitions';
 import { addToCartCookie, removeFromCartCookie,
     deleteCartCookie,getUserCookie } from '@/app/actions/cookies';
 
-export async function addToCart(userID: string, product: Product | WishlistItemType | ShoppingCartItemType,
+export async function addToCart(userID: string | undefined, 
+    product: Product | WishlistItemType | ShoppingCartItemType,
     quantity?: number
 ) {
-    let cart: ShoppingCart | null = await getCartByUser(userID);
+    let cart: Nullable<ShoppingCart> = await getCartByUser(userID);
 
     // cart doesn't exist, create new one
     if (!cart) {
@@ -26,8 +27,7 @@ export async function addToCart(userID: string, product: Product | WishlistItemT
                 return cart;
             }
 
-            let itemExists;
-            itemExists = cart!.items.find((item) => item.productID === product.id);
+            const itemExists = cart!.items.find((item) => item.productID === product.id);
 
             if (!itemExists) {
                 await prisma.shopping_carts.updateMany({
@@ -83,8 +83,7 @@ export async function addToCart(userID: string, product: Product | WishlistItemT
                 return cart;
             }
 
-            let itemExists;
-            itemExists = cart!.items.find((item) => item.productID === product.productID);
+            const itemExists = cart!.items.find((item) => item.productID === product.productID);
 
             if (!itemExists) {
                 await prisma.shopping_carts.updateMany({
@@ -160,18 +159,18 @@ export async function addToCart(userID: string, product: Product | WishlistItemT
             console.log(`set quantity of ${product.productID} to ${product.quantity}!`);
         }
 
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
 
     cart = await getCartByUser(userID);
     return cart;
 }
 
-export async function removeFromCart(userID: string, product: ShoppingCartItemType, quantity?: number) {
+export async function removeFromCart(userID: string | undefined, product: ShoppingCartItemType, quantity?: number) {
     let cart: ShoppingCart | null = await getCartByUser(userID);
 
     if (!quantity) {
@@ -249,18 +248,18 @@ export async function removeFromCart(userID: string, product: ShoppingCartItemTy
 
             console.log(`removed product ${product.productID} from cart!`);
         }
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
 
     cart = await getCartByUser(userID);
     return cart;
 }
 
-export async function deleteCart(userID: string) {
+export async function deleteCart(userID: string | undefined) {
     let cart: ShoppingCart | null = await getCartByUser(userID);
     const prisma = new PrismaClient();
 
@@ -281,20 +280,24 @@ export async function deleteCart(userID: string) {
         })
 
         console.log(`deleted cart!`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
 
     cart = await getCartByUser(userID);
     return cart;
 }
 
-async function createCart(userID: string) {
+async function createCart(userID: string | undefined) {
     const prisma = new PrismaClient();
     let res: ShoppingCart | null;
+
+    if(userID === undefined) {
+        return;
+    }
 
     try {
         const tmp = await prisma.shopping_carts.create({
@@ -307,17 +310,17 @@ async function createCart(userID: string) {
         res = coerceToCartType(tmp);
 
         console.log(`created new cart for user ${userID}!`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
 
     return res;
 }
 
-export async function getCartByUser(userID: string) {
+export async function getCartByUser(userID: string | undefined) {
     const prisma = new PrismaClient();
     let res: ShoppingCart | null;
 
@@ -329,12 +332,12 @@ export async function getCartByUser(userID: string) {
         })
 
         res = coerceToCartType(tmp);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
 
     console.log(`got cart of user ${userID}!`);
     return res;
@@ -353,12 +356,12 @@ async function getQuantityByProduct(productID: number) {
                 productID: productID
             }
         })
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
 
     return res?.quantity;
 }
@@ -417,12 +420,12 @@ export async function getDetailedCartOfCookie() {
         })
 
         console.log(`filtered products by cart items`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
         await prisma.$disconnect();
-    };
+    }
     
     res = res.map((x) => {
         const {id_:productID, brand: renamedBrand,...rest} = x;
@@ -437,6 +440,7 @@ export async function getDetailedCartOfCookie() {
     return {userID: undefined, items: []};
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function checkForSufficientProducts(product: products, quantity: number) {
     const productCount = await getQuantityByProduct(product.id_);
     if (productCount && productCount < quantity) {

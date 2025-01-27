@@ -6,7 +6,7 @@ export const fetchListItems = cache(async (user: User | undefined) => {
     let res;
 
     if (user) {
-        res = await getListByUser(user?.sub!);
+        res = await getListByUser(user?.sub);
     }
     else {
         res = await getDetailedListOfCookie();

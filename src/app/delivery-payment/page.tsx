@@ -1,6 +1,7 @@
 'use client'
+import React from 'react';
 import { useCart } from '@/app/lib/cart/cart-provider';
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
 import CartStepper from '@/app/components/shopping-cart/cart-stepper';
 import ShoppingCartStats from '@/app/components/shopping-cart/shopping-cart-stats';
@@ -11,9 +12,18 @@ import ContinueButton from '@/app/components/shopping-cart/continue-button';
 
 export default function DeliveryPayment() {
     const { cart } = useCart();
-    const insuranceIncluded = sessionStorage.getItem("insuranceIncluded") === "true";
+    const [insuranceIncluded,setInsuranceIncluded] = useState<boolean>(false);
     const [deliveryPrice, setDeliveryPrice] = useState<number>(3.99);
     const [paymentPrice, setPaymentPrice] = useState<number>(0);
+
+    useEffect(() => {
+        if(sessionStorage.getItem("insuranceIncluded") === "true") {
+            setInsuranceIncluded(true);
+        }
+        else {
+            setInsuranceIncluded(false);
+        }
+    },[]);
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>

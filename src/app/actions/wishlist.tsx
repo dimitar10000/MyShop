@@ -12,7 +12,6 @@ export async function addToList(userID: string, product: Product | ShoppingCartI
     }
 
     const prisma = new PrismaClient();
-    let res;
 
     try {
         if (isProduct3(product)) {
@@ -22,11 +21,10 @@ export async function addToList(userID: string, product: Product | ShoppingCartI
                 return list;
             }
 
-            let itemExists;
-            itemExists = list!.items.find((item) => item.productID === product.id);
+            const itemExists = list!.items.find((item) => item.productID === product.id);
 
             if (!itemExists) {
-                res = await prisma.wishlists.updateMany({
+                await prisma.wishlists.updateMany({
                     where: {
                         userID: userID
                     },
@@ -57,11 +55,10 @@ export async function addToList(userID: string, product: Product | ShoppingCartI
                 return list;
             }
 
-            let itemExists;
-            itemExists = list!.items.find((item) => item.productID === product.productID);
+            const itemExists = list!.items.find((item) => item.productID === product.productID);
 
             if (!itemExists) {
-                res = await prisma.wishlists.updateMany({
+                await prisma.wishlists.updateMany({
                     where: {
                         userID: userID
                     },
@@ -85,7 +82,7 @@ export async function addToList(userID: string, product: Product | ShoppingCartI
                 console.error(`The product with id ${product.productID} is already in the list`);
             }
         }
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -96,7 +93,7 @@ export async function addToList(userID: string, product: Product | ShoppingCartI
     return list;
 }
 
-export async function getListByUser(userID: string) {
+export async function getListByUser(userID: string | undefined) {
     const prisma = new PrismaClient();
     let res: Wishlist | null;
 
@@ -109,7 +106,7 @@ export async function getListByUser(userID: string) {
 
         res = coerceToListType(tmp);
 
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -124,7 +121,6 @@ export async function removeFromList(userID: string, productID: number) {
     let list: Wishlist | null = await getListByUser(userID);
 
     const prisma = new PrismaClient();
-    let res;
 
     try {
         if (userID === undefined) {
@@ -136,7 +132,7 @@ export async function removeFromList(userID: string, productID: number) {
         // remove the item from the list
         const newItems = list!.items.filter(item => item.productID !== productID);
 
-        res = await prisma.wishlists.updateMany({
+        await prisma.wishlists.updateMany({
             where: {
                 userID: userID
             },
@@ -146,7 +142,7 @@ export async function removeFromList(userID: string, productID: number) {
         })
 
         console.log(`removed ${productID} from list!`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -178,7 +174,7 @@ export async function deleteList(userID: string) {
         })
 
         console.log(`deleted list!`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -204,7 +200,7 @@ async function createList(userID: string) {
         res = coerceToListType(tmp);
 
         console.log(`created new list for user ${userID}!`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -237,7 +233,7 @@ export async function getDetailedListOfCookie() : Promise<Wishlist | null> {
         })
 
         console.log(`filtered products by wishlist items`);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {

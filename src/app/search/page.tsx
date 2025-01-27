@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import BreadcrumbTemplate from '@/app/components/breadcrumbs/breadcrumb-template';
 import {getProductsByQuery,getBrandsByQuery,getCategoriesByQuery} from '@/app/lib/search-queries';
 import SearchProductBox from '@/app/components/search/search-product-box';
@@ -18,7 +19,7 @@ export default async function Page(props: {searchParams?: Promise<{query?: strin
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
             <BreadcrumbTemplate labels={["Home", 'Search']} links={['/']}/>
 
-            <div className='text-2xl mt-5 mb-5 ms-5'> Search results for "{searchParams?.query}": </div>
+            <div className='text-2xl mt-5 mb-5 ms-5'> Search results for &quot;{searchParams?.query}&quot;: </div>
 
             <div className='mb-10'>
                 {products && brands &&
@@ -44,7 +45,11 @@ export default async function Page(props: {searchParams?: Promise<{query?: strin
                             }
 
                             return (
-                                <div>
+                                <div key={
+                                    typeof cat === 'string'
+                                    ? cat
+                                    : cat[0] + cat[1]
+                                }>
                                     {typeof cat === 'string'
                                     ? <Link href={'/products/' + cat}>
                                         {cat}

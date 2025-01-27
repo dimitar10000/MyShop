@@ -6,7 +6,7 @@ export const fetchCartItems = cache(async (user: User | undefined) => {
     let res;
 
     if (user) {
-        res = await getCartByUser(user?.sub!);
+        res = await getCartByUser(user?.sub);
         if(res) {
             return res.items;
         }

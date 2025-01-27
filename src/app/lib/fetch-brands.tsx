@@ -13,7 +13,7 @@ export const fetchBrands = cache(async () => {
           id: true
         }
       })
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
       return null;
     } finally {
@@ -39,7 +39,7 @@ export const initializeBrandsOnClient = async (brandsSetter: Dispatch<SetStateAc
   );
 
   if(res.ok) {
-     let jsonResponse : FetchedType = await res.json();
+     const jsonResponse : FetchedType = await res.json();
      brandsSetter(jsonResponse.brands);
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse, NextRequest } from 'next/server'
 import {auth0Client} from '@/app/lib/auth0';
 
@@ -9,8 +11,7 @@ async function createUserCookie() {
             name: 'unregistered',
             cart: [],
             wishlist: [],
-            email: '',
-            expiration: new Date(Date.now() + 60 * 60 * 24 * 7)
+            email: ''
         }), {
             maxAge: 60 * 60 * 24 * 7 * 4,
             httpOnly: true,
@@ -35,7 +36,7 @@ const profileMiddleWare = async (req: NextRequest) => {
 
     try {
         await auth0Client.getAccessToken();
-    } catch (e) {
+    } catch (e: any) {
         return NextResponse.redirect(new URL('/auth/login', req.url));
     }
 

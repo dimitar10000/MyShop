@@ -124,7 +124,7 @@ export default function DeleteAccountForm({ loggedUsername }: { loggedUsername: 
                                     name={'username'}
                                     helperText={
                                         errorCond
-                                            ? <div className='text-base'>Username doesn't match actual one</div>
+                                            ? <div className='text-base'>Username doesn&apost match actual one</div>
                                             : ""
                                     }
                                     variant='outlined'

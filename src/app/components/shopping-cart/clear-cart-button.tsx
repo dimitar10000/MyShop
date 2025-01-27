@@ -1,3 +1,4 @@
+import React from 'react';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { Button } from "@mui/material";
 import { useConfirmationDialog } from '@/app/lib/confirmation-dialog';
@@ -8,10 +9,10 @@ import { Nullable, ShoppingCart } from '@/app/lib/definitions';
 import { deleteCart } from '@/app/actions/shopping-cart';
 import { useEffect,Dispatch, SetStateAction } from 'react';
 
-const handleClearCart = async (user: User | undefined,
+const handleClearCart = async (user: Nullable<User>,
     updater: Dispatch<SetStateAction<Nullable<ShoppingCart>>>) => {
 
-    const newCart = await deleteCart(user?.sub!);
+    const newCart = await deleteCart(user?.sub);
     updater(newCart);
 }
 

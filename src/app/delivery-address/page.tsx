@@ -17,10 +17,11 @@ import {getUser} from '@/app/actions/user';
 export default function DeliveryAddress() {
     const { user } = useUser();
     const [myUser,setMyUser] = useState<Nullable<User>>(undefined);
+    const [insuranceIncluded,setInsuranceIncluded] = useState<boolean>(false);
     const { cart } = useCart();
     const theme = useTheme();
     const themeBorderColor = theme.palette.primary.light;
-    const insuranceIncluded = sessionStorage.getItem("insuranceIncluded") === "true";
+    
     const deliveryPrice = Number(sessionStorage.getItem("deliveryPrice"));
     const paymentPrice = Number(sessionStorage.getItem("paymentPrice"));
 
@@ -36,6 +37,15 @@ export default function DeliveryAddress() {
             getFunc();
     
         },[user])
+
+    useEffect(() => {
+        if(sessionStorage.getItem("insuranceIncluded") === "true") {
+            setInsuranceIncluded(true);
+        }
+        else {
+            setInsuranceIncluded(false);
+        }
+    },[])
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>

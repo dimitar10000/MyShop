@@ -1,3 +1,4 @@
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './cart.module.css';
@@ -17,10 +18,10 @@ import {getProductLink} from '@/app/lib/util-funcs';
 import {getBrandImageOfProduct,setLocalStorageForProduct} from '@/app/lib/util-funcs';
 import { useRouter } from "next/navigation";
 
-const handleRemoveItem = async (user: User | undefined, cartItem: ShoppingCartItemType,
+const handleRemoveItem = async (user: Nullable<User>, cartItem: ShoppingCartItemType,
     updater: (newCart: Nullable<ShoppingCart>) => void) => {
 
-    const newCart = await removeFromCart(user?.sub!, cartItem!, cartItem!.quantity);
+    const newCart = await removeFromCart(user?.sub, cartItem!, cartItem!.quantity);
     updater(newCart);
 }
 

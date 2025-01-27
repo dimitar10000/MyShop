@@ -41,7 +41,7 @@ export type User  = {
   phone?: string
   sub?: string
   created?: Date
-  [otherUserProps: string]: any
+  [otherUserProps: string]: unknown
 }
 
 export type Brand = {
@@ -109,7 +109,7 @@ export function coerceToProductArrayType( products: products[] | null) : Product
     return null;
   }
 
-  let modifiedProducts = [];
+  const modifiedProducts = [];
 
   for(let i=0;i<products.length;i++) {
     const {id, id_,...rest} = products[i];
@@ -196,7 +196,7 @@ export function isProduct3(data: Product | WishlistItemType | ShoppingCartItemTy
   return (data as Product).id !== undefined;
 }
 
-type AsyncFunction = (...args: any[]) => Promise<void>;
+type AsyncFunction = (...args: unknown[]) => Promise<void>;
 
 export function isAsyncType(func: UseMutationResult | Function): func is AsyncFunction {
   return func.constructor.name === 'AsyncFunction';
