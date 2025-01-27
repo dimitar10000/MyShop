@@ -10,42 +10,49 @@ import ContinueButton from '@/app/components/shopping-cart/continue-button';
 import UserDetails from '@/app/components/delivery-address/user-details';
 import AddressSection from '@/app/components/delivery-address/address-section';
 import BackButton from '@/app/components/delivery-address/back-button';
-import {User,Nullable,coerceToUserType} from '@/app/lib/definitions';
-import { useEffect,useState } from "react";
-import {getUser} from '@/app/actions/user';
+import { User, Nullable, coerceToUserType } from '@/app/lib/definitions';
+import { useEffect, useState } from "react";
+import { getUser } from '@/app/actions/user';
 
 export default function DeliveryAddress() {
     const { user } = useUser();
-    const [myUser,setMyUser] = useState<Nullable<User>>(undefined);
-    const [insuranceIncluded,setInsuranceIncluded] = useState<boolean>(false);
+    const [myUser, setMyUser] = useState<Nullable<User>>(undefined);
+    const [insuranceIncluded, setInsuranceIncluded] = useState<boolean>(false);
+    const [deliveryPrice, setDeliveryPrice] = useState<number>(3.99);
+    const [paymentPrice, setPaymentPrice] = useState<number>(0);
     const { cart } = useCart();
     const theme = useTheme();
     const themeBorderColor = theme.palette.primary.light;
-    
-    const deliveryPrice = Number(sessionStorage.getItem("deliveryPrice"));
-    const paymentPrice = Number(sessionStorage.getItem("paymentPrice"));
 
     useEffect(() => {
-            const getFunc = async () => {
-                const fetchedUser = await getUser(user?.email);
-    
-                if(fetchedUser) {
-                    setMyUser(coerceToUserType(fetchedUser));
-                }
+        const getFunc = async () => {
+            const fetchedUser = await getUser(user?.email);
+
+            if (fetchedUser) {
+                setMyUser(coerceToUserType(fetchedUser));
             }
-    
-            getFunc();
-    
-        },[user])
+        }
+
+        getFunc();
+
+    }, [user])
 
     useEffect(() => {
-        if(sessionStorage.getItem("insuranceIncluded") === "true") {
+        if (sessionStorage.getItem("deliveryPrice")) {
+            setDeliveryPrice(Number(sessionStorage.getItem("deliveryPrice")));
+        }
+
+        if (sessionStorage.getItem("paymentPrice")) {
+            setPaymentPrice(Number(sessionStorage.getItem("paymentPrice")));
+        }
+
+        if (sessionStorage.getItem("insuranceIncluded") === "true") {
             setInsuranceIncluded(true);
         }
         else {
             setInsuranceIncluded(false);
         }
-    },[])
+    }, [])
 
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
@@ -74,7 +81,7 @@ export default function DeliveryAddress() {
                             </div>
                         </Box>
                     </div>
-                    
+
                     <div className='mb-7'>
                         <div className='mb-1 ml-3'> Address </div>
                         <Box sx={{
