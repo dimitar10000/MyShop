@@ -5,7 +5,7 @@ export default function LogIn() {
     return (
 
         <a className='flex flex-row gap-x-0 items-center hover:brightness-90'
-            href="/api/auth/login">
+            href="/auth/login">
             <PermIdentityOutlinedIcon fontSize="large" />
             <span className=""> Login </span>
         </a>
