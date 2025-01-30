@@ -5,7 +5,7 @@ import {User,coerceToUserType,Nullable} from '@/app/lib/definitions';
 // gets the user object from the auth0 endpoint
 // treats the fetched object as locally defined User type
 async function fetchUser() {
-    const response = await fetch('/auth/profile');
+    const response = await fetch('/api/auth/profile');
     if (response.ok) {
       const auth0User = await response.json();
       const user = coerceToUserType(auth0User);
