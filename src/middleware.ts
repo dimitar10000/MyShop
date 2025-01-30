@@ -46,7 +46,7 @@ const profileMiddleWare = async (req: NextRequest) => {
 export async function middleware(request: NextRequest) {
     const authResponse = await auth0Client.middleware(request);
 
-    if (request.nextUrl.pathname.startsWith("/auth")) {
+    if (request.nextUrl.pathname.startsWith("/api/auth")) {
         return authResponse;
     }
 
