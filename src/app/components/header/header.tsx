@@ -6,29 +6,36 @@ import LogIn from './login';
 import LoggedIn from './logged-in';
 import ShoppingCart from './shopping-cart/shopping-cart';
 import WishList from './wishlist';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useCart } from '@/app/lib/cart/cart-provider';
 import { useList } from '@/app/lib/list/list-provider';
 import { useUser } from '@/app/lib/user';
 import { initializeCart } from '@/app/lib/cart/initialize-cart';
 import { initializeList } from '@/app/lib/list/initialize-list';
+import { getUser } from '@/app/actions/user';
+import { User, Nullable,coerceToUserType } from "@/app/lib/definitions";
 
 export default function Header() {
     const { user } = useUser();
+    const [myUser, setMyUser] = useState<Nullable<User>>(undefined);
     const { cart, setCart } = useCart();
     const { list, setList } = useList();
 
     useEffect(() => {
         initializeCart(user, setCart);
-    }, [user, setCart]);
-
-    useEffect(() => {
         initializeList(user, setList);
-    }, [user, setList]);
 
-    console.log("user",user);
+        const fetchAndSetUser = async () => {
+            const fetchedUser = await getUser(user?.email);
+            setMyUser(coerceToUserType(fetchedUser));
+        }
+
+        fetchAndSetUser();
+    }, [user, setCart, setList,setMyUser]);
+
+    console.log("user", user);
     console.log("cart", cart);
-    console.log("list",list);
+    console.log("list", list);
 
     return (
         <div className="flex flex-row bg-slate-400 border-0 border-b-2 border-slate-700 border-solid h-100">
@@ -50,7 +57,7 @@ export default function Header() {
 
             {user
                 ? <div className="flex flex-row items-center ml-10 mr-20">
-                    <LoggedIn user={user} />
+                    <LoggedIn user={myUser} />
                 </div>
                 : <div className="flex flex-row items-center mr-20">
                     <LogIn />

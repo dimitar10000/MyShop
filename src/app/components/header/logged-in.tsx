@@ -1,7 +1,7 @@
 import ProfileMenu from '@/app/components/menus/profile-menu';
-import { User } from '@/app/lib/definitions';
+import { User,Nullable } from '@/app/lib/definitions';
 
-export default function LoggedIn({ user }: { user: User }) {
+export default function LoggedIn({ user }: { user: Nullable<User> }) {
     return (
         <ProfileMenu user={user} />
     )

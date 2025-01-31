@@ -4,12 +4,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { Button } from "@mui/material";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import styles from './menus.module.css';
-import { User } from '@/app/lib/definitions';
+import { User,Nullable } from '@/app/lib/definitions';
 
-export default function ProfileMenu({ user }: { user: User }) {
+export default function ProfileMenu({ user }: { user: Nullable<User> }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [displayName,setDisplayName] = useState<string>("");
     const open = Boolean(anchorEl);
     let timeoutId: NodeJS.Timeout | null = null;
 
@@ -40,17 +41,17 @@ export default function ProfileMenu({ user }: { user: User }) {
         }
     }
 
-    let displayName;
-
-    if(user.givenName && user.familyName) {
-        displayName = user.givenName as string + ' ' + user.familyName as string;
-    }
-    else if(user.givenName) {
-        displayName = user.givenName as string;
-    }
-    else {
-        displayName = user.email;
-    }
+    useEffect(() => {
+        if(user?.givenName && user?.familyName) {
+            setDisplayName(user.givenName + ' ' + user.familyName);
+        }
+        else if(user?.givenName) {
+            setDisplayName(user.givenName);
+        }
+        else if(user) {
+            setDisplayName(user.email);
+        }
+    },[user,setDisplayName])
 
     return (
         <div>

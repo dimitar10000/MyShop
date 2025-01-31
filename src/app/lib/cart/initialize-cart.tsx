@@ -7,11 +7,11 @@ type SetterType = Dispatch<SetStateAction<Nullable<ShoppingCart>>>;
 
 export const initializeCart = async (user: Nullable<User>, cartItemsSetter: SetterType) => {
     if(user) {
-        let res = await getCartByUser(user?.sub!);
+        const res = await getCartByUser(user?.sub);
         cartItemsSetter(res);
     }
     else {
-        let res = await getDetailedCartOfCookie();
+        const res = await getDetailedCartOfCookie();
         cartItemsSetter(res);
     }
 }
