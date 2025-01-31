@@ -29,6 +29,7 @@ export default function Profile() {
         return <ProfileSkeleton/>;
     }
 
+    console.log("user", user);
     console.log('myuser',myUser);
 
     return (
