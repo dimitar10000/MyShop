@@ -47,6 +47,7 @@ export async function middleware(request: NextRequest) {
     const authResponse = await auth0Client.middleware(request);
 
     if (request.nextUrl.pathname.startsWith("/auth")) {
+        console.log("calling auth0 middleware");
         return authResponse;
     }
 
@@ -55,6 +56,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (request.nextUrl.pathname.startsWith('/')) {
+        console.log("calling user cookies function");
         const existingCookies = request.cookies.get('user');
 
         if (!existingCookies) {
