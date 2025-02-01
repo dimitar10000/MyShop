@@ -9,11 +9,7 @@ export default async function Wishlist() {
     const auth0Client = new Auth0Client();
     const session = await auth0Client.getSession();
     const user = session?.user;
-    let data: ListType['items'] | null;
-
-    data = await fetchListItems(user as User);
-
-    console.log("list items on wishlist page ", data);
+    const data: ListType['items'] | null = await fetchListItems(user as User);
 
     return (
     <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>

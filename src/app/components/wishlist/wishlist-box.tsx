@@ -64,7 +64,7 @@ export default function WishlistBox({ productsData }: {
 
     return (
         <div className='mb-10 mt-1'>
-            {!productsData && <WishlistSkeleton />}
+            {productsData === undefined && <WishlistSkeleton />}
 
             {productsData && productsData.length === 0 &&
                 <div className='flex flex-col justify-center items-center gap-y-3'>

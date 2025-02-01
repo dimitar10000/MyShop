@@ -260,7 +260,6 @@ export async function removeFromCart(userID: string | undefined, product: Shoppi
 }
 
 export async function deleteCart(userID: string | undefined) {
-    let cart: ShoppingCart | null = await getCartByUser(userID);
     const prisma = new PrismaClient();
 
     try {
@@ -287,7 +286,7 @@ export async function deleteCart(userID: string | undefined) {
         await prisma.$disconnect();
     }
 
-    cart = await getCartByUser(userID);
+    const cart = await getCartByUser(userID);
     return cart;
 }
 

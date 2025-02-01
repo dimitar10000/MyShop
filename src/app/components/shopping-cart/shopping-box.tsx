@@ -17,7 +17,7 @@ export default function ShoppingBox({ cartItems,insuranceIncluded, insuranceUpda
         insuranceUpdater: Dispatch<SetStateAction<boolean>> }) {
     const { user } = useUser();
     const theme = useTheme();
-    const { list, setList } = useList();
+    const { list, setList } = useList(); 
     const [brands, setBrands] = useState<Brand[] | null>(null);
 
     useEffect(() => {

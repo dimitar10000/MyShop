@@ -153,9 +153,8 @@ export async function removeFromList(userID: string, productID: number) {
     return list;
 }
 
-export async function deleteList(userID: string) {
+export async function deleteList(userID: string | undefined) {
     const prisma = new PrismaClient();
-    let res;
 
     try {
         if (userID === undefined) {
@@ -164,7 +163,7 @@ export async function deleteList(userID: string) {
             return list;
         }
 
-        res = await prisma.wishlists.updateMany({
+        await prisma.wishlists.updateMany({
             where: {
                 userID: userID
             },
@@ -181,8 +180,8 @@ export async function deleteList(userID: string) {
         await prisma.$disconnect();
     };
 
-    res = await getListByUser(userID);
-    return res;
+    const list = await getListByUser(userID);
+    return list;
 }
 
 async function createList(userID: string) {

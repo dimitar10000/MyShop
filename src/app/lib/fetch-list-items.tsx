@@ -15,5 +15,5 @@ export const fetchListItems = cache(async (user: User | undefined) => {
     if(res) {
         return res.items;
     }
-    return null;
+    return res;
 });

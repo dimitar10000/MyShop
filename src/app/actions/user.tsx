@@ -17,7 +17,7 @@ export async function getUser(email: string | undefined) {
             }
         })
 
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -46,7 +46,7 @@ export async function createUser(email: string) {
             }
         });
 
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {
@@ -70,7 +70,28 @@ export async function updateUser(user: User) {
                 phone: user.phone
             }
         })
-    } catch (e: any) {
+    } catch (e: unknown) {
+        console.error(e);
+        return null;
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+export async function deleteUser(email: string | undefined) {
+    const prisma = new PrismaClient();
+    
+    if(email === undefined) {
+        throw new Error("Email is undefined");
+    }
+
+    try {
+        await prisma.users.deleteMany({
+            where: {
+                email: email
+            }
+        })
+    } catch (e: unknown) {
         console.error(e);
         return null;
     } finally {

@@ -3,7 +3,9 @@ import { Auth0Client } from '@auth0/nextjs-auth0/server';
 import { ManagementClient } from 'auth0';
 import axios from 'axios'
 import { ChangePassConstants } from '@/app/components/profile/change-pass-constants';
-import { updateUser } from '@/app/actions/user';
+import { updateUser,deleteUser } from '@/app/actions/user';
+import { deleteCart } from './shopping-cart';
+import { deleteList } from './wishlist';
 
 const DOMAIN = 'dev-22pxfwuc6cwn74ws.eu.auth0.com';
 const MAN_CLIENT_ID = 'BsW2h1eMGEdiFuYF5teNs12rUz5LQ6qW'; // for auth0 management api
@@ -28,22 +30,21 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
     });
 
     const auth0Client = new Auth0Client();
-    let session = await auth0Client.getSession();
-    let user = session!.user;
+    const session = await auth0Client.getSession();
+    const user = session!.user;
     const userID = user!.sub;
 
     const givenName = formData.get('first-name')?.toString();
     const familyName = formData.get('last-name')?.toString();
     const phone = formData.get('phone')?.toString();
 
-    let data: any = {
+    const data = {
         user_metadata: {
             phone: phone ?? ''
-        }
+        },
+        given_name: givenName ?? '',
+        family_name: familyName ?? ''
     };
-
-    data['given_name'] = givenName ?? '';
-    data['family_name'] = familyName ?? '';
 
     try {
         const response = await management.users.update({ id: userID! }, data);
@@ -71,7 +72,11 @@ export async function saveUserInfo(state: FormState, formData: FormData) {
 }
 
 async function verifyUserPassword(domain: string, clientId: string, clientSecret: string,
-    username: string, currPass: string) {
+    username: string | undefined, currPass: string) {
+    
+    if(!username) {
+        return false;
+    }
 
     try {
         // setting the default directory manually
@@ -111,8 +116,8 @@ async function verifyUserPassword(domain: string, clientId: string, clientSecret
 
 export async function updateUserPassword(state: FormState, formData: FormData) {
     const auth0Client = new Auth0Client();
-    let session = await auth0Client.getSession();
-    let user = session?.user;
+    const session = await auth0Client.getSession();
+    const user = session?.user;
     const userID = user?.sub;
     const currPass = formData.get('current-password')?.toString();
     const newPass = formData.get('new-password')?.toString();
@@ -142,7 +147,7 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
         }
     }
 
-    const verifiedPass = await verifyUserPassword(DOMAIN, APP_CLIENT_ID, APP_CLIENT_SECRET, user?.name!, currPass ?? '');
+    const verifiedPass = await verifyUserPassword(DOMAIN, APP_CLIENT_ID, APP_CLIENT_SECRET, user?.name, currPass ?? '');
 
     if (verifiedPass) {
         try {
@@ -183,8 +188,8 @@ export async function updateUserPassword(state: FormState, formData: FormData) {
 
 export async function deleteUserAccount(state: FormState, formData: FormData) {
     const auth0Client = new Auth0Client();
-    let session = await auth0Client.getSession();
-    let user = session?.user;
+    const session = await auth0Client.getSession();
+    const user = session?.user;
     const userID = user?.sub;
 
     const management = new ManagementClient({
@@ -197,6 +202,10 @@ export async function deleteUserAccount(state: FormState, formData: FormData) {
     try {
         const response = await management.users.delete({ id: userID! });
         console.log(response.data);
+
+        await deleteUser(user?.email);
+        await deleteCart(userID);
+        await deleteList(userID);
     } catch (e) {
         console.error(e);
         return {

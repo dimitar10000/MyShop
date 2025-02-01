@@ -47,7 +47,6 @@ export async function middleware(request: NextRequest) {
     const authResponse = await auth0Client.middleware(request);
 
     if (request.nextUrl.pathname.startsWith("/auth")) {
-        console.log("calling auth0 middleware");
         return authResponse;
     }
 
@@ -55,8 +54,11 @@ export async function middleware(request: NextRequest) {
         return profileMiddleWare(request);
     }
 
+    if (request.nextUrl.pathname.startsWith('/delivery-address')) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+
     if (request.nextUrl.pathname.startsWith('/')) {
-        console.log("calling user cookies function");
         const existingCookies = request.cookies.get('user');
 
         if (!existingCookies) {
