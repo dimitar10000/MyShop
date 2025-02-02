@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { useState,useEffect } from 'react';
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from '@mui/material/Badge';
-import { ShoppingCartItemType, Nullable,Brand, Wishlist } from '@/app/lib/definitions';
+import { ShoppingCartItemType, Nullable,Brand } from '@/app/lib/definitions';
 import { ButtonBaseOwnProps } from '@mui/material/ButtonBase';
 import CartMenuBox from '../header/shopping-cart/cart-menu-box';
 import Box from '@mui/material/Box';

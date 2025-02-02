@@ -8,6 +8,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { addToCart, removeFromCart } from '@/app/actions/shopping-cart';
 import { ShoppingCartItemType,Nullable } from '@/app/lib/definitions';
 import { User } from '@/app/lib/definitions';
+import { useCart } from '@/app/lib/cart/cart-provider';
 
 interface TextfieldType {
     user: Nullable<User>,
@@ -17,6 +18,8 @@ interface TextfieldType {
 }
 
 export default function CartTextfield({ user, item, textBoxValue, setTextBoxValue }: TextfieldType) {
+    const {setCart} = useCart();
+    
     return (
         <OutlinedInput
             sx={{
@@ -51,12 +54,14 @@ export default function CartTextfield({ user, item, textBoxValue, setTextBoxValu
                 if (asNumber > item.quantity) {
                     const diff = asNumber - item.quantity;
                     item.quantity = asNumber;
-                    await addToCart(user?.sub, item, diff);
+                    const newCart = await addToCart(user?.sub, item, diff);
+                    setCart(newCart);
                 }
                 else if (asNumber < item.quantity) {
                     const diff = item.quantity - asNumber;
                     item.quantity = asNumber;
-                    await removeFromCart(user?.sub, item, diff);
+                    const newCart = await removeFromCart(user?.sub, item, diff);
+                    setCart(newCart);
                 }
 
             }}
@@ -73,7 +78,8 @@ export default function CartTextfield({ user, item, textBoxValue, setTextBoxValu
                                 item.quantity = asNumber;
 
                                 setTextBoxValue(asNumber.toString());
-                                await removeFromCart(user?.sub, item, 1);
+                                const newCart = await removeFromCart(user?.sub, item, 1);
+                                setCart(newCart);
                             }}
                             edge="start"
                         >
@@ -101,7 +107,8 @@ export default function CartTextfield({ user, item, textBoxValue, setTextBoxValu
                             item.quantity = asNumber;
 
                             setTextBoxValue(asNumber.toString());
-                            await addToCart(user?.sub, item, 1);
+                            const newCart = await addToCart(user?.sub, item, 1);
+                            setCart(newCart);
                         }}
                         edge="end"
                     >

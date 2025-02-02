@@ -38,6 +38,8 @@ export default function ShoppingCart() {
         }
     },[])
 
+    console.log("cart on shopping cart page", cart);
+
     return (
         <div style={{ marginLeft: "5%", marginRight: "5%" }} className='mt-1'>
             <BreadcrumbTemplate labels={["Home", "Shopping Cart"]} links={['/']} />

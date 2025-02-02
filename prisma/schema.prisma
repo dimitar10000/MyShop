@@ -14,9 +14,9 @@ type ProductsBrand {
 
 type ProductsImage {
   description String
-  height      Int?
+  height      Int
   source      String
-  width       Int?
+  width       Int
 }
 
 type ShoppingCartsItems {
@@ -32,9 +32,25 @@ type ShoppingCartsItems {
 
 type ShoppingCartsItemsImage {
   description String
-  height      Int?
+  height      Int
   source      String
-  width       Int?
+  width       Int
+}
+
+type WishlistsItems {
+  brand      String
+  categories String[]
+  image      WishlistsItemsImage
+  name       String
+  price      Float
+  productID  Int
+}
+
+type WishlistsItemsImage {
+  description String
+  height      Int
+  source      String
+  width       Int
 }
 
 model brands {
@@ -77,8 +93,7 @@ model users {
 }
 
 model wishlists {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  items  Json?
+  id     String           @id @default(auto()) @map("_id") @db.ObjectId
+  items  WishlistsItems[]
   userID String
 }
