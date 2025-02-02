@@ -1,7 +1,7 @@
 'use server'
 import { PrismaClient } from '@prisma/client'
 import { Wishlist, UserCookie, ShoppingCartItemType, Product,WishlistItemType, isProduct3,coerceToListType,Nullable } from '@/app/lib/definitions';
-import { addToListCookie, removeFromListCookie, deleteWishlistCookie, getUserCookie } from '@/app/actions/cookies';
+import { addToListCookie, removeFromListCookie, clearWishlistCookie, getUserCookie } from '@/app/actions/cookies';
 
 export async function addToList(userID: string, product: Product | ShoppingCartItemType | WishlistItemType) {
     let list: Nullable<Wishlist> = await getListByUser(userID);
@@ -153,12 +153,12 @@ export async function removeFromList(userID: string, productID: number) {
     return list;
 }
 
-export async function deleteList(userID: string | undefined) {
+export async function clearList(userID: string | undefined) {
     const prisma = new PrismaClient();
 
     try {
         if (userID === undefined) {
-            await deleteWishlistCookie();
+            await clearWishlistCookie();
             const list = await getDetailedListOfCookie();
             return list;
         }
@@ -172,7 +172,7 @@ export async function deleteList(userID: string | undefined) {
             }
         })
 
-        console.log(`deleted list!`);
+        console.log(`cleared list!`);
     } catch (e: unknown) {
         console.error(e);
         return null;

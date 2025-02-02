@@ -4,7 +4,7 @@ import type { products } from '@prisma/client';
 import { ShoppingCart, WishlistItemType, ShoppingCartItemType, 
     isProduct3,UserCookie,coerceToCartType, Product,Nullable } from '@/app/lib/definitions';
 import { addToCartCookie, removeFromCartCookie,
-    deleteCartCookie,getUserCookie } from '@/app/actions/cookies';
+    clearCartCookie,getUserCookie } from '@/app/actions/cookies';
 
 export async function addToCart(userID: string | undefined, 
     product: Product | WishlistItemType | ShoppingCartItemType,
@@ -242,10 +242,6 @@ export async function removeFromCart(userID: string | undefined, product: Shoppi
                 }
             });
 
-            if (cart!.items.length === 0) {
-                await deleteCart(userID);
-            }
-
             console.log(`removed product ${product.productID} from cart!`);
         }
     } catch (e: unknown) {
@@ -259,12 +255,12 @@ export async function removeFromCart(userID: string | undefined, product: Shoppi
     return cart;
 }
 
-export async function deleteCart(userID: string | undefined) {
+export async function clearCart(userID: string | undefined) {
     const prisma = new PrismaClient();
 
     try {
         if (userID === undefined) {
-            await deleteCartCookie();
+            await clearCartCookie();
             const cart = await getDetailedCartOfCookie();
             return cart;
         }
@@ -278,7 +274,7 @@ export async function deleteCart(userID: string | undefined) {
             }
         })
 
-        console.log(`deleted cart!`);
+        console.log(`cleared cart!`);
     } catch (e: unknown) {
         console.error(e);
         return null;

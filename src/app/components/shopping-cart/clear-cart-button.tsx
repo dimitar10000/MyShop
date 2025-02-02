@@ -6,13 +6,13 @@ import { useCart } from '@/app/lib/cart/cart-provider';
 import { useUser } from '@/app/lib/user';
 import {User} from '@/app/lib/definitions';
 import { Nullable, ShoppingCart } from '@/app/lib/definitions';
-import { deleteCart } from '@/app/actions/shopping-cart';
+import { clearCart } from '@/app/actions/shopping-cart';
 import { useEffect,Dispatch, SetStateAction } from 'react';
 
 const handleClearCart = async (user: Nullable<User>,
     updater: Dispatch<SetStateAction<Nullable<ShoppingCart>>>) => {
 
-    const newCart = await deleteCart(user?.sub);
+    const newCart = await clearCart(user?.sub);
     updater(newCart);
 }
 

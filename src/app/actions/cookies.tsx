@@ -3,9 +3,7 @@ import { UserCookie } from '@/app/lib/definitions';
 import { cookies } from 'next/headers';
 
 async function getUserCookieString() {
-    let cookie;
-
-    cookie = (await cookies()).get('user')!.value;
+    const cookie = (await cookies()).get('user')!.value;
     return cookie;
 }
 
@@ -51,7 +49,7 @@ async function updateUserCookie(oldCookie: UserCookie | null) {
     return res;
 }
 
-export async function deleteCartCookie() {
+export async function clearCartCookie() {
     let cookieValues;
 
     try {
