@@ -290,7 +290,7 @@ export async function deleteCart(userID: string | undefined) {
     return cart;
 }
 
-async function createCart(userID: string | undefined) {
+export async function createCart(userID: string | undefined) {
     const prisma = new PrismaClient();
     let res: ShoppingCart | null;
 

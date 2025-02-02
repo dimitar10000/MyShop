@@ -1,19 +1,21 @@
 'use server'
 import { PrismaClient,users } from '@prisma/client'
-import { User } from '../lib/definitions';
+import { User,Nullable,coerceToUserType } from '@/app/lib/definitions';
+import {createCart} from "@/app/actions/shopping-cart";
+import {createList} from "@/app/actions/wishlist";
 
-export async function getUser(email: string | undefined) {
+export async function getUser(user: Nullable<User>) {
     const prisma = new PrismaClient();
-    let user: users | null;
+    let dbUser: users | null;
 
-    if(email === undefined) {
+    if(!user) {
         return;
     }
 
     try {
-        user = await prisma.users.findFirst({
+        dbUser = await prisma.users.findFirst({
             where: {
-                email: email
+                email: user.email
             }
         })
 
@@ -25,11 +27,16 @@ export async function getUser(email: string | undefined) {
     }
 
     // user didn't exist, need to add them
-    if(user === null) {
-        user = await createUser(email);
+    // cart and list need to be created too
+    if(dbUser === null) {
+        dbUser = await createUser(user.email);
+        if(user !== null) {
+            await createCart(user.sub);
+            await createList(user.sub);
+        }
     }
 
-    return user;
+    return coerceToUserType(dbUser);
 }
 
 export async function createUser(email: string) {

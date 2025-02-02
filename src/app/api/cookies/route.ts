@@ -8,8 +8,7 @@ async function createUserCookie() {
         name: 'unregistered',
         cart: [],
         wishlist: [],
-        email: '',
-        expiration: new Date(Date.now() + 60 * 60 * 24 * 7)
+        email: ''
     }),{maxAge: 60 * 60 * 24 * 7 * 4,
         httpOnly: true,
         expires: new Date(Date.now() + 60 * 60 * 24 * 7)});

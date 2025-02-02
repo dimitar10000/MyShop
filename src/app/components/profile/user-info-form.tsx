@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useFormStatus } from 'react-dom'
 import { useState, useEffect, useActionState,SetStateAction,Dispatch } from 'react';
 import { saveUserInfo } from '@/app/actions/profile';
-import { User, Nullable,coerceToUserType } from '@/app/lib/definitions';
+import { User, Nullable } from '@/app/lib/definitions';
 import { useSnackbar } from '@/app/lib/snackbar';
 import {getUser} from '@/app/actions/user';
 
@@ -61,8 +61,8 @@ export default function UserInfoForm({ user,updateUser }: { user: Nullable<User>
         }
         else if (!state?.errors) {
             setTimeout(async () => {
-                const newUser = await getUser(user?.email);
-                updateUser(coerceToUserType(newUser));
+                const newUser = await getUser(user);
+                updateUser(newUser);
 
                 (clickHandler({ vertical: 'bottom', horizontal: 'right' }))();
             },0); // timeout needed to get the latest user data from DB

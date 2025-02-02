@@ -13,7 +13,7 @@ import { useUser } from '@/app/lib/user';
 import { initializeCart } from '@/app/lib/cart/initialize-cart';
 import { initializeList } from '@/app/lib/list/initialize-list';
 import { getUser } from '@/app/actions/user';
-import { User, Nullable,coerceToUserType } from "@/app/lib/definitions";
+import { User, Nullable } from "@/app/lib/definitions";
 
 export default function Header() {
     const { user } = useUser();
@@ -26,8 +26,8 @@ export default function Header() {
         initializeList(user, setList);
 
         const fetchAndSetUser = async () => {
-            const fetchedUser = await getUser(user?.email);
-            setMyUser(coerceToUserType(fetchedUser));
+            const fetchedUser = await getUser(user);
+            setMyUser(fetchedUser);
         }
 
         fetchAndSetUser();

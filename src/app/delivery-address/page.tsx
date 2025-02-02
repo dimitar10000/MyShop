@@ -10,7 +10,7 @@ import ContinueButton from '@/app/components/shopping-cart/continue-button';
 import UserDetails from '@/app/components/delivery-address/user-details';
 import AddressSection from '@/app/components/delivery-address/address-section';
 import BackButton from '@/app/components/delivery-address/back-button';
-import { User, Nullable, coerceToUserType } from '@/app/lib/definitions';
+import { User, Nullable } from '@/app/lib/definitions';
 import { useEffect, useState } from "react";
 import { getUser } from '@/app/actions/user';
 
@@ -26,10 +26,10 @@ export default function DeliveryAddress() {
 
     useEffect(() => {
         const getFunc = async () => {
-            const fetchedUser = await getUser(user?.email);
+            const fetchedUser = await getUser(user);
 
             if (fetchedUser) {
-                setMyUser(coerceToUserType(fetchedUser));
+                setMyUser(fetchedUser);
             }
         }
 

@@ -53,7 +53,7 @@ export default function ShoppingCart() {
 
             <div className='flex flex-row mt-5 justify-between'>
                 <div className='flex flex-col gap-y-1'>
-                    <ShoppingBox cartItems={cart?.items} insuranceIncluded={insuranceIncluded}
+                    <ShoppingBox cartItems={cart === null ? cart : cart?.items} insuranceIncluded={insuranceIncluded}
                         insuranceUpdater={setInsuranceIncluded} />
                     <div className='self-end me-10 mb-10'>
                         {cart?.items && cart.items.length > 0 &&

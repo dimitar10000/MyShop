@@ -4,7 +4,7 @@ import { ShoppingCart, Nullable, Brand } from '@/app/lib/definitions';
 import { isInWishlist } from '@/app/lib/util-funcs';
 import { useTheme } from '@mui/material/styles';
 import { useUser } from '@/app/lib/user';
-import { useState, useEffect,Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useList } from '@/app/lib/list/list-provider';
 import { initializeList } from '@/app/lib/list/initialize-list';
 import ShoppingItem from './shopping-item';
@@ -12,12 +12,14 @@ import ShoppingSkeleton from '@/app/components/loadings/shopping-skeleton';
 import { initializeBrandsOnClient } from '@/app/lib/fetch-brands';
 import PackageInsurance from './package-insurance';
 
-export default function ShoppingBox({ cartItems,insuranceIncluded, insuranceUpdater }: 
-    { cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean,
-        insuranceUpdater: Dispatch<SetStateAction<boolean>> }) {
+export default function ShoppingBox({ cartItems, insuranceIncluded, insuranceUpdater }:
+    {
+        cartItems: Nullable<ShoppingCart['items']>, insuranceIncluded: boolean,
+        insuranceUpdater: Dispatch<SetStateAction<boolean>>
+    }) {
     const { user } = useUser();
     const theme = useTheme();
-    const { list, setList } = useList(); 
+    const { list, setList } = useList();
     const [brands, setBrands] = useState<Brand[] | null>(null);
 
     useEffect(() => {
@@ -31,7 +33,7 @@ export default function ShoppingBox({ cartItems,insuranceIncluded, insuranceUpda
     const themeBorderColor = theme.palette.primary.light;
 
     return (
-        !cartItems
+        cartItems === undefined
             ? <ShoppingSkeleton />
             : <Box sx={{
                 width: "60vw", borderColor: themeBorderColor, borderWidth: "2px", borderStyle: 'solid',
@@ -39,13 +41,14 @@ export default function ShoppingBox({ cartItems,insuranceIncluded, insuranceUpda
             }}>
                 {
                     <div>
-                        {cartItems.length === 0 &&
+                        {cartItems && cartItems.length === 0 &&
                             <div className='flex flex-row justify-center items-center'>
                                 It looks like your cart is empty... Your products will appear here once you add them.
                             </div>
                         }
 
                         {
+                            cartItems && cartItems.length > 0 &&
                             cartItems.map((item, index) => {
                                 const inWishlist = isInWishlist(item, list);
 

@@ -1,10 +1,10 @@
 'use server'
 import { PrismaClient } from '@prisma/client'
-import { Wishlist, UserCookie, ShoppingCartItemType, Product,WishlistItemType, isProduct3,coerceToListType } from '@/app/lib/definitions';
+import { Wishlist, UserCookie, ShoppingCartItemType, Product,WishlistItemType, isProduct3,coerceToListType,Nullable } from '@/app/lib/definitions';
 import { addToListCookie, removeFromListCookie, deleteWishlistCookie, getUserCookie } from '@/app/actions/cookies';
 
 export async function addToList(userID: string, product: Product | ShoppingCartItemType | WishlistItemType) {
-    let list: Wishlist | null = await getListByUser(userID);
+    let list: Nullable<Wishlist> = await getListByUser(userID);
 
     // list doesn't exist, create new one
     if (!list) {
@@ -184,9 +184,13 @@ export async function deleteList(userID: string | undefined) {
     return list;
 }
 
-async function createList(userID: string) {
+export async function createList(userID: string | undefined) {
     const prisma = new PrismaClient();
     let res: Wishlist | null;
+
+    if(userID === undefined) {
+        return;
+    }
 
     try {
         const tmp = await prisma.wishlists.create({

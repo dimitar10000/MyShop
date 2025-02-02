@@ -4,7 +4,7 @@ import ProfileButton from "../components/profile/profile-button";
 import UserInfoForm from '../components/profile/user-info-form';
 import {getUser} from '@/app/actions/user';
 import { useEffect,useState } from "react";
-import {User,coerceToUserType,Nullable} from '@/app/lib/definitions';
+import {User,Nullable} from '@/app/lib/definitions';
 import {useUser} from '@/app/lib/user';
 import ProfileSkeleton from '@/app/components/loadings/profile-skeleton';
 
@@ -14,10 +14,10 @@ export default function Profile() {
 
     useEffect(() => {
         const getFunc = async () => {
-            const fetchedUser = await getUser(user?.email);
+            const fetchedUser = await getUser(user);
 
             if(fetchedUser) {
-                setMyUser(coerceToUserType(fetchedUser));
+                setMyUser(fetchedUser);
             }
         }
 
