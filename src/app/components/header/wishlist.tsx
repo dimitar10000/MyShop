@@ -21,7 +21,7 @@ export default function WishList({listItems} : {listItems: Nullable<WishlistItem
                     <Badge badgeContent={numListItems} color="success">
                         <FavoriteBorderOutlinedIcon fontSize="large" />
                     </Badge>
-                    <span className='text-center'> My Wishlist </span>
+                    <span className='text-center'> My Wishlist </span> 
                 </div>
             </Link>
         </div>

@@ -7,6 +7,7 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import { useState,useEffect } from 'react';
 import styles from './menus.module.css';
 import { User,Nullable } from '@/app/lib/definitions';
+import { poppins } from '@/app/styles/fonts';
 
 export default function ProfileMenu({ user }: { user: Nullable<User> }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -67,8 +68,8 @@ export default function ProfileMenu({ user }: { user: Nullable<User> }) {
                     sx={{ zIndex: (theme) => theme.zIndex.modal + 1, textTransform: 'none' }}
                 >
                     <PermIdentityOutlinedIcon htmlColor='black' fontSize="large" />
-                    <span className="text-black mt-2">
-                        {displayName}
+                    <span className={`text-black mt-2 ${poppins.className}`}>
+                        {displayName} 
                     </span>
                 </Button>
             </Link>

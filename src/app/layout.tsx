@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
 import Head from "next/head";
 import "./globals.css";
 import ReactDOM from "react-dom";
@@ -8,6 +7,7 @@ import TopMenu from "./components/menus/top-menu";
 import Footer from "./components/footer/footer";
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '@/app/lib/theme';
+import { poppins } from '@/app/styles/fonts';
 import CssBaseline from '@mui/material/CssBaseline';
 import QueryClientProviderWrapper from './query-client-provider';
 import CartProvider from '@/app/lib/cart/cart-provider';
@@ -15,8 +15,6 @@ import ListProvider from '@/app/lib/list/list-provider';
 import ProductsProvider from '@/app/lib/product/products-provider';
 import ScrollUpProvider from '@/app/lib/scroll-up/scroll-up-provider';
 import ScrollUpButton from '@/app/components/scroll-up-button/scroll-up-button';
-
-const poppins = Poppins({ subsets: ["latin"], weight: '400' });
 
 export const metadata: Metadata = {
   title: {
@@ -44,7 +42,7 @@ export default function RootLayout({
   ReactDOM.preconnect("https://fonts.gstatic.com", { crossOrigin: "anonymous" });
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.className} ${poppins.variable}`}>
       <Head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet" />
       </Head>
@@ -56,7 +54,7 @@ export default function RootLayout({
                 {/*<a href="https://www.flaticon.com/free-icons/branding" title="branding icons">Branding icons created by Freepik - Flaticon</a> */}
                 {/*<a href="https://www.flaticon.com/free-icons/architecture-and-city" title="architecture-and-city icons">Architecture-and-city icons created by Rendyudha - Flaticon</a>*/}
                 <QueryClientProviderWrapper>
-                  <body className={`${poppins.className}`}>
+                  <body>
                     <ScrollUpProvider>
                       <Header />
                       <div className="pt-1">
