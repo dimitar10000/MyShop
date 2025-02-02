@@ -338,6 +338,29 @@ export async function getCartByUser(userID: string | undefined) {
     return res;
 }
 
+export async function deleteCart(userID: string | undefined) {
+    const prisma = new PrismaClient();
+
+    try {
+        if (userID === undefined) {
+            return;
+        }
+
+        await prisma.shopping_carts.deleteMany({
+            where: {
+                userID: userID
+            }
+        })
+
+        console.log(`deleted cart!`);
+    } catch (e: unknown) {
+        console.error(e);
+        return null;
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function getQuantityByProduct(productID: number) {
     const prisma = new PrismaClient();
     let res;

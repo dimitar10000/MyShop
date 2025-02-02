@@ -67,7 +67,7 @@ export async function clearCartCookie() {
     return res;
 }
 
-export async function deleteWishlistCookie() {
+export async function clearWishlistCookie() {
     let cookieValues;
 
     try {

@@ -184,6 +184,29 @@ export async function clearList(userID: string | undefined) {
     return list;
 }
 
+export async function deleteList(userID: string | undefined) {
+    const prisma = new PrismaClient();
+
+    try {
+        if (userID === undefined) {
+            return;
+        }
+
+        await prisma.wishlists.deleteMany({
+            where: {
+                userID: userID
+            }
+        })
+
+        console.log(`deleted list!`);
+    } catch (e: unknown) {
+        console.error(e);
+        return null;
+    } finally {
+        await prisma.$disconnect();
+    };
+}
+
 export async function createList(userID: string | undefined) {
     const prisma = new PrismaClient();
     let res: Wishlist | null;
