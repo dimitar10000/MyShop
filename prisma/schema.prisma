@@ -32,9 +32,9 @@ type ShoppingCartsItems {
 
 type ShoppingCartsItemsImage {
   description String
-  height      Int
+  height      Int?
   source      String
-  width       Int
+  width       Int?
 }
 
 type WishlistsItems {
@@ -48,9 +48,9 @@ type WishlistsItems {
 
 type WishlistsItemsImage {
   description String
-  height      Int
+  height      Int?
   source      String
-  width       Int
+  width       Int?
 }
 
 model brands {
