@@ -116,7 +116,7 @@ export default function CartMenu({ cartItems, numItems }: {numItems: number,
                 <MenuItem disableRipple sx={{
                     ...commonMenuItemProps, paddingLeft: 2, borderBottom: 'none'
                 }}>
-                    <div className='text-lg cursor-text'>  Shopping cart ({numItems + " items"}): </div>
+                    <div className='text-lg cursor-text'>  Shopping cart ({numItems + (numItems <= 1 ? " item" : " items")}): </div>
                 </MenuItem>
 
                 {cartItems
