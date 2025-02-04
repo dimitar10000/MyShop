@@ -26,7 +26,7 @@ async function createUserCookie() {
     return response;
 }
 
-const profileMiddleWare = async (req: NextRequest) => {
+const protectPathMiddleWare = async (req: NextRequest) => {
     const res = NextResponse.next();
     const session = await auth0Client.getSession();
 
@@ -51,11 +51,21 @@ export async function middleware(request: NextRequest) {
     }
 
     if (request.nextUrl.pathname.startsWith('/profile')) {
-        return profileMiddleWare(request);
+        return protectPathMiddleWare(request);
     }
 
+    // allow access only from delivery-payment page
     if (request.nextUrl.pathname.startsWith('/delivery-address')) {
-        return NextResponse.redirect(new URL('/', request.url));
+        const res = NextResponse.next();
+
+        const referer = request.headers.get("referer");
+        const allowedReferer = request.nextUrl.origin + "/delivery-payment";
+
+        if (!referer || !referer.startsWith(allowedReferer)) {
+          return NextResponse.redirect(new URL("/", request.url));
+        }
+
+        return res;
     }
 
     if (request.nextUrl.pathname.startsWith('/')) {
