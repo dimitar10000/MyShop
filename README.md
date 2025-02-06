@@ -46,3 +46,32 @@ https://github.com/user-attachments/assets/ca77fbcd-c567-4c6d-9fe5-e8bd33c07b7b
 Using search by keywords function
 
 https://github.com/user-attachments/assets/ad966246-4976-4dbb-a7e5-274d46274b11
+
+## Sources for images
+
+* boots - https://menswear-market.com/
+  
+* jeans - https://unsplash.com/de/fotos/mann-in-blauen-jeans-stehend-17qC7l19hMI?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+
+* tshirts - https://unsplash.com/de/fotos/mann-tragt-weisse-t-shirts-mit-rundhalsausschnitt-WWesmHEgXDs?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* shirts - https://unsplash.com/de/fotos/mann-in-weissem-button-up-hemd-GDebkNryTd4?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* sneakers - https://unsplash.com/de/fotos/grau-weisser-nike-sportschuh-tgdgb6yb0Qo?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* slippers - https://unsplash.com/de/fotos/ein-paar-schwarz-weiss-gestreifte-schuhe-aCR_KE3vg7U?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* high heels - https://unsplash.com/de/fotos/schuhe-mit-schwarzen-lederabsatzen-auf-gelbem-stuhl-EZXKn9P2scc?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* dress - https://unsplash.com/de/fotos/schwarzes-spaghettitragerkleid-aus-leder-kS3YkVtf85U?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* sandals - https://unsplash.com/de/fotos/frau-in-orangefarbenen-und-braunen-ledersandalen-mit-offener-zehe-DfQSEG0N_tw
+  
+* ankle boots - https://unsplash.com/de/fotos/person-die-tagsuber-auf-einer-grauen-betonstrasse-steht-e2FnrcFOY98?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* skirts - https://unsplash.com/de/fotos/selektiver-fokus-einer-frau-mit-rotem-langarmhemd-und-blauem-jeansrock-die-auf-der-strasse-steht-ucmVImW1coE?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* blouses - https://unsplash.com/de/fotos/weiss-schwarz-gestreiftes-langarmshirt-LLHs1CN-5UU?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
+  
+* brand icons - https://www.flaticon.com/free-icons/branding
+  https://www.flaticon.com/free-icons/architecture-and-city (Architecture-and-city icons created by Rendyudha)
